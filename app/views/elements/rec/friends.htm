@@ -1,0 +1,18 @@
+{% if recs and recs|length > 0 %}
+<div class="other-box">
+  <h3>{{ 'People you may know'|__ }}</h3>
+  {% for rec in recs %}
+    <div class="other-box-one clearfix">
+      <div class="other-box-one__img">
+        <a href="/profile/{{ rec.User.id }}"><img src="{{ rec.UserInfo|avatar|thumb(64,64) }}"/></a>
+      </div>
+      <div class="other-box-one__text">
+        <a href="/profile/{{rec.User.id}}"><h5>{{ rec.UserInfo.first_name }} {{ rec.UserInfo.last_name }}</h5></a>
+        <a href="/profile/{{rec.User.id}}"><p>{{ rec.UserPrivateInfo.position ? rec.UserPrivateInfo.position : '' }}</p></a>
+        <a href="#" class="btn-add-to btnBlue" data-id="{{ rec.User.id }}">{{ 'ADD TO NETWORK'|__ }}</a>
+      </div>
+    </div>
+  {% endfor %}
+  <a class="view-more-recs-link" href="/join-us">{{ 'View more'|__ }} >></a>
+</div>
+{% endif %}

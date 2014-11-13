@@ -1,0 +1,65 @@
+<div class="login-box">
+    {% if not session.check('Auth.User.id') %}
+    {{ form.create('User', {"type":"post", "url":"/users/login"}) }}
+        <div class="clearfix">
+            <div class="input">
+                {{ form.text("User.email", {"class":"text",
+                    "onblur": "this.value = (this.value == '') ? 'Email' : this.value",
+                    "onfocus": "this.value = (this.value == 'Email') ? '' : this.value",
+                    "value": "Email"}) }}
+                {{ session.flash('auth') }}
+            </div>
+            <div class="input">
+                {{ form.password("User.password", {"class":"text",
+                    "onblur": "this.value = (this.value == '') ? 'Password' : this.value",
+                    "onfocus": "this.value = (this.value == 'Password') ? '' : this.value",
+                    "value": "Password"}) }}
+            </div>
+            <div class="button">
+              {{ form.submit('', {'class': 'btn-login', 'div': false})}}
+
+              <div id="fb-root"></div>
+
+              {# Scripts added from the layout, or elements in the layout will not be added to $scripts_for_layout #}
+              {# view.addScript('<script type="text/javascript" src="/js/facebook.js"></script>') #}
+              <script type="text/javascript" src="/js/facebook.js"></script>
+
+              <a href="#" id="facebookLoginBtn">{{ view.Html.image('icons/facebook1.png') }}</a>
+
+              {# old login code #}
+              {# facebook.login({ 'perms' : 'email,read_stream,publish_stream,user_birthday,user_location,user_hometown,user_photos,friends_photos, user_checkins, publish_checkins, friends_checkins, read_friendlists, read_mailbox', 'style' : 'height:0px; width:0px;', 'registration-url':'/registration.html' }, 'Login') #}
+              {# facebook.init(null, false) #}
+              {#<a href="#">{{ view.Html.image('icons/linkedin.png') }}</a>#}
+
+              </div>
+        </div>
+        <div class="clearfix remember-block">
+            {{ form.checkbox('remember') }} <label>{{'Remember me?'|__}}</label>
+            <a class='forgot' href="/forgotten-password.html">{{'Forgot Password?'|__}}</a>
+            <a class='registration' href="/registration.html">{{ 'Register'|__}} test</a>
+        </div>
+    {{ form.end() }}
+    {% else %}
+        <div class="welcomeUser">
+            <span class="textLogin">
+                {{'Welcome,'|__}} {{ session.read('Auth.User.info.first_name') }} {{ session.read('Auth.User.info.last_name') }}!<br/>
+                <a href="/profile/{{ session.read('Auth.User.id') }}">{{'View profile'|__}}</a>&nbsp;/&nbsp;
+                {# if FB_logoutLink }
+                    {{ facebook.logout({'redirect' : '/users/logout'}) }}
+                    {{ facebook.init(null, false) }}
+                {% else % #}
+                    {{ view.Html.link('Logout', '/users/logout') }}
+                {# % endif % #}
+
+            </span>
+
+            <span class="avaLogin">
+                <a href="/profile/{{ session.read('Auth.User.id') }}">{{ view.element('ava_common', { 'data' : session.read('Auth.User.info'), 'w' : 40, 'h' : 40 } ) }}</a>
+            </span>
+        </div>
+
+
+
+    {% endif %}
+</div>
+

@@ -1,0 +1,15 @@
+{{ extTree.addItemAttribute('id', 'list_' ~ data.PublicationCategory.id ) }}
+
+{% if hasChildren %}
+    {{ extTree.addItemAttribute('class', 'haveChilds' ) }}
+{% endif %}
+
+<div class="categoryDiv">
+    <span class="categoryItem">
+        {% if hasChildren %}
+            {{ data.PublicationCategory.name }}
+        {% else %}
+            <a href="#{{ data.PublicationCategory.id }}" data-id="{{ data.PublicationCategory.id }}" class="clickCategory">{{ data.PublicationCategory.name }}</a>
+        {% endif %}
+    </span>
+</div>

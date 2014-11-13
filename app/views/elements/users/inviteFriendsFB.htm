@@ -1,0 +1,55 @@
+<div id="joinUsRenderResult">
+<div class="results-box clearfix">
+    <form action="#" id="formInviteFB" style="padding-top: 0;">
+    <div class="results-box-left" style="padding-bottom: 0;">
+        {% if inviteFriendsFB %}<h4 class="status">You have {{ inviteFriendsFB|length }} Facebook friends on Vivarena.com.</h4>{% endif %}
+        {% for item in inviteFriendsFB %}
+        {% set iAmFriend  = item.UserFriend.iAmFriend %}
+        {% set isMyFriend = item.UserFriend.isMyFriend %}
+            {% set linkProfile = (item.User.login|length > 0) ? item.User.login : 'profile-'~item.User.id %}
+            <div class="results-box-left-one clearfix">
+                <div class="results-box-left-one-i clearfix">
+                    <div class="results-box-left-one__img">
+                        <a href="/{{ linkProfile }}">
+                            {{ view.element('ava_common', { 'data' : item.UserInfo, 'w' : 45, 'h' : 45, 'thumbAva' : true })}}
+                        </a>
+                    </div>
+                    <div class="results-box-left-one__text">
+                        <h5><a href="/{{ linkProfile }}" class="fromInvite" target="_blank">{{ item.UserInfo.first_name }} {{ item.UserInfo.last_name }}</a></h5>
+
+                        <div class="actionSearchButtons clearfix">
+
+                          {% if iAmFriend and isMyFriend %}
+                            <a href="#" data-id="{{ item.User.id }}" class="remove delete">{{'Delete'|__}}</a><br/>
+                          {% elseif not isMyFriend and iAmFriend %}
+                            <a class="friendshipChanger btn-add-net addToNet btnBlue" data-id="{{ item.User.id }}" href="/community/cancelRequest">{{'Cancel Request'|__}}</a>
+                          {% elseif isMyFriend and not iAmFriend %}
+                            <a class="confirm" href="/community/confirmFriend" data-id="{{ item.User.id }}">{{'Accept Request'|__}}</a>
+                            <a class="unfriend" href="#" data-id="{{ item.User.id }}">{{'Reject Request'|__}}</a>
+                          {% elseif not isMyFriend and not iAmFriend %}
+                            <a class="friendshipChanger btn-add-net addToNet btnBlue" data-id="{{ item.User.id }}" href="/community/addToNetwork">{{'ADD TO NETWORK'|__}}</a>
+                          {% endif %}
+                          <a href="/emails/write/{{ item.User.id }}" data-id="{{ item.User.id }}" class="send-msg blockElem">{{'Send Message'|__}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="results-box-left-one clearfix">
+                <div class="results-box-left-one-i clearfix">
+                    <div class="results-box-left-one__text">
+                        <h5>{{'Search has returned empty result'|__}}</h5>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <br class="clear"/>
+        <div class="padd-20 align-center">
+            <a href="#" class="sendFBInvite fb-invite">Invite more friends</a>
+        </div>
+
+    </div>
+
+    </form>
+</div>
+</div>

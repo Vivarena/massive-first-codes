@@ -1,0 +1,76 @@
+<div id="feedBackBox">
+    {{ form.create('FeedBack', {'action': 'contact'}) }}
+       <div class="input clearfix">
+           {{ form.input('first_name', {'class' : 'text', 'label': 'Name'|__, 'div' : false}) }}
+       </div>
+       <div class="input clearfix">
+           {{ form.input('email', {'class' : 'text', 'div' : false}) }}
+       </div>
+       <div class="textarea clearfix">
+           <label for="FeedBackComment">{{'Message'|__}}</label>
+           {{ form.textarea('comment') }}
+       </div>
+       <div class="button">
+           {{ form.submit('Send'|__, {'class': 'btnSend', 'label': false, 'div': false, 'type' : 'button'}) }}
+           {{ form.submit('Cancel'|__, {'class': 'btnCancel', 'label': false, 'div': false, 'type' : 'button'}) }}
+       </div>
+   {{ form.end() }}
+</div>
+<a href="#" class="btn-feedback">{{ view.Html.image('btn/btn-feedback.png')}}</a>
+<script type="text/javascript">
+
+    $(function() {
+
+        var formFB = $('#FeedBackContactForm'),
+            feedB = $('#feedBackBox'),
+            btnFeedB = $('.btn-feedback');
+
+
+        $('.btn-feedback').click(function(e){
+            feedBackBoxToggle();
+            e.preventDefault();
+        });
+
+        $('.btnCancel').click(function(e){
+
+            feedBackBoxToggle();
+            e.preventDefault();
+        });
+
+        $('.btnSend').click(function(e){
+            $.post('/pages/contact', formFB.serialize(),
+                function(data) {
+                    if (!data.status) {
+                        $.jGrowl('An error occurred! Check input field e-mail address', {
+                            'life': 5000,
+                            'theme': 'jGrowl-type-error'
+                        });
+                    } else {
+                        formFB.find('input:not(".btnCancel", ".btnSend")').val('').end()
+                            .find('textarea').text('').val('');
+                        feedBackBoxToggle();
+                        $.jGrowl('Your request has been processed!', {
+                            'life': 5000,
+                            'theme': 'jGrowl-type-success'
+                        });
+                    }
+                },
+                'json'
+            );
+            e.preventDefault();
+        });
+
+
+        function feedBackBoxToggle(){
+            var positionBox = parseInt(feedB.css('left'),10);
+            feedB.animate({
+              left: positionBox == 0 ? -feedB.outerWidth() : 0
+            });
+            btnFeedB.animate({
+              left: positionBox == 0 ? 0 : -feedB.outerWidth()
+            });
+        }
+
+    });
+
+</script>

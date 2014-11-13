@@ -1,0 +1,82 @@
+{{ view.Html.css([ '/admin/css/analytics' ], null, {'inline': false}) }}
+
+
+<div class="eachBlock">
+
+    {{ form.create() }}
+    <div id="customFilter">
+        <table cellpadding="0" cellspacing="1" class="common-style-table autoWidth">
+            <tr>
+                <th>{{ form.select('Search.column.0', filterFields, null, {'empty' : true} ) }}</th>
+                <th>{{ form.select('Search.column.1', filterFields, null, {'empty' : true} ) }}</th>
+                <th>{{ form.select('Search.column.2', filterFields, null, {'empty' : true} ) }}</th>
+                <th>{{ form.select('Search.column.3', filterFields, null, {'empty' : true} ) }}</th>
+                <th>{{ form.select('Search.column.4', filterFields, null, {'empty' : true} ) }}</th>
+            </tr>
+{#            <tr>
+                <td colspan="5">
+                    also
+                </td>
+            </tr>#}
+{#
+            <tr>
+                <th colspan="5">
+                    {{ form.select('Search.also.0', filterAlso, null, {'empty' : true, 'style' : 'width: 300px'} ) }}
+                </th>
+            </tr>
+#}
+
+            <tr>
+                <td colspan="5">
+                    {{ form.submit() }}
+                </td>
+            </tr>
+        </table>
+        {% if items %}
+
+        <table cellpadding="0" cellspacing="1" class="common-style-table autoWidth">
+            <tr>
+                <th>
+                    &nbsp;#&nbsp;
+                </th>
+                {% for nameSubItem, subMainItem in items.0 %}
+                    {% for childKeyItem, childValItem in subMainItem %}
+                        <th>
+                            {{ filterFields[nameSubItem~'.'~childKeyItem] }}
+                            {#{{ paginator.sort(filterFields[nameSubItem~'.'~childKeyItem], nameSubItem~'.'~childKeyItem) }}#}
+                        </th>
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+
+                {% for mainItem in items %}
+                {% set row_class = loop.index%2 ? 'odd' : 'even' %}
+                    <tr>
+                        <td class="{{ row_class }}">
+                            {{ loop.index }}
+                        </td>
+                    {% for nameSubItem, subMainItem in mainItem %}
+                        {% for childKeyItem, childValItem in subMainItem %}
+                            <td class="{{ row_class }}">
+                                {{ childValItem|default('not defined') }} &nbsp;
+                            </td>
+                        {% endfor %}
+                    {% endfor %}
+                    </tr>
+                {% endfor %}
+            <tr>
+                <td colspan="{{ items|length }}">
+                    {{ view.element('paginator') }}
+                </td>
+            </tr>
+        </table>
+
+
+        {% endif %}
+        
+    </div>
+
+    {{ form.end() }}
+
+</div>
+

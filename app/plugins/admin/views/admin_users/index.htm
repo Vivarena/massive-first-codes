@@ -1,0 +1,19 @@
+{{ html.css('/admin/css/users', null, {'inline': false}) }}
+<div id="listUsers">
+
+    {{ view.element('users/usersAjax') }}
+
+</div>
+
+<script type="text/javascript">
+
+    var elementUpdate = $('#listUsers');
+
+    $('#listUsers').on('click', '.pagi a', function(e){
+        ajaxLoader('Loading users...');
+        elementUpdate.load($(this).attr('href'));
+        e.preventDefault();
+    });
+
+
+</script>

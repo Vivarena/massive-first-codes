@@ -1,0 +1,230 @@
+<script type="text/javascript" src="/admin/js/jquery/plugins/nano/jquery.nano.js"></script>
+<script type="text/javascript" src="/admin/js/emptytable.js"></script>
+<script type="text/javascript">
+	$(function() {
+        var $content = $('body');
+
+        printEmpty($content);
+
+        function showDialog(content) {
+            $(content).dialog({
+                'modal': true,
+                'resizable': false,
+                'draggable': false,
+                'width': 500,
+                'buttons': {
+                    'Cancel': function()
+                    {
+                        $(this).dialog("close");
+                    },
+                    'Save': function()
+                    {
+                        $(this).find('form').submit();
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+
+        $content.on('click', ".delete-link", function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+            var content = $.nano($('#tplDialogConfirm').html(), {
+                'action' : 'delete',
+                'link' : link,
+                'id' : $(this).data('id'),
+                'title' : 'Confirm',
+                'message': 'Are you sure to delete this poll?'
+            });
+
+            showDialog(content);
+        });
+
+        $content.on('click', ".activate-link", function(event) {
+			event.preventDefault();
+            var sender = $(this);
+            $.get(
+                    sender.attr("href"),
+                    function(data) {
+                        if (data.status) {
+                            sender.toggleClass('ui-icon-check').toggleClass('ui-icon-cancel');
+                        }
+                    },'json'
+            );
+
+        });
+
+        $content.on('click', '.add_poll', function(e){
+            e.preventDefault();
+            var content = $.nano($('#tplDialogEdit').html(), {
+                'action' : 'add',
+                'title' : 'Add new poll',
+                'id' : '',
+                'question': {
+                {% for key, lang in languages %}
+                {% set comma = not loop.last ? ',': '' %}
+                    '{{ key }}' : ''{{ comma }}
+                {% endfor %}
+                }
+            });
+
+            showDialog(content);
+        });
+
+        $content.on('click', '.edit-link', function(e){
+            e.preventDefault();
+            var sender = $(this),
+                    question;
+
+            $.getJSON(sender.attr('href'),
+                    function (data) {
+                        question = data;
+                        var content = $.nano($('#tplDialogEdit').html(), {
+                            'action' : 'edit',
+                            'title' : 'Edit poll question',
+                            'id' : sender.data('id'),
+                            'question': question
+                        });
+
+                        showDialog(content);
+                    }
+            );
+
+        });
+
+        $content.on('submit', 'form', function(e){
+            e.preventDefault();
+            var form = $(this),
+                action = form.parent().attr('id');
+            $.post( form.attr('action'),
+                    form.find('input').serialize(),
+                    function(data) {
+                        if (data.status) {
+                            switch(action) {
+                                case 'delete':
+                                    $('#quest-'+form.find('#id').val()).remove();
+                                    printEmpty($content);
+                                    break;
+                                case 'add':
+                                    var id = data.id,
+                                            value = form.find('input[name*="[eng]"]').val(),
+                                            table = $content.find('table.contact-info'),
+                                            rclass = table.find('tr[id*="quest"]').length % 2 ? 'odd' : 'even';
+                                    table.find('tbody').append( $.nano($content.find('#tplTableRow').html(), {
+                                        'id': id,
+                                        'text': value,
+                                        'class': rclass
+                                    }) );
+                                    deleteEmpty(table);
+                                    break;
+                                case 'edit':
+                                    var id = form.find('input[name*="[id]"]').val(),
+                                        value = form.find('input[name*="[eng]"]').val(),
+                                        row = $content.find('tr#quest-'+id);
+                                    row.find('td.first > a').text(value);
+                                    break;
+                                default:
+                                    console.log(action);
+                                    break;
+                            }
+                        } else {
+                            /*data = data.toJSON();*/
+                            console.log(data);
+                        }
+                    },
+                    'json'
+                  );
+        });
+
+	});
+</script>
+
+<div id="tplDialogConfirm" class="hidden">
+    <div id="{action}" title="{title}">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>{message}</p>
+        <form action="{link}">
+            <input type="hidden" id="id" value="{id}" disabled="disabled">
+        </form>
+    </div>
+</div>
+
+<div id="tplDialogEdit" class="hidden">
+    <div id="{action}" title="{title}">
+
+        {{ form.create('PollQuestion', {'url': '/admin/admin_polls/{action}_question'}) }}
+            <input type="hidden" name="data[PollQuestion][id]" value="{id}" >
+            <table width="100%">
+                <tr>
+                    <td colspan="2"><span style="color: red"> All fields are required </span></td>
+                </tr>
+                {% for key, lang in languages %}
+                <tr style="width: 50%">
+                    <td>Poll question ({{ lang }}) </td>
+                    <td>
+                        {{ form.text('PollQuestion.q_text.'~key, {'value': '{question.'~key~'}'}) }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {{ form.end() }}
+
+    </div>
+</div>
+
+<script type="text/html" id="tplTableRow">
+    <tr id="quest-{id}">
+        <td class="first {class}">
+            <a href="/admin/admin_polls/edit_question/{id}"
+               class="edit-link" data-id="{id}">{text}</a>
+        </td>
+        <td class="{class}">
+            <a href="/admin/admin_polls/ajaxActivate/PollQuestion/{id}"
+               class="btn activate-link  ui-icon ui-icon-check">[activate]</a>
+        </td>
+        <td class="{class}">
+            <a href="/admin/admin_polls/questions/{id}">
+                <img alt="" src="/admin/img/icons/edit.png"/></a>
+        </td>
+        <td class="{class}">
+            <a href="/admin/admin_polls/ajaxDelete/PollQuestion/{id}"
+               data-id="{id}" class="delete-link"><img alt="" src="/admin/img/icons/delete.png"/></a>
+        </td>
+    </tr>
+</script>
+
+<div style="float: right; padding: 5px">
+    <a href="#" class="add_poll"><img src="/admin/img/icons/add.png" alt="">&nbsp;Add new poll</a>
+</div>
+
+<table cellpadding="0" cellspacing="1" class="contact-info">
+    <tr id="head">
+        <th width="75%">Poll question</th>
+        <th>-</th>
+        <th>-</th>
+        <th>-</th>
+    </tr>
+    {% if pollQuestions %}
+    {% for item in pollQuestions %}
+    {% set class = loop.index % 2 ? 'even': 'odd' %}
+    <tr id="quest-{{ item.PollQuestion.id }}">
+        <td class="first {{ class }}"><a href="/admin/admin_polls/edit_question/{{ item.PollQuestion.id }}"
+                                         class="edit-link"
+                                         data-id="{{ item.PollQuestion.id }}">{{ item.PollQuestion.q_text }}</a></td>
+        <td class="{{ class }}">
+            <a href="/admin/admin_polls/ajaxActivate/PollQuestion/{{ item.PollQuestion.id }}"
+               class="btn activate-link  ui-icon ui-icon-{% if item.PollQuestion.active %}check{% else %}cancel{% endif %}">
+                [activate]
+            </a>
+        </td>
+        <td class="{{ class }}"><a href="/admin/admin_polls/questions/{{ item.PollQuestion.id }}">
+            <img alt="" src="/admin/img/icons/edit.png"/>
+        </a></td>
+        <td class="{{ class }}"><a href="/admin/admin_polls/ajaxDelete/PollQuestion/{{ item.PollQuestion.id }}"
+                                   data-id="{{ item.PollQuestion.id }}" class="delete-link">
+            <img alt="" src="/admin/img/icons/delete.png"/>
+        </a></td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>

@@ -1,0 +1,76 @@
+<div id="popup-block" style="overflow: visible;">
+    <div class="popup-block-i clearfix">
+        <div class="mail-open__top clearfix">
+            <div class="mail-open__img">
+                <p>
+                    {% if view.data.UserInfo.photo|length > 0 %}
+                        {{ view.Html.image( view.data.UserInfo.photo|thumb('46','44'), {'url': '/profile/'~view.data.UserInfo.user_id} ) }}
+                    {% else %}
+                        {% if view.data.UserInfo.sex == 'M' %}
+                            {{ view.Html.image('/img/demo/man.png'|thumb('46','44'), {'url': '/profile/'~view.data.UserInfo.user_id}) }}
+                        {% endif %}
+                        {% if view.data.UserInfo.sex == 'F' %}
+                            {{ view.Html.image('/img/demo/woman.png'|thumb('46','44'), {'url': '/profile/'~view.data.UserInfo.user_id}) }}
+                        {% endif %}
+                        {% if view.data.UserInfo.sex|length == 0 %}
+                            {{ view.Html.image( view.data.UserInfo.photo|thumb('46','44'), {'url': '/profile/'~view.data.UserInfo.user_id} ) }}
+                        {% endif %}
+                    {% endif %}
+                    {{ view.data.UserInfo.username }}
+                </p>
+            </div>
+            {#<div class="mail-open__text">#}
+                {#<p>{{ 'Received on'|__ }}:<span class="date">Auguest 10, 2012 at 3:05 PM EST</span></p>#}
+            {#</div>#}
+        </div>
+        {{ form.create('', {'id': 'sendMessage', 'url': '/emails/ajaxSendMessage'}) }}
+            {{ form.hidden('Message.to_id', {'value': view.data.UserInfo.user_id}) }}
+            {% if view.data.Message.subject %}
+                {% set replySubject = 'Re: '~view.data.Message.subject %}
+            {% endif %}
+            <div class="mail-open__inp clearfix">
+                <label>{{ 'Subject'|__ }}:</label>
+                {{ form.input('Message.subject', { 'div': false, 'label': false, 'value' : replySubject }) }}
+            </div>
+            {% if reply %}
+
+                {% if view.data.Message.content %}
+                    {% set msgReplyContent %}
+                        <br/>
+                        <div class="replyContent">
+                            {{ view.data.Message.created|date('D, j M Y, H:i') }} from &lt;{{ view.data.UserInfo.username }}&gt;:<br/>
+                            -----------------------------------<br/>
+                            {{ view.data.Message.content }}    <br/>
+                            -----------------------------------
+                        </div>
+                    {% endset %}
+                {% endif %}
+
+                {% if friends %}
+                    <label>{{ 'Forward to'|__ }}:</label>
+                    <select data-placeholder="Forward to..." class="chzn-select" name="data[Message][forward][]" multiple style="width:410px;" tabindex="2">
+                        {% for friend in friends %}
+                            <option value="{{ friend.UserInfo.user_id }}">{{ friend.UserInfo.first_name }} {{ friend.UserInfo.last_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <br/>
+                {% endif %}
+            {% endif %}
+            {#<div class="text-line clearfix">#}
+                {#{{ view.Html.image('btn/text-l.png') }}#}
+                {#{{ view.Html.image('btn/text-r.png') }}#}
+            {#</div>#}
+            <div class="bg-line">
+                <div class="padd10">
+                    {{ form.textarea('Message.content', { 'rows': 9, 'cols': 85, 'style' : 'width: 600px', 'value' : msgReplyContent }) }}
+                </div>
+            </div>
+            <div class="button-mail clearfix">
+                <div class="bottom-box bottom-reg clearfix">
+                    {{ form.submit('Cancel', { 'id': 'cancel', 'class': 'btn-changes notshad normalText cancel', 'div': false }) }}
+                    {{ form.submit('Send', { 'id': 'send', 'class': 'btn-changes green normalText btn-send',    'div': false }) }}
+                </div>
+            </div>
+        {{ form.end() }}
+    </div>
+</div>

@@ -1,0 +1,47 @@
+<data>
+    <product>
+        {% for key, val in item.Product %}
+            <{{ key }}>{{ val|escape }}</{{ key }}>
+        {% endfor %}
+    </product>
+    <product_image>
+        {% for key, node in item.ProductImage %}
+            <path>{{ node.path }}</path>
+        {% endfor %}
+    </product_image>
+    <product_attribute_group>
+        {% for key, node in item.ProductAttributeGroup %}
+            <group>
+                <id>{{ node.id }}</id>
+                <name>{{ node.name }}</name>
+                {% for ke, no in node.ProductAttribute %}
+                    <attr>
+                        {% for k, v in no %}
+                            <{{ k }}>{{ v }}</{{ k }}>
+                        {% endfor %}
+                    </attr>
+                {% endfor %}
+            </group>
+        {% endfor %}
+    </product_attribute_group>
+    <categories>
+        {% for key, node in item.Category %}
+            <category>
+                {% for k, v in node %}
+                    <{{ k }}>{{ v }}</{{ k }}>
+                {% endfor %}
+            </category>
+        {% endfor %}
+    </categories>
+    {% if relatedProduct %}
+        <related_products>
+        {% for key, node in relatedProduct %}
+            <product>
+            {% for key, val in node %}
+                <{{ key }}>{{ val }}</{{ key }}>
+            {% endfor %}
+            </product>
+        {% endfor %}
+        </related_products>
+    {% endif %}
+</data>

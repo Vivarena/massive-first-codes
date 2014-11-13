@@ -1,0 +1,47 @@
+{% if friends|length %}
+<div class="profile-content__block clearfix">
+    {% set uInfo = user_info.0 %}
+    {% if uInfo.sex == 'M' %}
+        {% set gender = 'His' %}
+    {% elseif uInfo.sex == 'F' %}
+        {% set gender = 'Her' %}
+    {% else %}
+        {% set gender = '' %}
+    {% endif %}
+    {#<h3>{{ gender }} network</h3>#}
+    <h3>{{'friends'|__}}</h3>
+
+    <div class="profile-content__block__info clearfix">
+        <div class="profile-content__block__info-i first friendBlock clearfix">
+            {% if friends %}
+                {% for friend in friends %}
+
+                    <div class="oneFriend">
+                        <span class="photoFriend">
+                            <a href='/profile/{{ friend.user_id }}'>
+                                {{ view.element('ava_common', { 'data' : friend, 'w' : 40, 'h' : 40, 'thumbAva' : true })}}
+                            </a>
+                        </span>
+                        <span class="nameFriend">{{ friend.username }}</span>
+                    </div>
+
+                {% endfor %}
+                {% if friends|length > 6 %}
+                    <div style="position: absolute; bottom: 5px; right: 8px;">
+                        {{ view.Html.link( 'See more...'|__, '#' ) }}
+                    </div>
+                {% endif %}
+            {% else %}
+                There is no one
+            {% endif %}
+            {% if paginator.numbers() %}
+            <div class="clear"></div>
+            <div id="FriendsPager">
+                {{ paginator.prev('<< Prev'|__) }} {{ paginator.numbers() }} {{ paginator.next('Next >>'|__) }}
+            </div>
+            {% endif %}
+        </div>
+        <span class="privacy">{{ privacy['UserFriend'] }}</span>
+    </div>
+  </div>
+{% endif %}

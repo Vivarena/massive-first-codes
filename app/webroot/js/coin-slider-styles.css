@@ -1,0 +1,97 @@
+/*
+	Coin Slider jQuery plugin CSS styles
+	http://workshop.rs/projects/coin-slider
+*/
+
+
+.coin-slider {  zoom: 1; position: relative; }
+.coin-slider a{ text-decoration: none; outline: none; border: none; }
+
+.cs-buttons {
+    font-size: 0px;
+    float: right;
+    left: 1%!important;
+    margin-left: 0 !important;
+    position: absolute!important;
+    right: 0px!important;
+    bottom:12px!important;
+    z-index: 1000;
+}
+.cs-buttons a { margin-left: 5px; height: 10px; width: 10px; float: left; border: 1px solid #B8C4CF; color: #B8C4CF; text-indent: -1000px; }
+.cs-active { background-color: #B8C4CF; color: #FFFFFF; }
+
+.cs-title { }
+
+.cs-prev, 
+.cs-next { background-color: #000000; color: #FFFFFF; padding: 0px 10px; }
+
+
+.button a {
+    background: -moz-linear-gradient(center top , #599BDC, #3072B3) repeat scroll 0 0 transparent;
+    border: 1px solid #518CC6;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    display: block;
+    line-height: 50px;
+    margin: 10px 100px;
+    opacity: 1;
+    outline: medium none;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+}
+.button a:hover {
+    background: -moz-linear-gradient(center top , #3072B3, #599BDC) repeat scroll 0 0 transparent;
+    box-shadow: 0 0 3px #518CC6;
+}
+.bar {
+    background-color: #111111;
+    box-shadow: 0 0 2px #333333;
+    color: #F0F0F0;
+    left: 0;
+    line-height: 25px;
+    padding: 0 20px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10000;
+}
+.bar a {
+    color: #DDDDDD;
+}
+.bar a:hover {
+    color: #FFFFFF;
+}
+#download {
+    clear: both;
+}
+#download .button {
+    font-size: 22px;
+}
+#features ul {
+    margin: 15px;
+    overflow: hidden;
+}
+#features li {
+    float: left;
+    width: 50%;
+}
+#cs-navigation-coin-slider a {display: none;}
+.cs-buttons a {
+    background: url(../img/elements/slid-btn-ac.png) no-repeat 0 0 transparent; width: 15px; height: 15px;border: 0;
+
+    /*background: -moz-linear-gradient(center top , #CCCCCC, #F3F3F3) repeat scroll 0 0 transparent;*/
+    /*border-radius: 50% 50% 50% 50%;*/
+}
+a.cs-active {
+    /*background: -moz-linear-gradient(center top , #599BDC, #3072B3) repeat scroll 0 0 transparent;*/
+    /*border: 1px solid #3072B3 !important;*/
+    /*border-radius: 50% 50% 50% 50%;*/
+    /*box-shadow: 0 0 3px #518CC6;*/
+    background: url(../img/elements/slid-btn.png) no-repeat 0 0 transparent; width: 15px; height: 15px;
+
+}
+
+
+.carousel { position: relative;}

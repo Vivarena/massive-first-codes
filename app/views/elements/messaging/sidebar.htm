@@ -1,0 +1,26 @@
+<div class="mail-box clearfix">
+    <div class="stages__top clearfix">
+        <div class="stages__top__left clearfix">
+            <span>&nbsp;</span>
+            <h3>{{ 'All Messages'|__ }}</h3>
+        </div>
+    </div>
+    <div class="stages__box clearfix">
+        <ul class="mail-menu">
+            <li>
+                {{ view.Html.link('Write a new message...'|__, '#', {'class': 'newMsg'} ) }}
+            </li>
+            <li>
+                <span class="pink float-r"><span class="count">{{ unread }}</span> {{ 'unread'|__ }}</span>
+                {{ view.Html.link('Inbox'|__, '/emails/inbox', {'class': 'inbox'} ) }}
+            </li>
+            <li>
+                {{ view.Html.link('Sent'|__, '/emails/outbox', {'class': 'sent'} ) }}
+            </li>
+            <li>
+                <a class="pink float-r" href="#">{{ 'Empty'|__ }}</a>
+                {{ view.Html.link('Trash'|__, '/emails/junk', {'class': 'trash'} ) }}
+            </li>
+        </ul>
+    </div>
+</div>

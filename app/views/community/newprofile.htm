@@ -1,0 +1,18 @@
+{{ view.addScript('
+<script type="text/javascript" src="/js/community/community.js"></script>
+<script type="text/javascript" src="/js/community/poll.js"></script>
+<link rel="stylesheet" href="/js/jquery/plugins/chosen/chosen.css" media="screen" />
+<script type="text/javascript" src="/js/jquery/plugins/chosen/chosen.jquery.min.js"></script>
+') }}
+
+{#
+<div class="profile-content-title clearfix">
+    <h2>COMMUNITY CENTER</h2>
+    <span>NETWORK</span>
+</div>
+#}
+<div class="section clearfix">
+    <div class="section-network network-update-box clearfix">
+        {{ view.element('/community/network-container') }}
+    </div>
+</div>

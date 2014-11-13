@@ -1,0 +1,31 @@
+{{ view.addScript('
+<script type="text/javascript" src="/js/community/messaging.js"></script>
+<link rel="stylesheet" href="/js/fancybox/jquery.fancybox-1.3.4.css" media="screen"/>
+<script type="text/javascript" src="/js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script type="text/javascript" src="/js/jquery/plugins/wysiwyg/jquery.wysiwyg.js"></script>
+<link rel="stylesheet" href="/js/jquery/plugins/wysiwyg/jquery.wysiwyg.css" media="screen" />
+<link rel="stylesheet" href="/js/jquery/plugins/chosen/chosen.css" media="screen" />
+<script type="text/javascript" src="/js/jquery/plugins/chosen/chosen.jquery.min.js"></script>
+') }}
+
+<div id="mail-system" class="clearfix">
+
+    {{ view.element('messaging/sidebar') }}
+    <div class="right-side clearfix">
+
+        <div class="block">
+            {{ view.element('messaging/messages') }}
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+{% if shareThis %}
+<script type="text/javascript">
+    $(function() {
+        window.Messenger.writeTo();
+    });
+</script>
+{% endif %}
+

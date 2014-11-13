@@ -1,0 +1,16 @@
+<h3><a href="#">Subscribers</a></h3>
+<div>
+	<ul class="menu-left">
+		<li><a href="/admin/admin_subscribers" {% if _hovers.subscribers %}class="hover"{% endif %}>List</a></li>
+		<li><a href="/admin/admin_subscribers/sendusers" {% if _hovers.usend %}class="hover"{% endif %}>Send by Users</a></li>
+	</ul>
+</div>
+<h3><a href="#">Groups</a></h3>
+<div>
+	<ul class="menu-left">
+		<li><a href="/admin/admin_subscribers/groups" {% if _hovers.subscribers %}class="hover"{% endif %}>List</a></li>
+		<li><a href="/admin/admin_subscribers/sendgroups" {% if _hovers.gsend %}class="hover"{% endif %}>Send by Group</a></li>
+	</ul>
+</div>
+
+

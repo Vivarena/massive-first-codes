@@ -1,0 +1,60 @@
+<div class="middle clearfix">
+    <div class="tabs-box clearfix">
+        <span class="shadow-tab">&nbsp;</span>
+        <div class="tabs-box-left clearfix">
+            <ul class="tab-list clearfix">
+                <li class="active">Events</li>
+            </ul>
+            <div class="padd-30"></div>
+            <div class="box-list clearfix">
+                <div class="map-inner">
+                    <h4>{{ event.Event.title }}</h4>
+
+                    <p>
+                        <b>Start:</b>{{ event.Event.date_start }}<br>
+                        <b>End:</b>{{ event.Event.date_end }}<br>
+                        <b>Location:</b>{{ event.Event.address }}<br>
+                        <b> Website:</b> <a href="{{ event.Event.site_url }}">{{ event.Event.site_url }}</a>
+                    </p>
+                    <p>{{ event.Event.details }}</p>
+                    <a href="/events" class="back"> Back to all Events</a>
+                </div>
+                {% if data %}
+                    <table class="event-info-table">
+                    {% for val in data %}
+                        <tr>
+                        {% if loop.first %}
+                            {% for cell in val %}
+                                <th> {{ cell }}</th>
+                            {% endfor %}
+                        {% else %}
+                            {% for cell in val %}
+                                <td> {{ cell }}</td>
+                            {% endfor %}
+                        {%  endif %}
+                        </tr>
+                    {% endfor %}
+                    </table>
+                {% endif %}
+            </div>
+        </div>
+        <div class="right-form clearfix">
+            <div class="padd-30"></div>
+            <div class="map-contact">
+                <div class="map-info ">
+                    <ul class="clearfix">
+                        <li>
+                            <span class="icon-date">Start: </span> <p>{{ event.Event.date_start }}</p>
+                        </li>
+                        <li>
+                            <span class="icon-time">Time: </span> <p>{{ event.Event.date_end }}</p>
+                        </li>
+                        <li>
+                            <span class="icon-map">Location:</span> <p>{{ event.Event.address }}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

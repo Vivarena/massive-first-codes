@@ -1,0 +1,87 @@
+<div class="main print" style="width: 800px; border: 1px solid #424242; padding: 50px; margin: 0 auto; background: #fffff2 ">
+	<div class="logo"><a href="/"><img alt="" src="/img/logo.png" /></a></div>
+    <br><br>
+	<div class="clear"></div>
+    MPS Entertainment<br /><br />
+    4400 Route 9 South Suite 1000 <br />
+    Freehold, NJ 07728<br /><br />
+    Phone: (732) 677-3607
+	<div class="padd-10"></div>
+    <br>
+	<hr />
+	<div class="padd-10"></div>
+	Date: {{ data.Order.modified|date("m/d/Y") }}<br /><br />
+	Invoice#: {{ data.Order.id }}
+    <br><br>
+	<div class="padd-10"></div>
+    <table cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td valign="top" width="80"><strong>Bill to:</strong></td>
+            <td>
+                {{ data.Order.payment_name }}<br />
+                {{ data.Order.payment_address_1 }},<br />
+                {{ data.Order.payment_city }}, {{ data.Order.payment_state }}, {{ data.Order.payment_postcode }}<br />
+                {{ data.Order.payment_country }}<br />
+                Phone: {{ data.Order.phone }}<br />
+                Email: {{ data.Order.email }}
+            </td>
+            <td valign="top" width="80"><strong>Ship to:</strong></td>
+            <td>
+                {{ data.Order.shipping_name }}<br />
+                {{ data.Order.shipping_address_1 }},<br />
+                {{ data.Order.shipping_city }}, {{ data.Order.shipping_state }}, {{ data.Order.shipping_postcode }}<br />
+                {{ data.Order.shipping_country }}<br />
+                Phone: {{ data.Order.phone }}<br />
+                Email: {{ data.Order.email }}
+            </td>
+        </tr>
+    </table>
+    <br><br><br><br>
+	<div class="padd-10"></div>
+	<table cellpadding="10" cellspacing="1" width="100%" bgcolor="#000000" style="border-collapse: separate">
+		<tr>
+			<td bgcolor="#ffffcc" style="padding:5px; font-weight: bold;">Product title</td>
+			<!--<td bgcolor="#FFFFFF" style="padding:5px">Size</td>
+			<td bgcolor="#FFFFFF" style="padding:5px">Color</td>
+			<td bgcolor="#FFFFFF" style="padding:5px">Designer</td>-->
+			<td bgcolor="#ffffcc" style="padding:5px; font-weight: bold;">Charity</td>
+			<td bgcolor="#ffffcc" style="padding:5px; font-weight: bold;">QTY</td>
+			<td bgcolor="#ffffcc" style="padding:5px; font-weight: bold;">Cost</td>
+		</tr>
+		{% for item in data.OrderProduct %}
+		<tr style="font-size: 14px">
+			<td bgcolor="#FFFFFF" style="padding:5px" width="500">{{ item.name }}</td>
+			<!--<td bgcolor="#FFFFFF" style="padding:5px">-</td>
+			<td bgcolor="#FFFFFF" style="padding:5px">-</td>
+			<td bgcolor="#FFFFFF" style="padding:5px">RIA CHARISSE</td>-->
+			{% if item.charity %}
+                <td bgcolor="#FFFFFF" style="padding:5px">{{ item.charity }}%</td>
+            {% else %}
+                <td bgcolor="#FFFFFF" style="padding:5px">-</td>
+            {% endif %}
+			<td bgcolor="#FFFFFF" style="padding:5px" width="80">{{ item.quantity }} pci.</td>
+			<td bgcolor="#FFFFFF" style="padding:5px" width="80">
+                {% if item.price != 0 %}
+                {{ number.format(item.price, {"places":"2"}) }}
+                {% else %}
+                Gift
+                {% endif %}
+            </td>
+		</tr>
+		{% endfor %}
+	</table>
+	<div class="padd-10"></div>
+    <br>
+	<div style="float: right; width: 100%; text-align: right">
+		Subtotal: {{ number.format(data.Order.subtotal, {"places":"2"}) }}<br />
+		{#Shipping: {{ number.format(data.Order.shipping, {"places":"2"}) }}<br />#}
+		{% if data.Order.discount %}
+		    Discount: {{ number.format(data.Order.discount, {"places":"2"}) }}<br />
+        {% endif %}
+		Total: {{ number.format(data.Order.total, {"places":"2"}) }}
+	</div>
+    <br><br>
+	<div style="text-align: center">
+        <p>THANK YOU FOR YOUR BUSINESS!</p>
+	</div>
+</div>

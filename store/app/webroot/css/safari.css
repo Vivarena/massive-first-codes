@@ -1,0 +1,4 @@
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+/* Safari 3.0 and Chrome rules here */ 
+	.style {...}
+} 

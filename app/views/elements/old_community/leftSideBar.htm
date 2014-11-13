@@ -1,0 +1,17 @@
+<div class="profile-left">
+    <div class="profile-left__name">
+        {{ view.element('ava_common', { 'data' : view.data, 'w' : 164, 'h' : 164, 'thumbAva' : true } ) }}
+        {#<img src="img/bg-pages/ava.jpg" alt=""/>#}
+
+        <div class="profile-left__text clearfix">
+            <p>{{ view.data.first_name|title }}&nbsp;{{ view.data.last_name }}</p>
+            <span class="online-icon">&nbsp;</span>
+            <span class="shadow-profile">&nbsp;</span>
+        </div>
+
+    </div>
+
+
+    {{ view.element('community/profileMenuSide') }}
+
+</div>

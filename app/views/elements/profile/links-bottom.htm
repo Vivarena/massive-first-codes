@@ -1,0 +1,7 @@
+<div class="links-btn clearfix">
+    {% set linkProfile = (view.data.login|length > 0) ? view.data.login : 'profile-'~view.data.user_id %}
+    <a href="/{{ linkProfile }}">{{'About Me'|__}}</a>
+    <a href="/{{ linkProfile }}/contacts">{{'Contacts'|__}}</a>
+    <a href="/{{ linkProfile }}/activity">{{'Activity'|__}}</a>
+    <a href="/{{ linkProfile }}/suggestions">{{'Suggestions'|__}}</a>
+</div>

@@ -1,0 +1,9 @@
+<div class="paginator-block">
+{% if paginator.hasPrev() %}
+	{{ paginator.prev('« Previous') }}&nbsp;
+{% endif %}
+{{ paginator.numbers() }}&nbsp;
+{% if paginator.hasNext() %}
+	{{ paginator.next('Next »') }}
+{% endif %}
+</div>

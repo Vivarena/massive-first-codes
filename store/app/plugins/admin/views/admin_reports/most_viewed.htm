@@ -1,0 +1,76 @@
+<script type="text/javascript">
+    (function($){
+        $(function() {
+    		var dates = $( ".from, .to" ).datepicker({
+    			defaultDate: "+1w",
+    			changeMonth: true,
+    			numberOfMonths: 2,
+    			onSelect: function( selectedDate ) {
+    				var option = this.id == "from" ? "minDate" : "maxDate",
+    					instance = $( this ).data( "datepicker" ),
+    					date = $.datepicker.parseDate(
+    						instance.settings.dateFormat ||
+    						$.datepicker._defaults.dateFormat,
+    						selectedDate, instance.settings );
+    				dates.not( this ).datepicker( "option", option, date );
+    			}
+    		});
+    	});
+    })(jQuery)
+</script>
+
+{{ form.create() }}
+<div class="indent">
+    <div class="title" id="intro">
+        <h3 class="name" style="color: #424242">Most Viewed</h3>
+    </div>
+    <div id="search_wrapper">
+
+        <fieldset class="field-form">
+            <div class="float-l">
+                {{ form.select('Click.category', categories, null, { 'empty' : 'All Categories' }) }}
+            </div>
+            <div class="float-r">
+                <input type="submit" value="Refresh">
+            </div>
+        </fieldset>
+        <fieldset class="field-form">
+            <div class="float-l">
+                From: <input name="data[Click][from]" type="text" class="from" id="from" style="width: 95px"> To: <input name="data[Click][to]" type="text" class="to" style="width: 95px">
+                {#Show By:
+                <select name="data[Click][period]" id="report_period" style="width:6em;">
+                    <option value="DAY" selected="">Day</option>
+                    <option value="MONTH">Month</option>
+                    <option value="YEAR">Year</option>
+                </select>#}
+
+            </div>
+        </fieldset>
+
+    </div>
+    <div class="padd-10"></div>
+
+    <table class="table" id="recents_table">
+        <thead>
+            <tr>
+                <td class="th">Period</td>
+                <td class="th">Product Name</td>
+                <td class="th">Price</td>
+                <td class="th">Number Of Views</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in clicks %}
+                <tr>
+                    <td>{{ result.Click.modified|date("m/d/Y") }}</td>
+                    <td><a href="/admin/admin_products/edit/{{ result.Product.id }}">{{ result.Product.title }}</a></td>
+                    <td>{{ number.format(result.Product.price, { "places":2 }) }}</td>
+                    <td align="center">{{ result.Click.clicks }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ view.element('paginator') }}
+    <div class="clear"></div>
+</div>
+{{ form.end() }}

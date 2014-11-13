@@ -1,0 +1,33 @@
+<label>Product category</label>
+{{ form.select('CategoriesProduct.category_id', categories, null, {'multiple':true, "style" : 'width: 415px; height: 110px;'}) }}
+{#<label>Gift</label>
+{{ form.select('Product.gift', productList, null, {"style" : 'width: 415px;'}) }}#}
+{{ form.error('Product.category_id') }}
+
+<br/>
+<div class="product-data">
+    {{ form.input('Product.networth', {'class' : 'text', 'label':'Wholesale Price', "div" : false, 'default': 0}) }}&nbsp;&nbsp;$<br>
+    {{ form.input('Product.shipping', {'class' : 'text', 'label':'Shipping Cost', "div" : false, 'default': 0}) }}&nbsp;&nbsp;$<br>
+    {{ form.input('Product.margin', {'class' : 'text', 'label':'Mark Up', "div" : false, 'default': 0}) }}
+    {{ form.select("Product.markup_select", { 'many' : '$', 'percent' : '%' }, null, { 'empty' : false }) }}<br>
+    {{ form.input('Product.tax', {'class' : 'text', 'label':'Tax', "div" : false, 'default': 0}) }}
+    {{ form.select("Product.tax_select", { 'many' : '$', 'percent' : '%' }, null, { 'empty' : false }) }}<br>
+    {{ form.input('Product.price', {'class' : 'text', 'label':'Stock Price', "readonly" : "readonly", "div" : false, 'default': 0}) }}&nbsp;&nbsp;$<br>
+    <br>
+    <div class="text row">
+        <label>Type</label>
+        {{ form.select('Product.type', {'new':'New Product','used':'Used Product','service':'Service', 'event':'Events'}, null, {'empty':false,'default':'new', 'id':'is_service_select'}) }}
+    </div>
+    <br/>
+    {{ form.input('Product.rprice', {'class' : 'text', 'label':'Sale Price', "div" : false}) }}&nbsp;&nbsp;$<br>
+    <br/>
+    <span style="margin-left: 160px">Enter emails separated by commas</span>
+    {{ form.input('Product.fullfillment', {'class' : 'text', 'label':'Out of stock emails', "style" : "width: 300px"}) }}
+    <br/>
+    <span style="margin-left: 160px">Enter emails separated by commas</span>
+    {{ form.input('Product.confirmation', {'class' : 'text', 'label':'Fullfillment emails', "style" : "width: 300px"}) }}
+    <br/>
+    <span class="qty-field">{{ form.input('Product.quantity', {'class' : 'text', 'label':'Quantity in Stock', "div" : false}) }}&nbsp;&nbsp;pci. (Do not specify the amount here if the product has attributes)<br></span>
+</div>
+{{ form.input('Product.sitch_style', {'class' : 'text', 'label':'Sitch style'}) }}
+

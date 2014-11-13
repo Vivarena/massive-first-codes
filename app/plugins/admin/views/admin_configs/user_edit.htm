@@ -1,0 +1,32 @@
+{{ view.addScript('
+<style type="text/css">
+	input {
+		margin-bottom: 10px;
+	}
+</style>
+') }}
+<h2 class="title-page"></h2>
+<div class="navi"><!--<a href="/admin/pages/">Home</a> / <a href="/admin/pages/add">Add new page</a>--></div>
+<div class="top-line">&nbsp;</div>
+<div class="pages-content-block">
+{{ form.create('User', {'url' : '/admin/admin_configs/user_edit', 'class' : 'simple-form'}) }}
+	<label>Login</label>
+		{{ form.input('User.username', {'class':'text', 'label' : false, 'autocomplete': 'off'}) }}
+	<label>{{'Password'|__}}</label>
+		{{ form.input('User.password', {'class':'text', 'label' : false, 'autocomplete': 'off'}) }}
+    <label>{{'First Name'|__}}</label>
+        {{ form.input('UserInfo.first_name', {'class':'text', 'label' : false, 'autocomplete': 'off'}) }}
+    <label>{{'Last Name'|__}}</label>
+        {{ form.input('UserInfo.last_name', {'class':'text', 'label' : false, 'autocomplete': 'off'}) }}
+	<label>User type</label>
+		{{ form.select('User.group_id', userGroups, view.data.User.group_id, {'empty' : false} ) }}
+		<div class="clear">&nbsp;</div>
+	<div class="align-center">
+		<div class="padd-10"></div>
+		<div class="padd-10"></div>
+		{{ form.hidden('User.id') }}
+		{{ form.hidden('UserInfo.id') }}
+		<input type="submit" value="Submit" class="submit-btn" />
+	</div>
+{{ form.end() }}
+</div>

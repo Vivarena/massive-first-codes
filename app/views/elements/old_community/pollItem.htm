@@ -1,0 +1,43 @@
+{% if PollItem %}
+    {% if PollItem.PollQuestion %}
+        {% set q = PollItem.PollQuestion %}
+        {% set as = PollItem.PollAnswer %}
+        <h4 class="poll_trigger"><span class="number-list"><span>•</span></span>
+            {{ q.q_text }}
+        </h4>
+        <div class="poll_container">
+        {{ form.create('VoteForPoll', {'url': '/vote', 'class': 'vote-poll'}) }}
+            {{ form.hidden('Poll.poll_question_id', {'value': q.id}) }}
+            <div class="pols-radio">
+                <div class="pols-radio__btn clearfix">
+                    {{ form.radio('Poll.poll_answer_id', as, {'legend': false, 'separator': '</div><div class="pols-radio__btn clearfix">', 'class': 'styled'}) }}
+                </div>
+            </div>
+            <div class="vote-button clearfix">
+                {{ form.submit('Vote', {'class': 'btn-send'}) }}
+            </div>
+        {{ form.end() }}
+        </div>
+    {% elseif PollItem.question %}
+        <h4 class="poll_trigger"><span class="number-list"><span>•</span></span>
+            {{ PollItem.question }}
+        </h4>
+        <div class="poll_container">
+        {% set colors = ['red','blue','orange', 'grey'] %}
+        {% for poll in PollItem.answers %}
+            <div class="votes-box-one clearfix">
+                <span class="votes-box-text">{{ poll.text }}</span>
+                <div class="votes-procent{% if poll.yourAnswer %} yourAnswer{% endif %}">
+                    <div class="votes-bg clearfix">
+
+                        <div class="poll-bar" style="width: {{ number.format(poll.percent, {"places":"0", 'after' : '%', 'before' : ''}) }};"> </div>
+                        <span class="{{ cycle(colors, loop.index0) }}-icon">{{ number.format(poll.percent, {"places":"0", 'after' : '%', 'before' : ''}) }}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% else %}
+    <h3>{{'No Polls'|__}}</h3><br/>
+{% endif %}

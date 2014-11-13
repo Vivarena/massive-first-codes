@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{ view.Html.charset() }}
+    {{ view.Html.meta('icon') }}
+
+    {{ view.element('meta-data') }}
+
+    {{ view.Html.css(['reset', 'home', 'form', 'fonts/stylesheet', '/js/jquery/plugins/humane-notify/themes/libnotify']) }}
+
+    {#<script type="text/javascript" src="http://platform.linkedin.com/in.js"></script>#}
+    {{ view.Html.script(['jquery/jquery-1.7.1.min', 'project/signup', 'jquery/plugins/humane-notify/humane.min', 'project/common_functions', 'facebookApi', 'linkedInApi']) }}
+    <script type="text/javascript">
+        window.fbAsyncInit = function() {
+            facebookApi.init();
+        };
+
+        $(document).ready(function() {
+            linkedInApi.init();
+        });
+
+        // Load the SDK asynchronously
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <!-- html5.js for IE less than 9 -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="fb-root"></div>
+<div class="wrapper clearfix">
+<div class="wrapper_inner clearfix">
+    <div class="logo-text">
+        <h1>
+            <a href="/" class="big-logo">Vivarena</a>
+        </h1>
+
+        {{ content_for_layout }}
+
+
+    </div>
+    <div class="enter-box">
+        {% if session.check('Auth.User') == false %}
+        <div class="logIn">
+            {{ form.create('User', {'action': 'login'}) }}
+                <div class="input clearfix">
+                   <label style="color: #ffffff;">Email</label>
+                    {{ form.input('UserLogin.email', {'div': false, 'label': false }) }}
+                </div>
+                <div class="input clearfix">
+                    <label style="color: #ffffff;">Password</label>
+                    {{ form.input('UserLogin.password', {'div': false, 'label': false }) }}
+                </div>
+                <div class="input-check clearfix">
+                    <input type="checkbox" value="1" name="data[UserLogin][remember]"/>
+                    <label>Remember me -&nbsp;</label>
+                    <a href="/forgotten-password.html" class="forgotLink">Forgot password?</a>
+                </div>
+
+                <input type="submit" value="Log In" class=" btn btn-login" />
+            {{ form.end() }}
+        </div>
+        <div class="sign-box clearfix">
+            {{ form.create('User', {'action': 'signup', "class" : "clearfix", 'id' : 'formSignup'}) }}
+                <h3>Sign Up</h3>
+                <div style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">
+                    <img src="/img/facebook.png" alt="facebook signin" class="loginFB"/>
+                    <img src="/img/in.png" alt="linkedIn" class="loginLinkedIn" style="float: right"/>
+                </div>
+                <h3 style="margin: 10px 0 10px 0; padding: 0; font-size: 15px;">If you don't use Facebook or Linkedin</h3>
+                <div class="input clearfix">
+                    <label>First Name: </label>
+                    {{ form.input('UserInfo.first_name', {'div': false, 'label': false, 'id' : 'input_first_name', 'class':'inputSignup' }) }}
+                </div>
+                <div class="input clearfix">
+                    <label>Last Name:</label>
+                    {{ form.input('UserInfo.last_name', {'div': false, 'label': false, 'id' : 'input_last_name', 'class':'inputSignup' }) }}
+                </div>
+                <div class="input clearfix">
+                    <label>Your Email:</label>
+                    {{ form.input('email', {'div': false, 'label': false, 'id' : 'input_email', 'class':'inputSignup' }) }}
+                </div>
+                <div class="input clearfix">
+                    <label>Password:</label>
+                    {{ form.input('password', {'div': false, 'label': false, 'id' : 'input_password', 'class':'inputSignup' }) }}
+                </div>
+                <div class="input clearfix">
+                    <label>Again password:</label>
+                    {{ form.input('cpassword', {'div': false, 'label': false, 'type':'password', 'id' : 'input_cpassword', 'class':'inputSignup' }) }}
+                </div>
+                <div class="input clearfix">
+                    <label>Account Type:</label>
+                    <select name="data[User][user_type_id]">
+                        <option value=""></option>
+                        {% for id, type in user_types %}
+                        <option value="{{ id }}">{{ type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {#<div class="input clearfix">
+                    <label> I am:</label>
+                    <select name="data[UserInfo][sex]">
+                        <option value="">Select Sex</option>
+                        <option value="M">Man</option>
+                        <option value="F">Woman</option>
+                    </select>
+                </div>#}
+                {#<div class="input clearfix">
+                    <label> Birthday:</label>
+                    <div class="select-box clearfix">
+                        {{ form.month('UserPrivateInfo.birthday', null, { 'class' : 'month', 'empty' : false}) }}
+                        {{ form.day('UserPrivateInfo.birthday', null, { 'class' : 'date', 'empty' : false }) }}
+                        {{ form.year('UserPrivateInfo.birthday', 1930, currentYear, currentYear, { 'class' : 'year', 'empty' : false}) }}
+                    </div>
+                </div>#}
+                <input type="submit" value="Sign Up" class="btn btn-sign "/>
+
+            {{ form.end() }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+</div>
+
+<footer>
+        <div class="copyright">
+            <p>&copy; 2013, Vivarena, Inc. All Rights Reserved.</p>
+        </div>
+
+    <ul class="clearfix footer-menu">
+        <li><a href="/about-us">About Us</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/advertise">Advertise</a></li>
+        <li><a href="/contact-us">Contact Us</a></li>
+
+    </ul>
+</footer>
+
+    {{ view.element('flyTopMessage') }}
+
+</body>
+</html>

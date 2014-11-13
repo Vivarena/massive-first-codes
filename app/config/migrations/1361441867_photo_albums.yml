@@ -1,0 +1,22 @@
+#
+# migration YAML file
+#
+UP:
+  create_table:
+    photo_albums:
+      name:
+        type: string
+        length: 200
+      description:
+        type: text
+      cover:
+        type: text
+      user_id:
+        type: integer
+      active:
+        type: integer
+        length: 2
+        default: 1
+
+DOWN:
+  drop_table: photo_albums

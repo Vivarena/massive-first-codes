@@ -1,0 +1,90 @@
+{{ view.Html.docType('xhtml-trans') }}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {{ view.Html.charset() }}
+
+    {{ view.Html.meta('icon') }}
+
+    {{ view.element('meta-data') }}
+
+    {{ view.Html.script('jquery/jquery-1.7.1.min') }}
+
+    {{ scripts_for_layout }}
+
+    <!--[if IE]>
+    {{ view.Html.script('http://html5shiv.googlecode.com/svn/trunk/html5.js') }}
+    <![endif]-->
+    <!--[if lte IE 6]>
+    <script src="js/ie6/warning.js"></script>
+    <script>window.onload = function () {
+        e("js/ie6/")
+    }</script>
+    <![endif]-->
+    <!--[if IE 7]>
+    {{ view.Html.css('ie7') }}
+    <![endif]-->
+    <!--[if IE 8]>
+    {{ view.Html.css('ie8') }}
+    <![endif]-->
+    <!--[if IE 9]>
+    {{ view.Html.css('ie9') }}
+    <![endif]-->
+    {{ view.Html.css('fonts/stylesheet') }}
+    {{ view.Html.css('titles') }}
+    {{ view.Html.css('layout') }}
+    {{ view.Html.css('menu') }}
+    {{ view.Html.css('buttons') }}
+    {{ view.Html.css('form') }}
+    {{ view.Html.css('style') }}
+    {{ view.Html.css('community.css?df2sae') }}
+    {{ view.Html.css('/js/fancybox/jquery.fancybox-1.3.4') }}
+    {{ view.Html.css('/js/jquery/plugins/wysiwyg/jquery.wysiwyg') }}
+
+    {{ view.Html.css('ajax.loader') }}
+    {{ view.Html.script('jquery/plugins/jquery.blockUI') }}
+    {{ view.Html.script('jquery/ajx_cfg') }}
+    {{ view.Html.script('jquery/ajx_cfg') }}
+    {{ view.Html.script('community/messaging') }}
+    {{ view.Html.script('fancybox/jquery.fancybox-1.3.4.pack') }}
+    {{ view.Html.script('jquery/plugins/wysiwyg/jquery.wysiwyg') }}
+
+</head>
+<body>
+{{ jGrowl.flash() }}
+<div id="wrapper">
+    {{ view.element('feedback') }}
+
+    <div class="wrapper">
+        {{ view.element('header') }}
+        <!-- #header-->
+
+        {{ view.element('navi_top') }}
+
+        <div class="community">
+            <h2>{{'Community'|__}}</h2>
+
+            <h3 class="title-profile">{% if not is_friend|length %}{{'My'|__}} {% endif %}{{'Profile'|__}}</h3>
+
+            <div class="profile clearfix">
+                <div class="profile-i clearfix">
+                    {{ view.element('community/profile-sidebar') }}
+
+                    {{ content_for_layout }}
+
+                </div>
+            </div>
+        </div>
+
+    <section id="middle">
+        {#{{ content_for_layout }}#}
+        {#{{ view.element('invest_now') }}#}
+    </section>
+        <!-- #middle-->
+
+        {{ view.element('footer') }}
+    </div>
+</div>
+
+{#{{ view.element('sql_dump') }}#}
+</body>
+</html>

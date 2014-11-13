@@ -1,0 +1,11 @@
+{{ extTree.addItemAttribute('id', 'list_' ~ data.id ) }}
+<div class="categoryDiv">
+    <span class="manufacturerItem" style="font-weight: bold;">
+        {{data.description|substr(0, 70)}}{% if data.description|length > 70%}...{% endif %}
+    </span>
+
+    <span class="margin-r float-r ui-state-default ui-corner-all red-border"><a href='{{data.id}}' class="package-del ui-icon ui-icon-trash">[ Del ]</a></span>
+    <span class="margin-r float-r ui-state-default ui-corner-all"><a href="{{data.id}}" class="price-edit ui-icon ui-icon-pencil">[ Edit ]</a></span>
+    <span class="margin-r float-r " style="margin-right: 70px">Price: ${{ data.price }}</span>
+    <br clear="all"/>
+</div>

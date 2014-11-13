@@ -1,0 +1,203 @@
+.nav {
+	position:absolute;
+	bottom:0;
+	/*left:135px;*/
+    width: 994px;
+	z-index:3;
+	}
+.nav ul#nav {
+	margin:0;
+	padding:0;
+	list-style:none
+	}
+.nav ul#nav li {
+	position: relative;
+	display:inline;
+	float:left;
+	text-align:center
+	}
+
+.nav ul#nav li a {
+	display:block;
+	padding:10px 19px;
+	color:#FFFFFF;
+	font-size:14px;
+	line-height:14px;
+	height:15px;
+	text-decoration:none;
+	position:relative
+	}
+.nav ul#nav li a span.currently {
+	background:url(../img/a4.png) top center no-repeat;
+	width:100%;
+	height:12px;
+	position:absolute;
+	left:0;
+	bottom:-8px;
+	display:none;
+	z-index:-1   /**/
+	}
+.nav ul#nav li a.currently span.currently {
+	display:block;
+	}
+	
+.nav ul#nav li .left {
+	left:-5px;
+	}
+.nav ul#nav li .right {
+	right:-5px;
+	
+	}
+.nav ul#nav li .drop-menu  {
+	background:url(../img/nav/bg2.png) left top repeat;
+	display:none;
+	position:absolute;
+	top:27px;
+	width:370px;
+	padding:0 5px 5px 5px;
+	z-index:99;
+	border-radius:0 0 10px 10px;
+	-moz-border-radius:0 0 10px 10px;
+	-webkit-border-bottom-left-radius:10px;
+	-webkit-border-bottom-right-radius:10px;
+	/*behavior:url(css/PIE.htc);*/
+	}
+.nav ul#nav li .drop-menu .drop-inner {
+	background:url(../img/nav/bg-drop-nav.gif) left top repeat-x #f2f2f2;
+	padding:40px 15px;
+	border-radius:0 0 10px 10px;
+	-moz-border-radius:0 0 10px 10px;
+	-webkit-border-bottom-left-radius:10px;
+	-webkit-border-bottom-right-radius:10px;
+	/*behavior:url(css/PIE.htc)*/
+	}
+.nav ul#nav li .drop-menu ul  {
+	margin:0; padding:0;
+	list-style:none;
+	
+	}
+.nav ul#nav li .drop-menu ul li {
+	width:auto;
+	display:block;
+	border:0 none;
+	text-align:left;
+	float:none;
+	background:url(../img/a3.gif) 15px 8px no-repeat;
+	padding:0 0 0 15px;
+	}
+.nav ul#nav li .drop-menu ul li a {
+	font-size:12px;
+	padding:2px 0 2px 8px;
+	}	
+	
+	
+.nav ul#nav li:hover, li.currently  {
+	background:url(../img/nav/bg-drop-nav.gif) left top repeat-x #f2f2f2;
+	}
+.nav ul#nav li > a.currently {
+    color: #000;
+}
+.nav ul#nav li:hover a {
+	color:#000000;
+	}
+.nav ul#nav li:hover .drop-menu  {
+	display:block;
+	}
+
+
+
+
+
+
+ ul.sidebar-nav,
+ ul.menu-left {
+	text-align:left;
+	padding:0;
+	list-style:none;
+	margin:0;
+	}
+ ul.sidebar-nav li,
+ ul.menu-left li {
+	height:auto;
+	border-bottom:1px solid #dddddd;
+	padding:7px 4px
+	}
+ ul.sidebar-nav li:first-child {
+	border:0 none;
+	}	
+ ul.sidebar-nav li a,
+ ul.menu-left li a {
+	display:block;
+	color:#262626;
+	text-decoration:none;
+	padding:0 0 0 12px
+	}
+ ul.sidebar-nav li a:hover,
+ ul.sidebar-nav li a.hover ,
+ ul.menu-left li a:hover,
+ ul.menu-left li a.hover {
+ 	background:url(../img/a5.gif) left 3px no-repeat;
+	color:#018dc8;
+	text-decoration:none
+	}
+
+#left-menu h3 {
+	border-bottom:1px solid #dddddd;
+	}
+
+#left-menu {
+	font-family:Arial, Helvetica, sans-serif!important;
+	}
+#left-menu .ui-state-default,
+#left-menu .ui-widget-content .ui-state-default {
+    background:none;
+    border: 0 none;
+	border-bottom:1px solid #dddddd;
+    color: #000000;
+    font-weight: normal;
+}
+
+#left-menu.ui-state-default a, #left-menu .ui-state-default a:link, #left-menu .ui-state-default a:visited {
+    color: #000000;
+    text-decoration: none;
+}
+#left-menu .ui-state-hover, #left-menu .ui-widget-content #left-menu .ui-state-hover, #left-menu .ui-state-focus, #left-menu .ui-widget-content .ui-state-focus {
+    background: none;
+    border: 0 none;
+	border-bottom:1px solid #dddddd;
+    color: #018DC8;
+    font-weight: normal;
+}
+#left-menu .ui-state-hover a, #left-menu .ui-state-hover a:hover {
+    color: #018DC8;
+    text-decoration: none;
+}
+#left-menu .ui-state-active, #left-menu .ui-widget-content .ui-state-active {
+    background: none;
+    border: 0 none;
+	border-bottom:1px solid #dddddd;
+    color: #000000;
+    font-weight: normal;
+}
+
+#left-menu .ui-state-active .ui-icon {
+    background-image: url("../img/a6.gif");
+}
+#left-menu .ui-icon-triangle-1-s {
+    background-position: 3px center
+}
+
+#left-menu .ui-state-active a, #left-menu .ui-state-active a:link, #left-menu .ui-state-active a:visited {
+    color: #000000;
+    text-decoration: none;
+}
+
+#left-menu .ui-widget-content {
+    background: none;
+    border: 0 none;
+}
+
+#left-menu .ui-accordion .ui-accordion-content {
+    padding: 0em 0 0 2.2em !important;
+
+}

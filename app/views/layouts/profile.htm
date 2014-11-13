@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    {{ view.Html.charset() }}
+
+    {{ view.Html.meta('icon') }}
+
+    {{ view.element('meta-data') }}
+
+    <!--[if lte IE 6]>
+    <script src="/js/ie6/warning.js"></script><script>window.onload=function(){e("/js/ie6/")}</script>
+    <![endif]-->
+
+    {{ view.Html.css('global') }}
+    {{ view.Html.css('fonts/stylesheet') }}
+    {{ view.Html.css('layout') }}
+    {{ view.Html.css('menu') }}
+    {{ view.Html.css('form') }}
+    {{ view.Html.css('community') }}
+
+    {{ view.Html.css('ajax.loader') }}
+
+    {{ view.Html.script('jquery/jquery-1.7.1.min') }}
+    {{ view.Html.script('jquery/plugins/jquery.blockUI') }}
+    {{ view.Html.script('jquery/ajx_cfg') }}
+    {{ view.Html.script('fancybox/jquery.fancybox-1.3.4.pack') }}
+    {{ view.Html.script('jquery/plugins/wysiwyg/jquery.wysiwyg') }}
+    {{ view.Html.script('placeholder') }}
+    {{ view.Html.script('//html5shim.googlecode.com/svn/trunk/html5.js') }}
+
+    {{ view.Html.script('jquery/plugins/jgrowl/jquery.jgrowl') }}
+    {{ view.Html.script('jquery/plugins/jquery.scrollTo-1.4.2-min') }}
+    {{ view.Html.script('share_this') }}
+    {{ view.Html.script('community/comments') }}
+    {{ view.element('ganalytics') }}
+</head>
+<body>
+{{ jGrowl.flash() }}
+<div id="wrapper-outer" class="bg-woman">
+    <div id="wrapper">
+        {{ view.element('headerCommunity', {'viewDashboard' : true}) }}<!-- #header-->
+        <div id="middle" class=" clearfix">
+            <div class="middle">
+                <div class="content clearfix">
+                    {{ content_for_layout }}
+                </div>
+            </div>
+{#
+            <div class="social-right clearfix">
+                <p>Follow us</p>
+                <a class="twitter-black" href="#"></a>
+                <a class="facebook-black" href="#"></a>
+                <a class="in-black" href="#"></a>
+                <a class="utube-black" href="#"></a>
+            </div>
+#}
+        </div>
+
+    </div>
+
+    {{ view.element('footerProfile') }}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+{{ form.create() }}
+<div class="indent">
+    <div class="title" id="intro">
+        <h3 class="name" style="color: #424242">Low Stock</h3>
+    </div>
+    <div id="search_wrapper">
+        <form id="search_form" class="simple-form">
+        <fieldset class="field-form">
+            <div class="float-l">
+                {{ form.select('category', categories, null, { 'empty' : 'All Categories' }) }}
+            </div>
+            <div class="float-r">
+                <input type="submit" value="Search">
+            </div>
+        </fieldset>
+        </form>
+    </div>
+    <div class="padd-10"></div>
+    <p>Products with quantity less then <span style="font-size: 16px">{{ defaultQuantity }}</span></p>
+    <table class="table" id="recents_table">
+        <thead>
+            <tr>
+                <td class="th">Name</td>
+                <td class="th">Vendor</td>
+                <td class="th">Quantity</td>
+            </tr>
+            <tr>
+                <td class="th">{{ form.text("name") }}</td>
+                <td class="th">{{ form.text("vendor") }}</td>
+                <td class="th">
+                    <label>From</label>{{ form.text("qty_from", { 'style' : 'width: 50px' }) }}<br/>
+                    <label>To</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.text("qty_to", { 'style' : 'width: 50px' }) }}
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+                <tr>
+                    <td><a href="/admin/admin_products/edit/{{ result.Product.id }}">{{ result.Product.title }}</a></td>
+                    <td>{{ result.Product.vendor }}</td>
+                    {% if result.ProductAttributeGroup|length == 0 %}
+                    <td>
+                       {{ result.Product.quantity }}
+                    </td>
+                    {% else %}
+                        <tr>
+                            <td colspan="3">
+                                <table width="95%" style="border: 1px solid green; margin-left: 35px" class="attr-table">
+                                   <tr style="padding: 0px 10px; background: #ffffcc">
+                                       <td>Group</td>
+                                       <td>Attribute</td>
+                                       <td>Quantity</td>
+                                   </tr>
+                                   {% for group in result.ProductAttributeGroup %}
+                                    {% for attr in group.ProductAttribute %}
+                                       <tr>
+                                           <td width="47%">{{ group.name }}</td>
+                                           <td width="35%">{{ attr.title }}</td>
+                                           <td>{{ attr.quantity }}</td>
+                                       </tr>
+                                    {% endfor %}
+                                   {% endfor %}
+                               </table>
+                            </td>
+                        </tr>
+                    {% endif %}
+
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ view.element('paginator') }}
+    <div class="clear"></div>
+</div>
+{{ form.end() }}

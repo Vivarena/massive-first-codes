@@ -1,0 +1,44 @@
+{{ view.element('editor-elrte1') }}
+
+<script type="text/javascript">
+	$(function() {
+        $('.CategoryImageUpload').click(function(){
+            $('<div />').elfinder({
+               url : '/js/elfinder-1.2/connectors/php/connector.php',
+               lang : 'eng',
+               dialog : { width : 900, modal : true },
+               editorCallback : function(url) {
+                $("#CategoryImageimg").attr('src', url);
+                $("#CategoryImage").val(url);
+               }
+            })
+        });
+
+		$('#CategoryDescription').elrte(opts);
+
+	});
+</script>
+
+<h2 class="title-page">{{ view.action == 'add' ? 'Add' : 'Edit' }} Category</h2>
+<div class="top-line">&nbsp;</div>
+<div class="pages-content-block">
+	{{ form.create({'class' : 'simple-form'}) }}
+    {{ form.hidden('Category.id') }}
+    <label>Parent category</label>
+    {{ form.select('Category.parent_id', categories, null, {'empty' : 'Select parent category'}) }}
+    {{ form.input('Category.title', {'class' : 'text', 'label':'Title'}) }}
+    <p style="margin-left:160px">Description should be at least 10 symbols</p>
+    {{ form.input('Category.description', {'type' : 'textarea', 'style':'height:100px; width:500px','class':'tinymce', 'label':'Description'}) }}
+
+    {{ form.input("Category.image") }}
+    <span style="margin-left: 160px"><img id="CategoryImageimg" src="{{ view.data.Category.image|default('/img/no_image/default.png') }}" height="100px"></span>
+    <div style="margin-left:160px">
+        <p style="margin-top:3px">
+            <a href="javascript:void(0)" class="CategoryImageUpload">Upload file</a>
+        </p>
+    </div>
+    {{ form.input('Category.active') }}
+    {{ form.submit('Save', {'class' : 'submit-btn'}) }}
+
+	{{ form.end() }}
+</div>

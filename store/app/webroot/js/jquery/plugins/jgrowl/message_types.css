@@ -1,0 +1,35 @@
+div.jGrowl-type-error {
+	background:url("bg-error_1x100.png") repeat-x scroll 50% top #FF0000;
+	border:1px solid #cc0000;
+	color: #363636;
+}
+div.jGrowl-type-error div.message{
+	color: #ffffff;
+}
+
+div.jGrowl-type-warning {
+	background:url("bg-warning_1x100.png") repeat-x scroll 50% top #FFEF8F;
+	border:1px solid #F9DD34;
+	color: #363636;
+}
+div.jGrowl-type-warning div.message{
+	color: #ff0000;
+}
+
+div.jGrowl-type-success {
+	background:url("bg-success_1x100.png") repeat-x scroll 50% top #06c626;
+	border:1px solid #009900;
+	color: #363636;
+}
+div.jGrowl-type-success div.message{
+	color: #000000;
+}
+
+div.jGrowl-type-message {
+	background:url("bg-message_1x100.png") repeat-x scroll 50% top #33a1ff;
+	border:1px solid #6d6d6d;
+	color:#363636;
+}
+div.jGrowl-type-message div.message{
+	color: #000000;
+}

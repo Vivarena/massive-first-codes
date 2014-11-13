@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {{ view.Html.charset() }}
+
+    {{ view.Html.meta('icon') }}
+
+    {{ view.element('meta-data') }}
+
+    {{ view.Html.script('jquery/jquery-1.7.1.min') }}
+
+    {{ view.Html.css('ajax.loader') }}
+    {{ view.Html.script(['jquery/plugins/jquery.blockUI', 'jquery/plugins/jquery.scrollTo-1.4.2-min']) }}
+    {{ view.Html.script('jquery/ajx_cfg') }}
+
+    {{ scripts_for_layout }}
+
+    <!--[if lte IE 6]>
+    <script src="/js/ie6/warning.js"></script><script>window.onload=function(){e("js/ie6/")}</script>
+    <![endif]-->
+
+    {{ view.Html.css('fonts/stylesheet') }}
+    {{ view.Html.css('layout') }}
+    {{ view.Html.css('menu') }}
+    {{ view.Html.css('form') }}
+    {{ view.Html.css('community') }}
+    {{ view.element('ganalytics') }}
+
+</head>
+
+<body>
+
+<div id="wrapper-outer" class="bg-woman">
+    <img class="bg-image" src="/img/home/social.png" alt="" />
+    <div id="wrapper">
+
+        {{ view.element('headerCommunity') }}
+
+        <div id="middle" class=" clearfix">
+
+            <div class="middle">
+
+                <div class="content clearfix">
+
+                    {{ content_for_layout }}
+
+                </div>
+                <!-- #content-->
+
+
+            </div>
+            <!-- #middle-->
+        </div>
+    </div>
+</div><!-- #wrapper -->
+</body>
+</html>

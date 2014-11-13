@@ -1,0 +1,14 @@
+<div class="news-box-i clearfix">
+    <h3>Latest News</h3>
+    {% for item in rightSideNews %}
+    <div class="news-box-one">
+        <p class="date">{{ item.created|date("d M Y") }}</p>
+        <a href="{{ 'news'|toUrl(item.id, item.title) }}">{{ item.title }}</a>
+    </div>
+    {% endfor %}
+
+    <a href="/news.html" class="more">More News</a>
+    <div class="shad-news"></div>
+    <span class="shad-left-news">&nbsp;</span>
+    <span class="shad-right-news">&nbsp;</span>
+</div>

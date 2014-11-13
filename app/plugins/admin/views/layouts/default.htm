@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{{ title_for_layout }}</title>
+		<!--[if IE 6]>
+		<link rel="stylesheet" type="text/css" href="/admin/css/ie6.css" />			
+		<script type="text/javascript" src="/admin/js/dd_belatedpng.js"></script>
+		<script type="text/javascript">
+			dd_belatedpng.fix('.png_bg'); 
+		</script>
+	<![endif]-->
+	<!--[if IE 7]>
+		<link rel="stylesheet" type="text/css" href="/admin/css/ie7.css" />	
+	<![endif]-->
+	<!--[if IE 8]>
+		<link rel="stylesheet" type="text/css" href="/admin/css/ie8.css" />
+	<![endif]-->
+
+	<link href="/admin/css/form.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/admin/css/layout.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/admin/css/style.css?sdfe3" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/admin/css/menu.css" rel="stylesheet" type="text/css" media="screen" />
+
+	<script type="text/javascript" src="/js/jquery/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="/admin/js/jquery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/js/jquery/plugins/jquery.blockUI.js"></script>
+
+    <link href="/css/ajax.loader.css" rel="stylesheet" type="text/css" media="screen" />
+	{#<script type="text/javascript" src="/js/jquery/ajx_cfg.js"></script>#}
+
+	<link href="/admin/js/jquery/jquery-ui/bs-theme/jquery-ui-1.8.custom.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="/admin/js/jquery/jquery-ui/jquery-ui-1.8.custom.min.js"></script>
+    <link href="/js/fancybox/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/js/fancybox/jquery.fancybox.js"></script>
+    <style type="text/css">
+        #tabs textarea {
+            width:400px;
+        }
+        .translate-hover {
+            opacity: 0.6;
+            background: url(/img/ajax-loader.gif) 5px 50px no-repeat;
+        }
+    </style>
+	{{ scripts_for_layout }}
+
+	<script type="text/javascript">
+		$(function() {
+			$("#left-menu").accordion();
+			$(".submit-btn").button();
+
+			var accordion = $("#left-menu");
+            var index = $.cookie("accordion");
+            var active;
+            if (index !== null) {
+                active = accordion.find("h3:eq(" + index + ")");
+            } else {
+                active = 0
+            }
+            accordion.accordion({
+                header: "h3",
+                event: "click hoverintent",
+                active: active,
+                change: function(event, ui) {
+                    var index = $(this).find("h3").index ( ui.newHeader[0] );
+                    $.cookie("accordion", index, {
+                        path: "/"
+                    });
+                },
+                autoHeight: false
+            });
+
+
+		});
+	</script>
+</head>
+<body>
+{{ jGrowl.flash() }}
+<div id="wrapper">
+
+		<div id="header">
+		<div class="shadow">&nbsp;</div>
+		<div class="header">
+			<div class="clearfix">
+				<div class="logo"><a href="/"><img alt="" src="/img/elements/logo-small.png" /></a></div>
+				<div class="logout">
+					<input type="button" style="cursor: pointer" value="Logout" class="btn1" onclick="window.location='/users/logout'" />
+				</div>
+			</div>
+			<div class="nav clearfix">
+				{{ view.element('main_menu') }}
+			</div>
+		</div>
+	</div>
+	<!-- #header-->
+	
+
+
+	<div class="middle clearfix">
+		
+		<div class="container clearfix">
+			<div id="sidebar">
+				<div id="left-menu">
+				{% if _left_menu_name %}
+					{{ view.element("custom_left_menu/" ~ _left_menu_name) }}
+				{% else %}
+					{{ view.element('custom_left_menu/empty') }}
+				{% endif %}
+				</div>
+			</div>
+			
+			<div id="content">	
+				{{ content_for_layout }}		
+			</div>
+		</div>
+	</div>
+
+	
+</div><!--#wrapper-->	
+<div id="footer">
+	<div class="footer-inner">		
+		{{ view.element('footer') }}
+	</div>
+</div><!-- #footer -->
+<script type="text/javascript">
+    function ajaxLoader(msgText, element){
+        if (msgText == undefined || msgText == '') msgText = 'Loading...';
+        if (element == undefined || element == '') {
+            $.blockUI({
+                message: '<h1><img src="/img/ajax-loader-dark.gif" /> ' + msgText + ' </h1>',
+                baseZ: 99999,
+                css: {
+                    border: 'none',
+                    width: '25%',
+                    padding: '5px',
+                    backgroundColor: '#000',
+                    borderRadius: '10px',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: .5,
+                    color: '#fff'
+                },
+                overlayCSS:  {
+                    backgroundColor: '#fff',
+                    opacity:         0.2
+                }
+            });
+        } else {
+            var widthEl =  $('#' + element).width();
+            var heightEl =  $('#' + element).height();
+            $('#' + element).block({
+                message: '<img src="/img/ajax-loader-dark.gif" />',
+                baseZ: 99999,
+                css: {
+                    padding: '5px',
+                    margin: '0px',
+                    width: widthEl + 'px',
+                    height: heightEl + 'px',
+                    border: '3px solid #a00',
+                    borderRadius: '0px',
+                    '-webkit-border-radius': '0px',
+                    '-moz-border-radius': '0px',
+                    backgroundColor: '#000',
+                    opacity: .3,
+                    color: '#fff'
+                }
+            });
+        }
+
+    }
+
+    $(document).ajaxStop($.unblockUI);
+</script>
+</body>
+</html>

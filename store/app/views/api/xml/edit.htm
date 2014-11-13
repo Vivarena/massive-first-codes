@@ -1,0 +1,19 @@
+<data>
+    {#<debug>{{ view.data|pr }}</debug>#}
+    <product>
+        {% for key, val in view.data.Product %}
+            <{{ key }}>{{ val }}</{{ key }}>
+        {% endfor %}
+    </product>
+    {% if view.data.CategoriesProduct %}
+        <category_product>
+            <id>{{ view.data.CategoriesProduct.id }}</id>
+            <product_id>{{ view.data.CategoriesProduct.category_id }}</product_id>
+            <category_id>
+                {% for key, val in view.data.CategoriesProduct.category_id %}
+                    <id>{{ val }}</id>
+                {% endfor %}
+            </category_id>
+        </category_product>
+    {% endif %}
+</data>

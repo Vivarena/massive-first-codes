@@ -1,0 +1,50 @@
+{% if pubs %}
+    <table class="pubsTable">
+        {% for pub in pubs %}
+        <tr class="startPub">
+            <td class="leftTD">
+                {{ pub.name }}
+            </td>
+            <td class="rightTD">
+                <span class="linkPub"><a href="{{ pub.affiliate_link }}">{{ pub.affiliate_link }}</a></span>
+                <span class="datePub">{{ pub.created|date('M d, Y') }}</span>
+            </td>
+        </tr>
+        <tr class="endPub">
+            <td class="leftTD">
+                {{ pub.content }}
+            </td>
+            <td class="rightTD">
+                <a href="#">View full version</a>
+            </td>
+        </tr>
+        <tr class="emptyTR">
+            <td colspan="2"></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% else %}
+
+    <table class="pubsTable">
+        <tr class="bothTR">
+            <td class="centerText" colspan="2">
+                {% if first %}
+                    Click on category to view publications
+                {% else %}
+                    No publications...
+                {% endif %}
+            </td>
+        </tr>
+        <tr class="emptyTR">
+            <td colspan="2"></td>
+        </tr>
+    </table>
+
+{% endif %}
+{% if not first %}
+<div class="actionBtns">
+    <a href="#" class="addPub actionBtn" data-cat-id="{{ idCat }}"><img src="/admin/img/icons/add.png" alt="Add"/> Add publication</a>
+    {% if pubs %}<a href="#" class="editPublications actionBtn" data-cat-id="{{ idCat }}"><img src="/admin/img/icons/edit.png" alt="Edit"/> Edit publications</a>{% endif %}
+</div>
+{% endif %}

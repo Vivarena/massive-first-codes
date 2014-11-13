@@ -1,0 +1,435 @@
+{{ html.css([
+    "/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4",
+    "/js/jquery/plugins/jcarousel/skins/tango/skin"
+], null, { 'inline' : false }) }}
+
+{{ html.script([
+    "jquery/plugins/fancybox/jquery.fancybox-1.3.4.pack"
+], { 'inline' : false }) }}
+
+<script type="text/javascript">
+
+$(function(){
+
+    var allAttr = [];
+    var countAttr = 0;
+    {% if data.ProductAttributeGroup %}
+        changeQuantity();
+    {% endif %}
+
+    $(".fancy-image").fancybox();
+
+    $('.attrChange').change(function(){
+
+        changeQuantity();
+
+    });
+
+    function changeQuantity() {
+        $(".product-info").addClass("product-info-hover");
+        $('.attrChange').each(function(index) {
+            allAttr[countAttr] = $(this).val();
+            countAttr++;
+        });
+
+        $.post("/products/getQty", { idAttr: allAttr },
+            function(data) {
+                if(!data.error) {
+
+                    $(".attr-qty").html("");
+                    $(".attr-qty").html("<select id='qty' name='data[Product][quantity]' style='width: 40px;'></select>");
+
+
+                    $('#qty').removeAttr('disabled');
+                    $('.add-to-cart').show();
+                    $('#qty').empty();
+                    var options = $('#qty').prop('options');
+                    for (var i = 1; i <= data.qty; i++) {
+                       options[options.length] = new Option(i, i);
+                    }
+
+                } else {
+
+                    $(".attr-qty").html("");
+                    $(".attr-qty").html("<span style='color: red; font-size:20px'>out of stock</span>");
+
+
+
+//                    $('#qty').empty();
+//                    var options = $('#qty').prop('options');
+//                    options[options.length] = new Option('0','0');
+//                    $('#qty').attr('disabled', 'disabled');
+                    $('.add-to-cart').hide();
+                }
+                $(".product-info").removeClass("product-info-hover");
+
+            },
+            "json"
+        );
+    }
+
+})
+</script>
+
+
+<div class="check-out-title">
+    <h3>Check out</h3>
+</div>
+<div class="check-form clearfix">
+    <div class="products-details">
+        <h3>{{ item.Product.title }}</h3>
+
+        <div class="products-details-img">
+            <img src="{{ item.Product.image }}" alt=""/>
+        </div>
+        <div class="products-details-text clearfix">
+            <div class="products-details-text__title">
+                <h3>Product Details</h3>
+            </div>
+            <div class="sale-price">
+                <p>sale price:<span>{{ number.format(item.Product.price, {"places":"2"}) }}</span></p>
+
+                <p> sitch style:<span>{{ item.Product.sitch_style }}</span></p>
+                {{ form.create('Product', { 'action':'cart' }) }}
+                {{ form.hidden('id', { 'value':item.Product.id }) }}
+                <div class="shop-input">
+                    {% if data.ProductAttributeGroup %}
+                        {% for attribute in data.ProductAttributeGroup %}
+                            <label>{{ attribute.name }}:</label>
+                            <select class="attrChange" name="data[Product][attributes][{{ attribute.name }}]">
+                                {% for subAttr in attribute.ProductAttribute %}
+                                    <option value="{{ subAttr.id }}">{{ subAttr.title }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endfor %}
+                    {% endif%}
+                </div>
+                <p>quantity:
+                    {% if data.ProductAttributeGroup %}
+                        <span class="attr-qty">
+                            <select id="qty" name="data[Product][quantity]" style="width: 40px;">
+                                <option value="0">0</option>
+                            </select>
+                        </span>
+                    {% elseif data.Product.quantity and data.Product.quantity > 0 %}
+                        <select id="qty" name="data[Product][quantity]" style="width: 40px;">
+                        {% for i in 1..data.Product.quantity %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                        </select>
+                    {% else %}
+                        <span style="color: red; font-size:20px">out of stock</span>
+                    {% endif %}
+                </p>
+                {{ form.end() }}
+            </div>
+            <div class="social-elem clearfix">
+                <div class="addThis">
+                    <!-- AddThis Button BEGIN -->
+                    <div class="addthis_toolbox addthis_default_style ">
+                    <a class="addthis_button_preferred_1"></a>
+                    <a class="addthis_button_preferred_2"></a>
+                    <a class="addthis_button_preferred_3"></a>
+                    <a class="addthis_button_preferred_4"></a>
+                    <a class="addthis_button_compact"></a>
+                    <a class="addthis_counter addthis_bubble_style"></a>
+                    </div>
+                    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4fc622363bd74276"></script>
+                    <!-- AddThis Button END -->
+                </div>
+
+                <p>quick overview</p>
+                <a href="javascript:;" onclick="jQuery('#ProductCartForm').submit();" class="btn-add add-to-cart">Add to Cart</a>
+                {#<a href="credit-card.html" class="btn-add">Add to Cart</a>#}
+            </div>
+            <div class="products-box-list">
+                {{ item.Product.overview }}
+                {#<p>Mens Black T-shirt with Wight Bird</p>
+                <ul>
+                    <li>Slim Fit</li>
+                    <li>Available in sizes S-XXL</li>
+                    <li>100% Cotton</li>
+                    <li>Machine Washable</li>
+                    <li>Imported</li>
+                </ul>#}
+            </div>
+            <div class="products-details-text__title">
+                <h3>Product Description</h3>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="products-box__text">
+        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in
+            some form, by injected humour, or randomised words which don't look even slightly believable. If you are
+            going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the
+            middle of text. </p>
+    </div>
+    <div class="products-box-small clearfix">
+        <h3>related Produts</h3>
+        {% for rItem in relatedProduct %}
+        <div class="products-box-small-one">
+            <a href="{{ 'product'|toUrl(rItem.id, rItem.title) }}"><img alt="" src="{{ rItem.image|thumb(105, 93) }}"/></a>
+        </div>
+        {% endfor %}
+    </div>
+
+
+</div>
+
+{#<div id="wp-content">
+    <div id="middle" class="clearfix">
+        {{ view.element('sidebar') }}
+        <div id="container">
+            <div id="content">
+                <h1 class="title-page-right clearfix">
+                    my products
+                </h1>
+                <div class="product-item product-item-open">
+                    <div class="clearfix">
+                        <h2 class="title" style="width: 300px; float: left;">{{ item.Product.title }}</h2>
+                        {% if item.Product.gift|length == 2 %}
+                            <div style="float: right;"><a href="{{ "product"|toUrl(item.Product.gift.id, item.Product.gift.title) }}" target="_blank"><img src="/img/gift.png" alt=""></a></div>
+                            <div class="clear"></div>
+                        {% endif %}
+                    </div>
+                    <div class="clearfix">
+                        <div class="picture">
+                            <div class="frame-picture-top">
+                                <div class="frame-picture-bottom">
+                                    <div class="frame-picture-left">
+                                        <div class="frame-picture-right">
+                                            <div class="frame-picture-lt">
+                                                <div class="frame-picture-rt">
+                                                    <div class="frame-picture-lb">
+                                                        <div class="frame-picture-rb">
+                                                            &#123;&#35;<a class="fancy-image" href="{{ item.Product.image }}">&#35;&#125;
+                                                                &#123;&#35;<img alt="" src="{{ item.Product.image }}" width="309" />&#35;&#125;
+                                                            &#123;&#35;</a>&#35;&#125;
+
+
+                                                            <a id="xxx" href="{{ item.Product.image }}" class="MagicZoom MagicThumb"
+                                                               rel="zoom-position:inner;zoom-fade:true;"
+                                                               title="{{ item.Product.name }}"><img class="url" src="{{ item.Product.image }}"
+                                                                                          alt="{{ item.Product.name }}"
+                                                                                          title="{{ item.Product.name }}"
+                                                                                          border="0"
+                                                                                          width="309"
+                                                                                          style="min-width: 309px"
+                                                                                          
+                                                                                          
+                                                                    /></a>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            &#123;&#35; Slider Start &#35;&#125;
+                            {% if item.ProductImage|length > 0 %}
+                            <div class="item-scroll">
+                                <div class="scroller">
+                                    {% if item.ProductImage|length > 3 %}
+                                        <a href="#" class="scroll-left"><img style="border: none" alt="" src="/img/a5.png" /></a>
+                                        <a href="#" class="scroll-right"><img style="border: none" alt="" src="/img/a6.png" /></a>
+                                    {% endif %}
+                                </div>
+                                <!--collection scrolling-->
+                                <div class="scrollcontent clearfix">
+                                    <ul  class="jcarousel-skin-tango-image" id='mycarousel-images'>
+                                        <li><a class="sc" href="{{ item.Product.image|thumb(309) }}" target="{{ item.Product.image }}"><img alt="" src="{{ item.Product.image|thumb(75, 75) }}" /></a></li>
+                                        {% for photo in item.ProductImage %}
+                                            {% if photo.path %}
+                                                <li><a class="sc" href="{{ photo.path|thumb(309) }}" target="{{ photo.path }}"><img alt="" src="{{ photo.path|thumb(75, 75) }}" /></a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <!--collection scrolling-->
+                            </div>
+                            {% endif %}
+                            &#123;&#35; Slider End &#35;&#125;
+                        </div>
+                        
+                        <div class="product-info">
+                            
+                            <div class="clearfix">
+
+                                <div class="details-info ">
+                                    <h3 class="title-item main">Product Details</h3>
+                                    <div class="prices">
+                                        {% if item.Product.rprice != 0.00 %}
+                                        <div class="our-price clearfix">
+                                            <span class="label">Price:</span>
+                                            <span class="rprice">{{ number.format(item.Product.rprice, {"places":"2"}) }}</span>
+                                        </div>
+                                        {% endif %}
+                                        <div class="our-price clearfix">
+                                            <span class="label">Sale Price:</span>
+                                            <span class="price">{{ number.format(item.Product.price, {"places":"2"}) }}</span>
+                                        </div>
+                                        {% if item.Product.sitch_style %}
+                                        <div class="our-price clearfix">
+                                            <span class="label">SITCH style</span>
+                                            <span class="price">{{ item.Product.sitch_style }}</span>
+                                        </div>
+                                        {% endif %}
+                                        &#123;&#35;<div class="availability clearfix">
+                                            <span class="label">Availability:</span>
+                                            <span class="price">{% if item.Product.quantity > 0 %}In stock({{ item.Product.quantity }}){% else %}<span style="color: red">Out of stock</span>{% endif %}</span>
+                                        </div>&#35;&#125;
+                                    </div>
+                                    {{ form.create('Product', { 'action':'cart' }) }}
+                                        {{ form.hidden('id', { 'value':item.Product.id }) }}
+
+                                    <div class="item-product-form" style="padding-left:20px">
+
+
+                                        {% if data.ProductAttributeGroup %}
+                                            {% for attribute in data.ProductAttributeGroup %}
+                                                <div class="select clearfix">
+                                                    <label>{{ attribute.name }}:</label>
+                                                    <div class="block-black">
+                                                        <div class="block-left">
+                                                            <div class="block-right">
+                                                                <div class="block-top">
+                                                                    <div class="block-bottom">
+                                                                        <div class="block-inner">
+                                                                            <div class="clearfix">
+                                                                                <select class="attrChange" name="data[Product][attributes][{{ attribute.name }}]">
+                                                                                    &#123;&#35;<option value="" selected="selected">Please select</option>&#35;&#125;
+                                                                                    {% for subAttr in attribute.ProductAttribute %}
+                                                                                        <option value="{{ subAttr.id }}">{{ subAttr.title }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+
+
+                                        <div class="select clearfix">
+                                            <label>Quantity:</label>
+                                            <div class="block-black">
+                                                <div class="block-left">
+                                                    <div class="block-right">
+                                                        <div class="block-top">
+                                                            <div class="block-bottom">
+                                                                <div class="block-inner">
+                                                                    <div class="clearfix">
+
+                                                                            {% if data.ProductAttributeGroup %}
+                                                                                <span class="attr-qty">
+                                                                                    <select id="qty" name="data[Product][quantity]" style="width: 40px;">
+                                                                                        <option value="0">0</option>
+                                                                                    </select>
+                                                                                </span>
+                                                                            {% elseif data.Product.quantity and data.Product.quantity > 0 %}
+                                                                                <select id="qty" name="data[Product][quantity]" style="width: 40px;">
+                                                                                {% for i in 1..data.Product.quantity %}
+                                                                                    <option value="{{ i }}">{{ i }}</option>
+                                                                                {% endfor %}
+                                                                                </select>
+                                                                            {% else %}
+                                                                                <span style="color: red; font-size:20px">out of stock</span>
+                                                                            {% endif %}
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+                                    {{ form.end() }}
+                                    <div class="clearfix">
+                                        <div class="share">
+                                             <div class="links " >
+                                            <a href="javascript:;" onclick="jQuery('#ProductCartForm').submit();" class="add-to-cart">Add to Cart</a>
+                                        </div>
+
+                                            &#123;&#35;<a href="/email-to-friend/{{ item.Product.id }}" class="mail-friend" style="margin-left:20px; white-space:nowrap;">Email to a Friend</a>&#35;&#125;
+
+
+                                        <!-- AddThis Button BEGIN -->
+                                        <div class="addthis_toolbox addthis_default_style " style="margin: 10px 0 10px 10px;">
+                                            <a class="addthis_button_preferred_1"></a>
+                                            <a class="addthis_button_preferred_2"></a>
+                                            <a class="addthis_button_preferred_3"></a>
+                                            <a class="addthis_button_preferred_4"></a>
+                                            <a class="addthis_button_compact"></a>
+                                            <a class="addthis_counter addthis_bubble_style"></a>
+                                        </div>
+                                        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4ee0c1224faf838c"></script>
+                                        <!-- AddThis Button END -->
+                                        </div>
+
+                                    </div>
+                                </div>
+                                
+                                <div class="quick-info">
+                                     <h3 class="description" style="text-align:left; padding-left:20px">Quick Overview</h3>
+                                    <div  style="padding-left:20px"><p>{{ item.Product.overview }}</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="description">Product Description</h3>
+                       <p>{{ item.Product.description }}</p>
+                    </div>
+
+                    
+
+                <!--END PRODUCT ITEM-->
+                <h1 class="title-page-right">
+                    related products
+                </h1>
+
+                <div class="related-products clearfix">
+                    {% for rItem in relatedProduct %}
+                    <div class="product">
+                        <div class="picture">
+                            <div class="frame-picture-top">
+                                <div class="frame-picture-bottom">
+                                    <div class="frame-picture-left">
+                                        <div class="frame-picture-right">
+                                            <div class="frame-picture-lt">
+                                                <div class="frame-picture-rt">
+                                                    <div class="frame-picture-lb">
+                                                        <div class="frame-picture-rb">
+                                                            <a href="{{ 'product'|toUrl(rItem.id, rItem.title) }}"><img alt="" src="{{ rItem.image|thumb(110, 110) }}"/></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>#}
+
+

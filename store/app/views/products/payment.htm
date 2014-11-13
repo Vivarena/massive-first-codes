@@ -1,0 +1,582 @@
+{{ html.script("jquery/plugins/fancybox/jquery.fancybox-1.3.4.pack", { 'inline' : false }) }}
+{{ html.css("/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4", null,{ 'inline' : false }) }}
+{{ html.script("jquery/plugins/jquery-ui-1.8.14/jquery-ui-1.8.14.custom", { 'inline' : false }) }}
+
+<script type="text/javascript">
+    $(function(){
+        $("input.shippingRadio[data-name='{{ session.read('Cart.ShippingMethod') }}']").attr('checked', true);
+
+        var blockKey = "{{ session.read("blockId")|default("priority_mail") }}";
+        blocksOperation(blockKey);
+	$("#uspstitle").css({color:"white"});
+        $(".shippingRadio").live("click", function(){
+            $(".shipping-block").addClass("shipping-hover");
+            var value = $(this).val();
+            var name = $(this).attr("data-name");
+            $.get("/products/set_shipping/" + value + "/" + name + "/" + blockKey,
+                function(data) {
+                    $(".total-value").text("$" + data);
+                    $(".shipping-value").text("$" + value);
+                    $(".shipping-block").removeClass("shipping-hover");
+                }
+            )
+        });
+
+        $("#paypal_confirm, #cc_confirm").fancybox({
+            "titleShow" : false,
+            "onStart" : function(e){
+                var link = $(e).prop("title");
+
+                if (link == "cc") {
+                    $(".continue-link").attr("href", "javascript: jQuery('#checkout').submit()");
+                } else {
+                    $(".continue-link").attr("href", "/" + $(e).prop("title") + ".html");
+                }
+
+            }
+        });
+
+        $(".help-send").click(function(e){
+            e.preventDefault();
+
+            var objects = [
+                $("#HelpName"), $("#HelpEmail"), $("#HelpComment")
+            ];
+
+            var error = false;
+            $.each(objects, function(i, e) {
+                if (e.val() == "") {
+                    e.effect("highlight", {}, 3000);
+                    error = true;
+                }
+            });
+
+            if (!checkEmail($("#HelpEmail").val())) {
+                error = true;
+                $("#HelpEmail").val("");
+                $("#HelpEmail").effect("highlight", {}, 3000);
+            }
+
+            if (!error) {
+                $("#PageHelpForm").submit();
+            }
+
+        });
+
+        function checkEmail(email) {
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+                return (true)
+            }
+            return (false)
+        }
+
+        $(".help").fancybox({
+            "titleShow" : false
+        });
+
+        $(".title").live('click', function(){
+            blockKey = $(this).attr("data-id");
+            blocksOperation(blockKey,$(this))
+        });
+
+        function blocksOperation(id,item) {
+            $(".sShippingBlock").hide();
+            $(".title2").css({color:"black"});
+	
+            $(".sRates" + id).show();
+            $(item).css({color:"white"});
+        }
+    })
+
+</script>
+
+<div id="wp-content">
+
+    <div class="wp-content-inner" style="padding-bottom: 0">
+
+        <h1 class="title-page-right">Credit Card Information</h1>
+        <form action="http://{{ server }}/thank-you.html" method="post" id="checkout">
+            <div class="clearfix">
+                <div class="billing-title float-l"><h2>Shipping Information</h2></div>
+                <div class="billing-title float-r"><h2>Credit Card Information</h2>
+                    {% if authorizeDebug %} <p style="color: red">Attention! Payment in test mode</p>{% endif %}
+                </div>
+            </div>
+            <div class="billing-shipping-block clearfix">
+                <div class="billing-shipping float-l">
+                    <table cellpadding="0" cellspacing="0" class="order-info">
+                        <tr>
+                            <td>
+                                <div class="block-black">
+                                    <div class="block-left">
+                                        <div class="block-right">
+                                            <div class="block-top">
+                                                <div class="block-bottom">
+                                                    <div class="block-inner">
+                                                        <div class="clearfix">
+                                                            <table class="order-info-title" cellpadding="0" cellspacing="0">
+                                                                <tr>
+                                                                    <td class="th column-product">Item</td>
+                                                                    <td class="th total">Price</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="order-product">
+                            {% for key, item in Cart.Products %}
+                                <div class="table-block-inner">
+                                    <table cellpadding="0" cellspacing="">
+                                        <tr>
+                                            <td class="column-product">{{ item.title }} ({{ item.qty }} pci)</td>
+                                            <td class="total">
+                                                {% if item.price != 0 %}
+                                                    {{ number.format(item.price*item.qty, {"places":"2"}) }}
+                                                {% else %}
+                                                    Gift
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="block-orange">
+                                    <div class="block-left">
+                                        <div class="block-right">
+                                            <div class="block-top">
+                                                <div class="block-bottom">
+                                                    <div class="block-inner">
+                                                        <div class="clearfix">
+                                                            <div class="total-block">
+                                                                <div class="title">Sub Total:</div><div class="text">{{ number.format(Cart.Subtotal, {"places":"2"}) }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="order-shipping">
+                                <table cellpadding="0" cellspacing="">
+                                    {% if Cart.Tax %}
+                                    <tr>
+                                        <td class="">
+                                            {% if vat %}VAT&nbsp;{% endif %}
+                                            Tax
+                                        </td>
+                                        <td class="total">{{ number.format(Cart.Tax, {"places":"2"}) }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if Cart.Shipping %}
+                                    <tr>
+                                        <td>Shipping&nbsp;</td>
+                                        <td class="total shipping-value">{{ number.format(Cart.Shipping, {"places":"2"}) }}</td>
+                                    </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td >Discount</td>
+                                        <td class="total">{{ number.format(Cart.Discount, {"places":"2"}) }}</td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <div class="block-black">
+                                    <div class="block-left">
+                                        <div class="block-right">
+                                            <div class="block-top">
+                                                <div class="block-bottom">
+                                                    <div class="block-inner">
+                                                        <div class="clearfix">
+                                                            <div class="total-block">
+                                                                <div class="title">Total:</div><div class="text total-value">{{ number.format(Cart.Total, {"places":"2"}) }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="block-black" style="margin-top: 20px">
+                                    <div class="block-left">
+                                        <div class="block-right">
+                                            <div class="block-top">
+                                                <div class="block-bottom">
+                                                    <div class="block-inner">
+                                                        <div class="clearfix">
+                                                            <div class="total-block" style="width: 380px;">
+                                                                <div class="title" style="width: 178px;">Choose a shipping method</div></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+
+                        {% if uspsDomasticRates|length > 0 %}
+                        {% for key, uspsTypes in uspsDomasticRates %}
+                        <tr>
+                            <td colspan="2">
+                                <div class="block-orange" style="border-bottom: 1px solid white;">
+                                    <div class="block-left">
+                                        <div class="block-right">
+                                            <div class="block-top">
+                                                <div class="block-bottom">
+                                                    <div class="block-inner">
+                                                        <div class="clearfix">
+                                                            <div class="total-block" style="width: 380px;">
+                                                                <div class="title title2" id="uspstitle" style="color:white;width: 100px; text-align: left; cursor: pointer; float:left;" data-id="priority_mail">
+                                                                    USPS
+                                                                </div>
+                                                                <div class="title title2" style="width: 100px; text-align: left; cursor: pointer; float:left;" data-id="Fedex">
+                                                                   FEDEX 
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="shipping-block sShippingBlock sRates{{ key }}" style="display: none;">
+                            <td class="order-shipping">
+                                <table cellpadding="0" cellspacing="">
+
+                                        {% for item in uspsTypes %}
+                                            <tr>
+                                                <td style="padding-right: 0">
+                                                    <input class="shippingRadio" type="radio" name="shipping" value="{{ item.RATE }}" data-name="USPS - {{ item.MAILSERVICE }}" />
+                                                </td>
+                                                <td style="padding-left: 25px">{{ item.MAILSERVICE }}</td>
+                                                <td class="total">{{ number.format(item.RATE, {"places":"2"}) }}</td>
+                                            </tr>
+                                        {% endfor %}
+
+                                </table>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% endif %}
+                        {% if shipRates|length > 0 %}
+                        <tr class="shipping-block sShippingBlock sRatesFedex">
+                            <td class="order-shipping">
+                                <table cellpadding="0" cellspacing="">
+                                    {% for item in shipRates %}
+                                    <tr>
+                                        <td style="padding-right: 0">
+                                            <input class="shippingRadio" type="radio" name="shipping" {% if item.amount == Cart.Shipping %}checked="true"{% endif %} value="{{ item.amount }}" data-name="{{ item.serviceType|normalize }}" />
+                                        </td>
+                                        <td style="padding-left: 0">{{ item.serviceType|normalize }}</td>
+                                        <td class="total">{{ number.format(item.amount, {"places":"2"}) }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </td>
+                        </tr>
+                            {% if notifications|length > 0 %}
+                                {% for note in notifications %}
+                                <tr>
+                                    {#<td><span style="color: red">Warning:</span> {{ note }}</td>#}
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        {% endif %}
+                    </table>
+                </div>
+                <div class="billing-shipping float-r">
+                    <div class="radio">Enter information exactly as it appears on your card.</div>
+                    <div class="input clearfix">
+                        <label>Account holder</label>
+                        <div class="block-black">
+                            <div class="block-left">
+                                <div class="block-right">
+                                    <div class="block-top">
+                                        <div class="block-bottom">
+                                            <div class="block-inner">
+                                                <div class="clearfix">
+                                                    {{ form.input("Credit.holder", {'class':"text", 'label':false, 'div':false}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="error-message"></div>
+                    </div>
+                    <div class="select clearfix">
+                        <label>Card Type</label>
+                        <div class="block-black">
+                            <div class="block-left">
+                                <div class="block-right">
+                                    <div class="block-top">
+                                        <div class="block-bottom">
+                                            <div class="block-inner">
+                                                <div class="clearfix">
+                                                    {{ form.select("Credit.type", { "MasterCard" : "MasterCard", "Visa" : "Visa", "Discover" : "Discover" }, null, {'empty':"Select Card Type"}) }}
+                                                    {#{{ form.select("Credit.type", { "MC" : "MasterCard", "VI" : "Visa", "AX" : "American Express", "DI" : "Discover", "JC" : "JCB" }, null, {'empty':"Select Card Type"}) }}#}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="error-message"></div>
+                    </div>
+                    <div class="input clearfix">
+                        <label>Account number</label>
+                        <div class="block-black">
+                            <div class="block-left">
+                                <div class="block-right">
+                                    <div class="block-top">
+                                        <div class="block-bottom">
+                                            <div class="block-inner">
+                                                <div class="clearfix">
+                                                    {{ form.input("Credit.number", {'class':"text", 'label':false, 'div':false}) }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="error-message"></div>
+                    </div>
+                    <div class="input clearfix">
+                        <label>Security code</label>
+                        <div class="block-black">
+                            <div class="block-left">
+                                <div class="block-right">
+                                    <div class="block-top">
+                                        <div class="block-bottom">
+                                            <div class="block-inner">
+                                                <div class="clearfix">
+                                                    {{ form.input("Credit.code", {'class':"text", 'label':false, 'div':false}) }}   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="error-message"></div>
+                    </div>
+                    <div class="select clearfix">
+                        <div class="expiration-date">
+                            <label>Expiration date</label>
+                            {#{ form.dateTime("Credit.date", "MY", now|date("MY"), {'minYear':'now'|date('Y')}) }#}
+        {{ form.month('Credit.date', null, {'monthNames': false, 'empty': false}) }}
+        {{ form.year('Credit.date', 'now'|date('Y'), 'now'|date('Y') + 10, 'now'|date('Y'), {'orderYear': 'asc', 'empty': false}) }}
+                        </div>
+                    </div>
+
+                    <div class="checkout-with">
+                        <a id="paypal_confirm" style="margin-left: 125px" title="paypal" href="#confirmation_pp"><img alt="" src="/img/checkout-paypal.jpg" /></a>
+                        {#<a style="margin-left: 125px" href="/paypal.html"><img alt="" src="/img/checkout-paypal.jpg" /></a>#}
+                        {#<a href="#"><img alt="" src="/img/google-checkout.jpg" /></a>#}
+                    </div>
+                </div>
+            </div>
+            <div class="button clearfix">
+                <div class="float-l"><input type="button" value="Shipping & Billing" class="btn-continue-shopping" onclick="window.location.href='/checkout.html'"  /></div>
+                {#<div class="float-r"><input type="submit" value="Continue" class="btn-continue" /></div>#}
+                <div class="float-r"><a id="cc_confirm" title="cc" href="#confirmation_pp"><input type="button" value="Continue" class="btn-continue" /></div>
+
+            </div>
+            <div style="float: right;"><a href="#help" class="help">If you are experiencing any difficulties ordering click here</a></div>
+        </form>
+        <div style="text-align: center; padding-top: 20px">
+            <span id="siteseal"><script type="text/javascript" src="https://seal.starfieldtech.com/getSeal?sealID=RwX04ouHQ5qKABNrZdUJfLVcGoxptH21jJZOs4BBPRVcw13ez0C0Qzj"></script><br/><a style="font-family: arial; font-size: 9px" href="http://www.starfieldtech.com" target="_blank">SSL</a></span>
+        </div>
+    </div>
+</div>
+
+<div style="display: none">
+    <div id="help">
+        {{ view.Form.create("Page", { 'action' : "help" }) }}
+        <div class="billing-shipping float-r">
+            <div class="input clearfix">
+                <div style="color:#1568B0; font-weight: bold;margin: 0 0 25px 16px;">Type your question, we will contact you as soon as possible</div>
+                <label>Name</label>
+                <div class="block-black">
+                    <div class="block-left">
+                        <div class="block-right">
+                            <div class="block-top">
+                                <div class="block-bottom">
+                                    <div class="block-inner">
+                                        <div class="clearfix">
+                                            {{ form.input("Help.name", {'class':"text", 'label':false, 'div':false}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="error-message"></div>
+            </div>
+            <div class="select clearfix">
+                <label>Email</label>
+                <div class="block-black">
+                    <div class="block-left">
+                        <div class="block-right">
+                            <div class="block-top">
+                                <div class="block-bottom">
+                                    <div class="block-inner">
+                                        <div class="clearfix">
+                                            {{ form.input("Help.email", {'class':"text", 'label':false, 'div':false, "style" : "width: 184px"}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="error-message"></div>
+            </div>
+            <div class="input clearfix">
+                <label>Message</label>
+                <div class="block-black">
+                    <div class="block-left">
+                        <div class="block-right">
+                            <div class="block-top">
+                                <div class="block-bottom">
+                                    <div class="block-inner">
+                                        <div class="clearfix">
+                                            {{ form.textarea("Help.comment", {'class':"text", 'label':false, 'div':false, "style" : "width: 184px; height: 100px"}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="error-message"></div>
+            </div>
+
+
+            <div class="float-r button" style="margin-right: 40px;"><a href="#"><input type="button" value="Send" class="btn-continue help-send"></a></div>
+        </div>
+        {{ view.Form.end() }}
+    </div>
+    <div id="confirmation_pp" style="padding: 30px; color: #000">
+        <h2>Order confirmation</h2>
+        <table cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td valign="top" width="80"><strong>Bill to:</strong></td>
+                <td>
+                    {{ session.read("BillingShipping.Billing.name") }}, {{ session.read("BillingShipping.Billing.first_name") }}<br />
+                    {{ session.read("BillingShipping.Billing.address1") }},<br />
+                    {{ addr.Billing.city }},
+                    {{ addr.Billing.state }},
+                    {{ session.read("BillingShipping.Billing.zip") }}<br />
+                    {{ addr.Billing.country }}<br />
+                    Phone: {{ session.read("BillingShipping.Billing.phone") }}<br />
+                    Email: {{ session.read("BillingShipping.Billing.email") }}
+                </td>
+                <td valign="top" width="80"><strong>Ship to:</strong></td>
+                <td>
+                    {{ session.read("BillingShipping.Shipping.name") }}, {{ session.read("BillingShipping.Billing.first_name") }}<br />
+                    {{ session.read("BillingShipping.Shipping.address1") }},<br />
+                    {{ addr.Shipping.city }},
+                    {{ addr.Shipping.state }},
+                    {{ session.read("BillingShipping.Shipping.zip") }}<br />
+                    {{ addr.Shipping.country }}<br />
+                    Phone: {{ session.read("BillingShipping.Shipping.phone") }}<br />
+                    Email: {{ session.read("BillingShipping.Shipping.email") }}
+                </td>
+            </tr>
+        </table>
+        <br><br><br><br>
+        <div class="padd-10"></div>
+        <table cellpadding="10" cellspacing="1" width="100%" bgcolor="#000000" style="border-collapse: separate; color: #000">
+            <tr>
+                <td bgcolor="#ffffcc" style="padding:5px; font-weight: bold;">Product title</td>
+                <td bgcolor="#ffffcc" style="padding:5px; font-weight: bold;">QTY</td>
+                <td bgcolor="#ffffcc" style="padding:5px; font-weight: bold;">Cost</td>
+            </tr>
+            {% for key, item in Cart.Products %}
+            <tr style="font-size: 14px; color: #000">
+                <td bgcolor="#FFFFFF" style="padding:5px" width="500">
+                    <span style="color: #000">{{ item.title }}</span>
+                    {% if item.attributes|length > 0 %}
+                    <ul style="list-style: none; padding-left: 5px; color: #000">
+                        <li style="font-weight: bold; line-height: 15px;">Attributes:</li>
+                        {% for key, val in item.attributes %}
+                        <li style="line-height: 13px;">{{ key }} - {{ val }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </td>
+                <td bgcolor="#FFFFFF" style="padding:5px" width="80">{{ item.qty }} pci.</td>
+                <td bgcolor="#FFFFFF" style="padding:5px" width="80">
+                    {% if item.price != 0 %}
+                    {{ number.format(item.price, {"places":"2"}) }}
+                    {% else %}
+                    Gift
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <div class="padd-10"></div>
+        <br>
+        <div style="float: right; width: 100%; text-align: right">
+            Subtotal: {{ number.format(Cart.Subtotal, {"places":"2"}) }}<br />
+            {#Shipping: {{ number.format(data.Order.shipping, {"places":"2"}) }}<br />#}
+		    {% if Cart.Discount %}
+            Discount: {{ number.format(Cart.Discount, {"places":"2"}) }}<br />
+            {% endif %}
+            {% if Cart.Shipping %}
+            Shipping: <span class="shipping-value">{{ number.format(Cart.Shipping, {"places":"2"}) }}</span><br />
+            {% endif %}
+            {% if Cart.Tax %}
+            Tax: {{ number.format(Cart.Tax, {"places":"2"}) }}<br />
+            {% endif %}
+            Total: <span class="total-value">{{ number.format(Cart.Total, {"places":"2"}) }}</span>
+        </div>
+        <br>
+        <div class="button clearfix">
+        <p style="text-align: right">Is order correct?
+            <a href="" class="continue-link"><input type="button" value="Continue" class="btn-continue" /></a>
+            or
+            <input type="button" value="Cancel" onclick="$.fancybox.close()" class="btn-continue" />
+        </p>
+            </div>
+    </div>
+
+</div>

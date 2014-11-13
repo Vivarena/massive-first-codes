@@ -1,0 +1,14 @@
+<h3><a href="#">TV</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_tv_investments/index/{{ index }}" {% if _hovers.tv_investments %}class="hover"{% endif %}>Manage</a></li>
+        <li><a href="/admin/admin_tv_investments/add/{{ index }}" {% if _hovers.add_tv %}class="hover"{% endif %}>Add new</a></li>
+    </ul>
+</div>
+
+<h3><a href="#">TV Categories</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_tv_investments/index_categories/{{index}}" {% if _hovers.category %}class="hover"{% endif %}>Manage</a></li>
+    </ul>
+</div>        

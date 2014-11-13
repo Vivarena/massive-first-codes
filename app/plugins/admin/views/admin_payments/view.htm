@@ -1,0 +1,118 @@
+
+<div class="indent">
+
+
+
+<div class="title2">
+    Order Details
+    {% if data.Payment.is_test_order == 1 %}
+    &nbsp;-&nbsp;<b style="color: #ff0000">This is a test order</b>
+    {% endif %}
+</div>
+<table class="table">
+    <tr>
+        <td class="th align-right">Order ID</td>
+        <td class="th align-right">Provider Order ID</td>
+        <td class="th">Date Added</td>
+        <td class="th">Payment Method</td>
+        <td class="th">{#Shipping Method#}&nbsp;</td>
+
+    </tr>
+    <tr>
+        <td class="align-right">#{{ data.Payment.id }}</td>
+        <td class="align-right">{{ data.Payment.payment_provider_order_number }}</td>
+        <td>{{ data.Payment.created|date("m/d/Y") }}</td>
+        <td>{{ data.Payment.payment_method }}</td>
+        <td>{# {{ shippingMethods[order.shipping_method] }}#}&nbsp;</td>
+    </tr>
+</table>
+
+<div class="padd-10"></div>
+<div class="title2">Contact Details</div>
+<table class="table">
+    <tr>
+        <td class="th">Name</td>
+        <td class="th">E-Mail</td>
+        <td class="th">Telephone</td>
+        <td class="th">&nbsp;</td>
+
+    </tr>
+    <tr>
+        <td>
+            {{ data.Payment.payment_fname }} {{ data.Payment.payment_lname }}
+        </td>
+        <td>
+            {{ data.Payment.email }}
+        </td>
+        <td>{{ data.Payment.phone }}</td>
+        <td>&nbsp;</td>
+    </tr>
+</table>
+
+<div class="padd-10"></div>
+<div class="title2">Address Details</div>
+<table class="table">
+    <tr>
+        <td class="th">Billing Address</td>
+        <td class="th">&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            {{ data.Payment.payment_address_1 }}<br />
+            {{ data.Payment.payment_city }}, {{ data.Payment.payment_state }}, {{ data.Payment.payment_postcode }}<br />
+            {{ data.Payment.payment_country }}
+        </td>
+        <td>
+            &nbsp;
+        </td>
+    </tr>
+</table>
+
+
+<div class="padd-10"></div>
+<table class="table">
+    <tr>
+        <td class="th">Package</td>
+        <td class="th">Attendees</td>
+        <td class="th">Amount</td>
+    </tr>
+    {% set total = 0 %}
+    {% set attNum = 0 %}
+
+    {% for item in data.Payment.attributes %}
+
+    {% set total = total + item.id.Package.price*item.attendees %}
+    {% set attNum = attNum + item.attendees %}
+    <tr>
+        <td>
+            {{ item.id.Package.description }}<br>
+        </td>
+        <td>{{ item.attendees }}</td>
+        <td>{{ number.format(item.id.Package.price*item.attendees, {"places":2}) }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td><span style="font-weight: bold;">Total</span>:</td>
+        <td>
+            <span style="font-weight: bold;">{{ attNum }}</span>
+        </td>
+        <td>
+            <span style="font-weight: bold;">{{ number.format(total, {"places":2}) }}</span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3"><span style="font-weight: bold;">Desired time</span>: {{ data.Payment.time }}</td>
+    </tr>
+
+</table>
+
+
+<div class="padd-10"></div>
+<table class="table">
+    <tr>
+        <td colspan="2">
+            <input type="button" style="float: right" class="submit-btn" value="Print Order" onclick="window.location='/invoice/{{ data.Payment.id }}'">
+        </td>
+    </tr>
+</table>
+</div>

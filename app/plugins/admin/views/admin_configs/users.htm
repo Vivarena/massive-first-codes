@@ -1,0 +1,64 @@
+{{ view.addScript('
+<script type="text/javascript">
+	$(function() {
+		$(".delete-link").click(function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:140,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$(this).dialog("close");
+						location.href = link;
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
+	});
+</script>
+') }}
+<div id="dialog-confirm" title="Delete this user?" class="hidden">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<a href="/admin/admin_configs/user_add">Add User</a>
+{% if users %}
+<table cellpadding="0" cellspacing="1" class="contact-info">
+	<tr>
+		<th class="first sort" width="110">{{ paginator.sort('First Name', 'UserInfo.first_name') }}</th>
+		<th class="sort" >{{ paginator.sort('Last Name', 'UserInfo.last_name') }}</th>
+		<th class="sort">{{ paginator.sort('Group', 'Group.name') }}</th>
+		<th>-</th>
+		<th>-</th>
+	</tr>
+	{% for item in users %}
+	{% set row_class = loop.index%2 ? 'odd' : 'even' %}
+	<tr>
+		<td class="first {{ row_class }}">{{ item.UserInfo.first_name }}</td>
+		<td class="{{ row_class }}">{{ item.UserInfo.last_name }}</td>
+		<td class="{{ row_class }}">{{ item.Group.name }}</td>
+		<td class="{{ row_class }}">
+			<a href="/admin/admin_configs/user_edit/{{ item.User.id }}" title="Click to edit">
+				<img alt="" src="/admin/img/icons/edit.png" />
+			</a>
+		</td>
+		<td class="{{ row_class }}">
+			<a href="/admin/admin_configs/user_delete/{{ item.User.id }}" class="delete-link" title="Click to delete">
+				<img alt="" src="/admin/img/icons/delete.png" />
+			</a>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{{ view.element('paginator') }}
+{% else %}
+<div class="empty-result">
+	Items not found
+</div>
+{% endif %}

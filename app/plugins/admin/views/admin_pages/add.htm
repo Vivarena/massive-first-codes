@@ -1,0 +1,34 @@
+{{ view.element('editor') }}
+{{ html.script('/admin/js/translate.js', { 'include' : false }) }}
+<script type="text/javascript">
+	$(function() {
+        $('#PageContent').elrte(opts);
+	});
+</script>
+
+<h2 class="title-page">{{ view.params.action == 'add' ? 'Add new page' : 'Edit page' }}</h2>
+<div class="navi"><!--<a href="/admin/pages/">Home</a> / <a href="/admin/pages/add">Add new page</a>--></div>
+<div class="top-line">&nbsp;</div>
+<div class="pages-content-block">
+	{{ form.create({'class' : 'simple-form'}) }}
+
+
+
+        {{ form.input('Page.key', {'label' : 'SEO Url'}) }}
+
+
+        <div id="tabs-{{ key }}">
+            {{ form.input('Page.title', {'label' : 'Title', "div" : false}) }}
+
+            {{ form.input('Page.content', {'type' : 'textarea' , 'label' : 'Content' , 'class' : 'myelfinder' , 'label' : false}) }}
+
+        </div>
+
+        {{ form.input('Page.meta_title', {'label' : 'Meta Title'}) }}
+        {{ form.input('Page.meta_keywords', {'label' : 'Meta Keywords'}) }}
+        {{ form.input('Page.meta_description', {'label' : 'Meta Description'}) }}
+
+		{{ form.submit('Save', {'class' : 'submit-btn'}) }}
+
+	{{ form.end() }}
+</div>

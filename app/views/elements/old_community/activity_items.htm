@@ -1,0 +1,73 @@
+{% for item in feeds %}
+{% set prevDate = feeds[loop.index0-1].Feeds.created|date('M j') %}
+{% set nextDate = feeds[loop.index0+1].Feeds.created|date('M j') %}
+{% set curDate = item.Feeds.created|date('M j') %}
+{% if ((prevDate != curDate) and (nextDate != prevDate)) %}
+<div class="activation-box clearfix">
+    <div class="activation-box-i clearfix">
+        <div class="activation-box__text clearfix">
+            <p>
+                {{ item.Feeds.created|date('F j') }}
+            </p>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% set linkProfile = (item.Feeds.login|length > 0) ? item.Feeds.login : 'profile-'~item.Feeds.user_id %}
+<div class="activation-box clearfix">
+    <div class="activation-box-i clearfix">
+        <div class="activation-box__date">
+            <span>{{item.Feeds.created|date('H:i')}}</span>
+        </div>
+        <div class="activation-box__text clearfix">
+            <span><img alt="" src="../img/registration/snow-icon.png"></span>
+            <p>
+                <b><a href="/{{ linkProfile }}">{{ item.Feeds.userName }}</a></b>,
+                {% if item.Feeds.type_feed == 'friend' %}
+                    {{ item.Feeds.text|__ }} - <strong><a href="/profile-{{ item.Feeds.friendID }}">{{ item.Feeds.friendName }}</a></strong>
+                    {% if myID == item.Feeds.user_id%}
+                    <a class="del-item" data-item-type="{{item.Feeds.type_feed}}" data-item-id="{{item.Feeds.id}}" data-user-id="{{item.Feeds.user_id}}" title="{{'Delete item'|__}}" href="#">
+                        <img class="del-item-img" src="/img/delete-item.png">
+                    </a>
+                    {% endif %}
+                {% elseif item.Feeds.type_feed == 'suggestion' %}
+                    {{ item.Feeds.text|__ }}: <a href="/{{ linkProfile }}/suggestions"><i>&quot;{{ item.Feeds.titleSuggestion }}&quot;</i></a> ({{ item.urls }})
+                    {% if myID == item.Feeds.user_id%}
+                    <a class="del-item" data-item-type="{{item.Feeds.type_feed}}" data-item-id="{{item.Feeds.id}}" data-user-id="{{item.Feeds.user_id}}" title="{{'Delete item'|__}}" href="#">
+                        <img class="del-item-img" src="/img/delete-item.png">
+                    </a>
+                    {% endif %}
+                {% elseif item.Feeds.type_feed == 'poll' %}
+                    {{ item.Feeds.text.text|__ }} - <a href="/profile/polls/"><i>&quot;{{ item.Feeds.text.question }}&quot;</i></a>
+                    {% if myID == item.Feeds.user_id%}
+                    <a class="del-item" data-item-type="{{item.Feeds.type_feed}}" data-item-id="{{item.Feeds.id}}" data-user-id="{{item.Feeds.user_id}}" title="{{'Delete item'|__}}" href="#">
+                        <img class="del-item-img" src="/img/delete-item.png">
+                    </a>
+                    {% endif %}
+                {% elseif item.Feeds.type_feed == 'post' %}
+                    {{ item.Feeds.text.text|__ }} - <i class="post-text">&quot;{{ item.Feeds.text.post_text }}&quot;</i>
+                    <a class="show-comments" data-post-id="{{item.Feeds.id_affected_tables}}" data-user-id="{{item.Feeds.user_id}}" title="{{'Show comments'|__}}" href="#">
+                        <img class="show-comments-img" src="/img/a5.png">
+                    </a>
+                    {% if myID == item.Feeds.user_id%}
+                    <a class="del-item" data-item-type="{{item.Feeds.type_feed}}" data-item-id="{{item.Feeds.id}}" data-user-id="{{item.Feeds.user_id}}" title="{{'Delete item'|__}}" href="#">
+                        <img class="del-item-img" src="/img/delete-item.png">
+                    </a>
+                    {% endif %}
+                    <div data-post-id="{{item.Feeds.id_affected_tables}}" class="comments-container hidden">
+                        {{view.element('community/listPostComments') }}
+                    </div>
+                {% elseif item.Feeds.type_feed == 'comment_post' %}
+                    {{ item.Feeds.text.text|__ }} - <i>&quot;{{ item.Feeds.text.comment_text }}&quot;</i>
+                    {% if myID == item.Feeds.user_id%}
+                    <a class="del-item" data-item-type="{{item.Feeds.type_feed}}" data-item-id="{{item.Feeds.id}}" data-user-id="{{item.Feeds.user_id}}" title="{{'Delete item'|__}}" href="#">
+                        <img class="del-item-img" src="/img/delete-item.png">
+                    </a>
+                    {% endif %}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endfor %}

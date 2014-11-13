@@ -1,0 +1,16 @@
+{{ extTree.addItemAttribute('id', 'list_' ~ data.Menu.id ) }}
+
+<div class="categoryDiv">
+    <span>
+        <span class="float-l"></span>
+        <span>
+            <span class="manufacturerItem">{{ data.Menu.name }}</span>
+        </span>
+    </span>
+    <span class="margin-r float-r ui-state-default ui-corner-all red-border"><a href='{{ data.Menu.id }}' class="delete-link ui-icon ui-icon-trash">[ Del ]</a></span>
+    <span class="margin-r float-r ui-state-default ui-corner-all"><a data-id="{{ data.Menu.id }}" href="index.html#" class="ui-icon ui-icon-pencil edit-btn">[ Edit ]</a></span>
+    <span class="margin-r float-r ui-state-default ui-corner-all">
+        <a href="{{ data.Menu.id }}" class="activeItem ui-icon ui-icon-{% if data.Menu.active == 1%}check{% else %}cancel{% endif %}" title="Active or inactive"></a>
+    </span>
+    <br clear="all"/>
+</div>

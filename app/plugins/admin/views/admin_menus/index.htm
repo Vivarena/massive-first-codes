@@ -1,0 +1,23 @@
+<div>
+    <h2>Site navigation menus</h2>
+    <hr />
+    <br />
+    {% for item in menus %}
+        <div style="{% if loop.index is odd %}background: #ccc;{% endif %}margin-left: 30px; font-size: 14px; padding: 4px">
+            <a href="/admin/admin_menus/menu/{{ item.id }}">{{ item.name|capitalize }}</a>
+            <span style="float: right; margin-right: 30px">
+                {% if item.active %}
+                    <a style="text-decoration: none" href="/admin/admin_menus/activate/SiteMenu/{{ item.id }}" title="Click to deactivate">
+                        <img alt="" src="/admin/img/icons/active.png" />
+                    </a>
+                {% else %}
+                    <a style="text-decoration: none" href="/admin/admin_menus/activate/SiteMenu/{{ item.id }}" title="Click to activate">
+                        <img alt="" src="/admin/img/icons/inactive.png" />
+                    </a>
+                {% endif %}
+                <a href="/admin/admin_menus/menu/{{ item.id }}"><img src="/admin/img/icons/edit.png" alt=""></a>
+                <a href="/admin/admin_menus/menu_del/{{ item.id }}"><img src="/admin/img/icons/delete.png" alt=""></a>
+            </span>
+        </div>
+    {% endfor %}
+</div>

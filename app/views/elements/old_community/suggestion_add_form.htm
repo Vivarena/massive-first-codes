@@ -1,0 +1,86 @@
+{{ view.addScript('<script type="text/javascript" src="/js/community/suggestions.js"></script>') }}
+
+{#<div class="network-box clearfix">#}
+    {#<div class="network-box-i clearfix">
+        <div class="profile-content profile-content-left clearfix">#}
+
+            <div class="profile-content-title clearfix">
+                <h2 class="rss">{{'INFORMATION CENTER'|__}}</h2>
+                <span>{{'My Suggestions'|__}}</span>
+            </div>
+            <div class="section clearfix">
+
+                <div class="suggestion-title">
+                    <h4>{{'My Suggestions'|__}}</h4>
+                </div>
+                <div class="add-content" id="addContent">
+                    <h4>{{'Suggest a Link'|__}} </h4>
+                    {{ form.create('', {'url': '/profile/suggest'}) }}
+                    {{ form.hidden('UserSuggestion.user_id', { 'value': session.read('Auth.User.id') }) }}
+                    <table width="95%" border="0" cellpadding="3" cellspacing="1">
+                        <tr>
+                            <td width="15%">
+                                {{'Title'|__}}
+                            </td>
+                            <td width="85%">
+                                {{ form.input('UserSuggestion.title', {'div': false, 'label': false, 'class': 'text-input', 'width': '450'}) }}
+                            </td>
+                        </tr>
+                        <tr class="">
+                            <td width="15%">
+                                {{'http://'|__}}
+                            </td>
+                            <td width="85%">
+                                {{ form.input('SuggestionUrl.url', {'div': false, 'label': false, 'class': 'text-input', 'width': '450'}) }}
+                            </td>
+                        </tr>
+                    </table>
+                        <div class="button">
+                            {{ form.submit('Submit'|__, {'class': 'btn-send btn-post'}) }}
+                        </div>
+                        {#{{ form.submit('', {'class': 'btn-send btn-post'}) }}#}
+                        {#<input type="submit" value="Post" class="btn-post"/>#}
+                        <div class="add-more">
+                            <a href="javascript:void(0)">{{'Add more'|__}}</a>
+                        </div>
+                    {{ form.end() }}
+                </div>
+             </div>
+   {#     </div>
+    </div>#}
+{#</div>#}
+
+
+{#
+<span class="add" title="Click me to suggest something.">+</span>
+
+<div id="addContent" class="clearfix">
+    <span class="close" title="Click me to close.">X</span>
+    {{ form.create('', {'url': '/profile/suggest'}) }}
+    {{ form.hidden('UserSuggestion.user_id', { 'value': session.read('Auth.User.id') }) }}
+    <table width="95%" border="0" cellpadding="3" cellspacing="1">
+        <tr>
+            <td width="25%">
+                Title
+            </td>
+            <td width="75%">
+                {{ form.input('UserSuggestion.title', {'div': false, 'label': false, 'class': 'text', 'width': '450'}) }}
+            </td>
+        </tr>
+        <tr class="">
+            <td width="25%">
+                URL
+            </td>
+            <td width="75%">
+                {{ form.input('SuggestionUrl.url', {'div': false, 'label': false, 'class': 'text', 'width': '450'}) }}
+            </td>
+        </tr>
+    </table>
+    <div class="button" style="float: left;">
+        {{ form.submit('', {'class': 'btn-send'}) }}
+    </div>
+    <div class="add-more">
+        <a href="javascript:void(0)">Add more</a>
+    </div>
+    {{ form.end() }}
+</div>#}

@@ -1,0 +1,12 @@
+<h3><a href="#">Users</a></h3>
+<div>
+	<ul class="menu-left">
+		<li><a href="/admin/admin_users" {% if _hovers.manage %}class="hover"{% endif %}>Manage</a></li>
+        {% if access == 'admin' %}
+        {#<li>#}
+            {#<a href="/admin/admin_configs/users" {% if _hovers.users %}class="hover"{% endif %}>Users</a>#}
+        {#</li>#}
+        {% endif %}
+	</ul>
+
+</div>

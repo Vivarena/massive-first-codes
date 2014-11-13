@@ -1,0 +1,12 @@
+<div class="message-block-one clearfix">
+  <div class="message-block-one__img">
+    <a href="/profile/{{ from.id }}"><img src="{{ from.UserInfo|avatar|thumb(50,50)  }}" alt="{{ from.UserInfo.username }}"/></a>
+  </div>
+  <div class="message-block-one__text">
+    <a href="/profile/{{ from.id }}">{{ from.UserInfo.username }}</a>
+    <div class='message-content'>{{ message.content }}</div>
+  </div>
+  <div class="action-box clearfix">
+    <span class="date-comment">{{ time.format('M. jS, g:iA', message.created) }}</span>
+  </div>
+</div>

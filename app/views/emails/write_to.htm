@@ -1,0 +1,47 @@
+{{ view.addScript('
+<script type="text/javascript" src="/js/project/messaging.js"></script>
+<link rel="stylesheet" type="text/css" href="/js/jquery/plugins/chosen/chosen.css" />
+<script type="text/javascript" src="/js/jquery/plugins/chosen/chosen.jquery.min.js"></script>
+') }}
+
+<div class="tabs-box clearfix">
+<span class="shadow-tab">&nbsp;</span>
+    <ul class="tab-list clearfix">
+        <li class="active">Messages</li>
+    </ul>
+    <div class="padd-30"></div>
+    {% if friends %}
+        {{ form.create('', {'id': 'sendMessage', 'url': '/emails/ajaxSendMessageTo'}) }}
+            <fieldset>
+                <div class="btn-holder">
+                    <a href="/messages/inbox" class="box">In box</a>
+                    <a href="/messages/sent" class="sent">Sent</a>
+                </div>
+                <div class="messages-holder">
+                    <div class="title clearfix">
+                        <div class="top clearfix">
+                            <select data-placeholder="Send to..." class="chzn-select" name="data[Message][writeTo][]" multiple style="width:410px;" tabindex="2">
+                                <option value="all">To All</option>
+                                {% for friend in friends %}
+                                    <option value="{{ friend.UserInfo.user_id }}">{{ friend.UserInfo.first_name }} {{ friend.UserInfo.last_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <br/>
+
+                        </div>
+                        {{ form.input('Message.subject', { 'div': false, 'label': false, 'class' : 'message-subject txt only-writeTo', 'placeholder' : 'Subject'}) }}
+                    </div>
+                    <div class="txtarea-holder clearfix">
+                        {{ form.textarea('Message.content') }}
+                    </div>
+                    <div class="bottom">
+                        {{ form.submit('Send'|__, { 'id': 'send', 'class': 'btn btn-send',    'div': false }) }}
+                        {#<input type="button" class="btn" name="" data-to-id="{{ view.data.From.id }}" data-to="{{view.data.From.UserInfo.username}}" value="Send" />#}
+                    </div>
+                </div>
+            </fieldset>
+        {{ form.end() }}
+    {% else %}
+        No friends!
+    {% endif %}
+</div>

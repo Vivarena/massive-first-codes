@@ -1,0 +1,12 @@
+{{ extTree.addItemAttribute('id', 'categor_' ~ data.PublicationCategory.id ) }}
+
+
+{% if hasChildren %}
+    <span class="haveChilds">{{ data.PublicationCategory.name }}</span>
+{% else %}
+    <a href="#" class="byCategory" data-cat-id="{{ data.PublicationCategory.id }}">{{ data.PublicationCategory.name }}</a>
+{% endif %}
+
+
+
+

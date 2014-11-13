@@ -1,0 +1,76 @@
+<table>
+    <tr>
+        <td>
+            <p style="margin-top:3px; float: left">
+                   <input type="button" value="Add Main Pictures"  class="submit-btn ProductImageUpload" />
+                   {#<a href="javascript:void(0)" class="ProductImageUpload">Upload file</a>#}
+               </p>
+               {{ form.hidden("Product.image") }}
+               <span style="float: right;"><img id="ProductImageimg" src="{{ view.data.Product.image|default('/img/no_image/default.png') }}" height="100px"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="button" value="Add Additional Pictures" data-bind="click: addPicture" class="submit-btn" />
+            <table id="rest-item" data-bind="template: { name : 'sliderAddTemplate', foreach : pictures }"  class="contact-info" style="width: 625px">
+                {% for item in view.data.ProductImage %}
+                    <tr id="image{{ item.id }}" style="border-bottom: 1px solid #494949">
+                        <td class="first">
+                            <a class="fancy" href="{{ item.path }}"><img src="/thumbs/120x68{{ item.path }}"/></a>
+                            <input type="hidden" name="data[ProductImage][{{ loop.index }}][path]" value="{{ item.path }}">
+                        </td>
+                        <td>
+                            <div class="up_btn">
+                                <a class="move_up" title="Click to move up" href="/admin/admin_products/moveUp/ProductImage/{{ item.id }}">
+                                    <img alt="" src="/admin/img/icons/up.png" />
+                                </a>
+                            </div>
+                            <div class="dw_btn">
+                                <a class="move_down" title="Click to move down" href="/admin/admin_products/moveDown/ProductImage/{{ item.id }}">
+                                    <img alt="" src="/admin/img/icons/down.png" />
+                                </a>
+                            </div>
+                        </td>
+                        <td>
+                            {% if item.active %}
+                                <a href="/admin/admin_products/activate/ProductImage/{{ item.id }}" title="Click to deactivate">
+                                    <img alt="" src="/admin/img/icons/active.png" />
+                                </a>
+                            {% else %}
+                                <a href="/admin/admin_products/activate/ProductImage/{{ item.id }}" title="Click to activate">
+                                    <img alt="" src="/admin/img/icons/inactive.png" />
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ item.id }}" class="image-delete-link" title="Click to delete">
+                                <img alt="" src="/admin/img/icons/delete.png" />
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+
+
+<script id="sliderAddTemplate" type="text/html">
+    <tr id="image${id}"  style="border-bottom: 1px solid #494949">
+        <td class="first">
+            <a class="fancy" href="${path}"><img src="/thumbs/120x68${path}"/></a>
+            <input type="hidden" name="data[ProductImage][${id}][path]" value="${path}">
+        </td>
+        <td>
+            &nbsp;
+        </td>
+        <td>
+            &nbsp;
+        </td>
+        <td>
+            &nbsp;
+        </td>
+    </tr>
+</script>

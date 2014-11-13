@@ -1,0 +1,116 @@
+<div style="text-align: center">
+        <p style="font-size: 14px">
+            Congratulations on your order from vivarena.com. Please see the below tracking number.<br>
+        </p>
+        <p style="font-size: 12px">
+            Please be advised that your order will arrive within 3-5 business days unless otherwise specified.
+        </p>
+</div>
+<div style="font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 12px;">
+
+    <table cellpadding="0" cellspacing="0" border="0" width="820" align="center"><tr><td width="120">
+        <img src="http://officialsituation.com/img/logo.gif" alt="" vspace="0" hspace="0" border="0" width="120" height="105" /></td>
+        <td valign="bottom" width="140">
+            <h4><font face="arial"><a href="http://Officialsituation.com">Officialsituation.com</a></font></h4>
+        </td>
+        <td width="290">
+            <table cellpadding="5" cellspacing="0" border="0" width="280" align="center" bgcolor="#a2998b"><tr><td align="right"><font size="2" color="#ffffff">Purchased by</font></td>
+                <td><font color="#ffffff"><b>{{ order.Order.payment_fname }} {{ order.Order.payment_name }}</b></font></td>
+            </tr><tr><td align="right"><font size="2" color="#ffffff">Order Number</font></td>
+                <td><font color="#ffffff"><b>{{ order.Order.id }}</b></font></td>
+            </tr><tr><td align="right"><font size="2" color="#ffffff"></font></td>
+                <td><font color="#ffffff"><b></b></font></td>
+            </tr></table></td>
+        <td width="250">
+            <table cellpadding="5" cellspacing="0" border="0" width="250" align="center"><tr><td><font size="2" color="#a4a4a9">Shipping Method</font></td>
+                <td><font size="3">{{ order.Order.shipping_method }}</font></td>
+            </tr><tr><td><font size="2" color="#a4a4a9">Order Date</font></td>
+                <td>{{ order.Order.created }}</td>
+            </tr><tr><td><font size="2" color="#a4a4a9">Payment method</font></td>
+                <td><b>{{ order.Order.payment_method }}</b></td>
+            </tr></table></td>
+    </tr></table><br />
+    <table cellpadding="5" cellspacing="0" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-right-style: solid; border-right-color: #000000; border-right-width: 1px;" width="810" align="center">
+        <tr><th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Product</font></th>
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Attributes</font></th>
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Quantity</font></th>
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Total</font></th>
+        </tr>
+        {% for product in order.OrderProduct %}
+        <tr>
+            <td align="center" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px;border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">{{ product.name }}</font></td>
+            <td align="center" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px;border-left-width: 1px; border-left-color: #000000; border-left-style: solid;">
+                {% if product.attributes|length > 0 %}
+                <ul style="list-style-type: none; padding-left: 5px;">
+                    {% for key, attr in product.attributes %}
+                        <li style="line-height: 13px;">{{ key }} - {{ attr }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+            <td align="center" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px;border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">{{ product.quantity }}</font></td>
+            <td align="center" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px;border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">
+                {% if product.price !=0  %}
+                    {{ number.format(product.price, { 'places' : 2 }) }}
+                {% else %}
+                    Gift
+                {% endif %}
+            </font></td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="2" style="border-top-width: 1px; border-top-color: #000000; border-top-style: solid;"> </td>
+            <td align="right" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-left-style: solid; border-left-color: #000000; border-left-width: 1px;"><font size="2"><b>Subtotal</b></font></td>
+            <td align="center" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-left-style: solid; border-left-color: #000000; border-left-width: 1px;"><font size="2">{{ number.format(order.Order.subtotal, { 'places' : 2 }) }}</font></td>
+        </tr>
+        <tr>
+            <td colspan="2"> </td>
+            <td align="right" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-left-style: solid; border-left-color: #000000; border-left-width: 1px;"><font size="2"><b>Sales Tax</b></font></td>
+            <td align="center" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-left-style: solid; border-left-color: #000000; border-left-width: 1px;"><font size="2">
+                {% if order.Order.tax %}
+                    {{ number.format(order.Order.tax, { 'places' : 2 }) }}
+                {% else %}
+                    -
+                {% endif %}
+            </font>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"> </td>
+            <td align="right" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-left-style: solid; border-left-color: #000000; border-left-width: 1px;"><font size="2"><b>Shipping</b></font></td>
+            <td align="center" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-left-style: solid; border-left-color: #000000; border-left-width: 1px;"><font size="2">{{ number.format(order.Order.shipping, { 'places' : 2 }) }}<br /></font></td>
+        </tr>
+        <tr>
+            <td colspan="2"> </td>
+            <td align="right" style="border-top-color: #000000; border-top-style: solid; border-top-width: 1px; border-left-width: 1px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 1px; border-bottom-color: #000000; border-bottom-style: solid;"><font size="2"><b>Grand Total</b></font></td>
+            <td align="center" style="border-top-color: #000000; border-top-style: solid; border-top-width: 1px; border-left-width: 1px; border-left-style: solid; border-left-color: #000000; border-bottom-width: 1px; border-bottom-color: #000000; border-bottom-style: solid;"><font size="2">{{ number.format(order.Order.total, { 'places' : 2 }) }}</font></td>
+        </tr>
+    </table>
+{#
+    <table cellpadding="5" cellspacing="0" border="0" width="820" align="center">
+        <tr>
+            <td>
+                <table cellpadding="5" cellspacing="0" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-right-style: solid; border-right-color: #000000; border-right-width: 1px;" width="100%" align="center">
+                    <tr>
+                        <th bgcolor="#a2998b" align="left" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Tracking #</font></th>
+                    </tr>
+                    <tr>
+                        <td valign="top" align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid; border-bottom-width: 1px; border-bottom-color: #000000; border-bottom-style: solid;">
+                            <font size="2">Click the following tracking # to track your shippment. Your tracking number is
+                                {% if shippingMethod == "USPS" %}
+                                    <a href="https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1={{ order.Order.tracking }}">{{ order.Order.tracking }}</a>
+                                {% else %}
+                                    <a href="http://www.fedex.com/Tracking?clienttype=dotcom&initial=n&ascend_header=1&sum=n&cntry_code=us&language=english&tracknumber_list={{ order.Order.tracking }}&mi=n&spnlk=spnl0&track_number_0={{ order.Order.tracking }}&track_number_replace_0={{ order.Order.tracking }}">{{ order.Order.tracking }}</a>
+                                {% endif %}
+                            </font>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+#}
+
+</div>

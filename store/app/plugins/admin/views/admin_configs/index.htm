@@ -1,0 +1,14 @@
+{{ form.create() }}
+<table cellpadding="0" cellspacing="1" class="contact-info">
+	{% for key, item in view.data %}
+	{% set row_class = loop.index%2 ? 'odd' : 'even' %}
+	<tr>
+		<td class="first {{ row_class }}">{{ item.Config.key }}</td>
+        <td class="first {{ row_class }}" align="center">{{ form.text(key~'.Config.value', {'class':'text', 'value':item.Config.value}) }}</td>
+        {{ form.hidden(key~'.Config.key', { 'value' : item.Config.key }) }}
+        {{ form.hidden(key~'.Config.id', { 'value' : item.Config.id }) }}
+	</tr>
+	{% endfor %}
+</table>
+<input style="margin: 10px 0 0 10px" type="submit" value="Submit" class="submit-btn" />
+{{ form.end() }}

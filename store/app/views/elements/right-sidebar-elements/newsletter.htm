@@ -1,0 +1,46 @@
+<script type="text/javascript">
+    $(function(){
+        $(".btn-sub").click(function(e){
+            e.preventDefault();
+            var form = $("#subscriberForm").serialize();
+            console.log(form);
+            $.post("/pages/subscribe/", form,
+                    function(data){
+                        if (data.error) {
+                            var error = "";
+                            $.each(data.errors, function(key, value){
+                                error += "<p class='error'>" + value + "</p>";
+                            });
+                            $.jGrowl(error, { theme : "jGrowl-type-error", header : "Error occurred" });
+                        } else {
+                            $.jGrowl("Address has been successfully added", { theme : "jGrowl-type-success", header : "Success" });
+                            $("#SubscriberEmail").val("Enter your email here...");
+                        }
+                    },
+                    "json"
+            );
+        });
+
+        $("#SubscriberEmail").click(function(){
+            if ($(this).val() == 'Enter your email here...') {
+                $(this).val("");
+            }
+        });
+
+        $("#SubscriberEmail").blur(function(){
+            if ($(this).val() == '') {
+                $(this).val("Enter your email here...");
+            }
+        });
+    });
+</script>
+<div class="newsletter clearfix">
+    <div class="newsletter-i clearfix">
+        {{ form.create({ "id" : "subscriberForm" }) }}
+            <h3>NEWSLETTER</h3>
+            {{ form.input('Subscriber.email', {'div':false, 'class':'text', 'label':false, "value" : 'Enter your email here...'}) }}
+            <input type="submit" value="Submit" class="btn-sub"/>
+        {{ view.Form.end() }}
+    </div>
+    <div class="top-bg"></div>
+</div>

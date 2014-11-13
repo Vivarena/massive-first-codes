@@ -1,0 +1,22 @@
+<div class="msg-box">
+    <div class="comment-link clearfix">
+        <div class="msg-box-all clearfix">
+            {% for item in news %}
+                <div class="msg-box-one clearfix">
+                    <div class="msg-box-img clearfix">
+                       <img src="{{ item.src_img|default('/thumbs/60x60/no_img.jpg') }}" width="60" height="60" alt="">
+                    </div>
+                    <div class="msg-box-text clearfix">
+                        <a href="{{ item.link }}" target="_blank" class="name_link">{{ item.title }}</a>
+                        <p>
+                            {{ item.description }}
+                        </p>
+                        <div class="link-msg clearfix">
+                            <span>{{ item.pubDate|date('D, j M Y H:i') }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+     </div>
+</div>

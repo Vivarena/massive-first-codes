@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    {{ view.Html.charset() }}
+    {{ view.Html.meta('icon') }}
+
+    {{ view.element('meta-data') }}
+
+    {{ view.Html.css([
+        'reset', 'form', 'style', 'store-style', 'fonts/stylesheet', '/js/custom_el', '/js/selectbox',
+        '/js/jquery/plugins/humane-notify/themes/libnotify', '/js/jquery/plugins/modal-popup/the-modal', '/js/jquery/plugins/color-box/colorbox'
+    ]) }}
+
+    {{ view.Html.script([
+        'jquery/jquery-1.7.1.min', 'custom_el', 'selectbox', 'jquery/plugins/humane-notify/humane.min', 'project/common_functions',
+        'jquery/plugins/jquery.blockUI.min', 'jquery/plugins/modal-popup/jquery.modal.min', 'jquery/plugins/color-box/jquery.colorbox-min',
+        'jquery/plugins/jquery.nano.min','jquery/ajx_cfg'
+
+    ]) }}
+
+
+    <!--[if IE ]>
+    <link rel="stylesheet" type="text/css" href="/css/ie.css" />
+    <![endif]-->
+    <!-- html5.js for IE less than 9 -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
+    <![endif]-->
+
+    {{ scripts_for_layout }}
+
+</head>
+<body>
+
+<script type="text/javascript">
+    $(function() {
+        $('.selectedBlock').click(function(e) {
+            var toggleBlock = $(this).closest('.product-block').find('.block-collpse');
+            if ($(this).hasClass('currently')) $(this).removeClass('currently'); else $(this).addClass('currently');
+            toggleBlock.slideToggle('normal', function() {
+                // Animation complete.
+            });
+            e.preventDefault();
+        });
+    });
+</script>
+
+<div class="wrapper clearfix">
+
+<header class="header">
+    {{ view.element('community/header') }}
+</header>
+<!-- end header-->
+<div class="content">
+    <div class="shadow-top"></div>
+    <div class="content_inner clearfix">
+
+        {{ view.element('store/sidebar')}}
+
+        <div class="middle clearfix" id="content">
+
+            {{ content_for_layout }}
+
+        </div>
+    </div>
+    </div>
+</div>
+<!-- end content-->
+</div>
+<!-- end wrapper -->
+
+<footer>
+    <div class="copyright">
+        <p>&copy; 2013, Vivarena, Inc. All Rights Reserved.</p>
+    </div>
+
+    <ul class="clearfix footer-menu">
+        <li class="active"><a href="/about-us">About Us</a></li>
+        <li><a href="/terms">Terms</a></li>
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/advertise">Advertise</a></li>
+        <li><a href="/contact-us">Contact Us</a></li>
+
+    </ul>
+</footer>
+<!-- end footer-->
+
+{{ view.element('flyTopMessage') }}
+
+{{ view.element('nanoTemplates/popupTemplate') }}
+
+</body>
+</html>

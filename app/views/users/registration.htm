@@ -1,0 +1,161 @@
+{{ view.Html.css([
+    '/js/jquery/plugins/new-ui/css/humanity/jquery-ui-1.8.19.custom'
+    ], {'inline':false}) }}
+
+{{ view.Html.script([
+    'https://api.cloudsponge.com/address_books.js',
+    'jquery/plugins/jquery.maskedinput-1.3.min',
+    'jquery/plugins/new-ui/js/jquery-ui-1.8.19.custom.min',
+    'facebook.js',
+    'linkedin.js',
+    'links.js',
+    'jquery/plugins/jquery.oauthpopup.js',
+    'twitter.js'
+    ], {'inline':false}) }}
+
+<div class="register-step-title" >
+  <h2>{{'MEMBER REGISTRATION'|__}}</h2>
+</div>
+
+<div class="register-step clearfix">
+
+  <div id="step0" class="register-box">
+    <div class="register-box-i clearfix">
+      <div class="register-box-title">
+        <h3>{{'WELCOME TO VIVARENA'|__}}</h3>
+      </div>
+      <div class="register-box-terms">
+        <p>{{ 'By clicking Register or registering via a third-party website, you agree to our User Agreement and that you have read our Privacy Policy.' }}</p>
+      </div>
+      <p></p>
+      <div class="register-form">
+        {{ form.create('User', {'action': 'registration', "class" : "clearfix"}) }}
+        {{ form.hidden('UserInfo.photo', {'value':user['photo']}) }}
+
+        {% set has_facebook = (user['facebook_id'] is defined) %}
+        {% if has_facebook %}
+          {{ form.hidden('User.facebook_id', {'value':user['facebook_id']}) }}
+        {% endif %}
+
+        {% set has_linkedin = (user['linkedin_id'] is defined) %}
+        {% if has_linkedin %}
+          {{ form.hidden('User.linkedin_id', {'value':user['linkedin_id']}) }}
+        {% endif %}
+
+        {% set has_twitter = (user['twitter_id'] is defined) %}
+        {% if has_twitter %}
+          {{ form.hidden('User.twitter_id', {'value':user['twitter_id']}) }}
+        {% endif %}
+
+        {% if user['lang'] is defined %}
+          {{ form.hidden('User.lang', {'value':user['lang']}) }}
+        {% endif %}
+
+        <div class="input clearfix">
+          <div class="input-error">
+            {{ form.input('UserInfo.first_name', {'div': false, 'class': 'input-field', 'label': 'First Name'|__, 'default':user['first_name']}) }}
+          </div>
+        </div>
+        <div class="input clearfix">
+          <div class="input-error">
+            {{ form.input('UserInfo.last_name', {'div': false, 'class': 'input-field', 'label': 'Last Name'|__, 'default':user['last_name']}) }}
+          </div>
+        </div>
+        <div class="input clearfix">
+          <div class="input-error">
+            {{ form.input('email', {'div': false, 'class': 'input-field', 'label': 'Email'|__, 'default':user['email'] }) }}
+          </div>
+          {#<select class="styled">
+            <option value="Privacy">{{'Privacy'|__}}</option>
+          </select>#}
+        </div>
+        {% if has_facebook or has_linkedin or has_twitter %}
+          <div class="input clearfix">
+            <div class="input-error">
+              {{ form.input('password', {'div': false, 'class': 'input-field', 'label': 'Password'|__, 'disabled':true, 'placeholder':'N/A'}) }}
+            </div>
+          </div>
+          <div class="input clearfix">
+            <label>{{'Confirm Password'|__}}</label>
+            {{ form.password('cpassword', {'class': 'input-field', 'disabled':true, 'placeholder':'N/A'}) }}
+            {{ form.error('cpassword') }}
+          </div>
+        {% else %}
+          <div class="input clearfix">
+            <div class="input-error">
+              {{ form.input('password', {'div': false, 'class': 'input-field', 'label': 'Password'|__}) }}
+            </div>
+          </div>
+          <div class="input clearfix">
+            <label>{{'Confirm Password'|__}}</label>
+            {{ form.password('cpassword', {'class': 'input-field'}) }}
+            {{ form.error('cpassword') }}
+          </div>
+        {% endif %}
+        <div class="input clearfix">
+          <div class="input-error">
+            {{ form.input('login', {'div': false, 'class': 'input-field', 'label': 'Select Username (Vivarena.com/username)'|__, 'default':user['login']}) }}
+          </div>
+        </div>
+
+
+        {#<div class="input-null clearfix">
+          <label>{{'Contacts'|__}}</label>
+          <select class="styled">
+            <option value="Privacy">{{'Privacy'|__}}</option>
+          </select>
+        </div>
+
+        <div class="input-null clearfix">
+          <label>{{'Feed'|__}}</label>
+          <select class="styled">
+            <option value="Privacy">{{'Privacy'|__}}</option>
+          </select>
+        </div>
+
+        <div class="input-null clearfix">
+          <label>{{'Suggestions'|__}}</label>
+          <select class="styled">
+            <option value="Privacy">{{'Privacy'|__}}</option>
+          </select>
+        </div>#}
+
+        <div class="input-null clearfix">
+          <a href="javascript: void(0);" onclick="showRegForm('step1');" class="btn-register">{{'Register'|__}}</a>
+        </div>
+        {{ form.end() }}
+      </div>
+      <span class="line-or">&nbsp;</span>
+      <div class="sign-in-btn clearfix">
+        <div id="fb-root"></div>
+        {% if has_facebook %}
+          <div class="sso_link">
+            <a href="http://www.facebook.com/{{ user['facebook_id'] }}" target="_blank">{{ 'Facebook enabled'|__}}</a>
+            <a href="#" id="fb-logout">({{ 'logout'|__ }})</a>
+          </div>
+        {% else %}
+          <a href="#" class="btn-facebook"></a>
+        {% endif %}
+        {% if has_linkedin %}
+          <div class="sso_link">
+            <a href="http://www.linkedin.com/profile/view?id={{ user['linkedin_id'] }}" target="_blank">{{ 'LinkedIn enabled'|__}}</a>
+            <a href="#" id="li-logout">({{ 'logout'|__ }})</a>
+          </div>
+        {% else %}
+          <a href="#" class="btn-linkedin"></a>
+        {% endif %}
+        {% if has_twitter %}
+          <div class="sso_link">
+            <a href="http://www.twitter.com/{{ user['login'] }}" target="_blank">{{ 'Twitter enabled'|__}}</a>
+            <a href="#" id="tw-logout">({{ 'logout'|__ }})</a>
+          </div>
+        {% else %}
+          <a href="#" class="btn-twitter"></a>
+        {% endif %}
+      </div>
+    </div>
+    <span class="angle">&nbsp;</span>
+    <span class="shadow-register">&nbsp;</span>
+  </div>
+
+</div>

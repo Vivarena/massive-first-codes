@@ -1,0 +1,17 @@
+{{ googleChart.setChartAttrs(
+        {
+            'type' : 'pie',
+            'title' : 'Language',
+            'data' : dataL,
+            'size' : [ 400, 200 ],
+            'color' : [],
+            'labelsXY' : true,
+            'min' : minL,
+            'max' : maxL,
+            'legend' : legendL
+        }
+) }}
+
+<div class="divChart">
+    {{ googleChart }}
+</div>

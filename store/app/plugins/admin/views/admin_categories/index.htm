@@ -1,0 +1,173 @@
+<script type="text/javascript">
+    <!--
+    (function($) {
+
+    $(function() {
+        $("#product-delete").live("click", function(event){
+            event.preventDefault();
+			var link = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:170,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$(this).dialog("close");
+						$.get("/admin/admin_categories/ajaxDelete/" + link,
+						    function(data){
+						        if (data == "okey") {
+						        console.log(data)
+						        console.log(link)
+						            $(".row" + link).fadeOut()
+						        }
+						    }
+						);
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+        });
+        $('.click_category').click(function(event){
+            var sub_div = $(this).parent().find('.sub_category');
+            var a_href = $(this);
+            var id_category = $(this).attr('href');
+            id_category = id_category.slice(1);
+            sub_div.slideToggle('fast',function(){
+                if (!sub_div.is(':hidden')) {
+                    if (a_href.attr('rel')!='loaded') {
+                        $.post("/admin/admin_categories/ajaxGetSsubCategories/"+id_category, "",
+                        function(data) {
+                            if(data.error) {
+                                window.alert("Error! When loading product for this category!");
+                            } else {
+                                var count_sub_cat = data.sub_categor.length;
+
+                                if (count_sub_cat>0){
+                                    var append_html = '';
+                                    for (var num=0; num<count_sub_cat; num++){
+                                        append_html +=
+                                            '<li class="row' + data.sub_categor[num].id + '">' +
+                                                '<span class="sub_name">' + data.sub_categor[num].title + '</span>' +
+                                                '<span class="btns">' +
+                                                    '<a href="/admin/admin_products/edit/' + data.sub_categor[num].id +'" target="_blank">[ edit ]</a>' +
+                                                    '<a id="product-delete" href="' + data.sub_categor[num].id +'">[ delete]</a>' +
+                                                '</span>' +
+                                            '</li>';
+                                    }
+                                } else {
+                                    append_html = '<li><a href="/admin/admin_products/add/' + id_category + '" target="_blank">Add product?</a></li>';
+                                }
+                                sub_div.find('.sub_cat_list li').slideUp('fast',function(){
+                                    sub_div.find('.sub_cat_list li').html(append_html);
+                                    sub_div.find('.sub_cat_list li').slideDown('fast');
+                                });
+
+                            }
+                        },
+                        "json"
+                        );
+                        a_href.attr('rel','loaded');
+                    }
+                }
+            });
+            event.preventDefault();
+        });
+
+
+        $("#filterBtn").click(function(event) {
+            filter($(this));
+            event.preventDefault();
+        });
+
+        function filter(this_elem){
+            var category_name  = $("#CategoryName");
+            var all_category = $('table tr td a[class=click_category]');
+            var filtered_elements = new Array();
+            all_category.each(function(n, element){
+                if ($(element).text().toLowerCase().indexOf(category_name.val().toLowerCase()) > -1) {
+                    if ($(element).is(':hidden')) $(element).parent().parent().show();
+                } else {
+                    $(element).parent().parent().hide();
+                }
+            });
+            return true;
+        }
+
+        $('#CategoryName').keypress(function(event){
+            if (event.which == '13') {
+                filter($("#filterBtn"));
+                event.preventDefault();
+            }
+        });
+
+    });
+
+    })(jQuery);
+    //-->
+</script>
+
+<div id="dialog-confirm" title="Delete this item?" class="hidden">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<h2>Categories</h2>
+{% if categories %}
+<table class="table">
+        <tr>
+            <th class="check">&nbsp;</th>
+            <th class="align-left">Category Name</th>
+            <th width="40">Sort</th>
+            <th width="40">Actions</th>
+
+        </tr>
+        {#<tr>
+            <td class="check">&nbsp;</td>
+            <td class="align-left" colspan="2">
+                <input type="text" name="CategoryName" id="CategoryName" class="text"/>&nbsp;&nbsp;&nbsp;
+                <input type="button" class="btn" value="Filter" id="filterBtn" />
+            </td>
+        </tr>#}
+        {% for key, category in categories %}
+        <tr class="row{{ key }}">
+            <td class="check">
+                {% if category.active %}
+                    <a href="/admin/admin_products/activate/Category/{{ key }}" title="Click to deactivate">
+                        <img alt="" src="/admin/img/icons/active.png" />
+                    </a>
+                {% else %}
+                    <a href="/admin/admin_products/activate/Category/{{ key }}" title="Click to activate">
+                        <img alt="" src="/admin/img/icons/inactive.png" />
+                    </a>
+                {% endif %}
+            </td>
+            <td><a href="#{{ key }}" class="click_category">{{ category.title }}</a>
+                <div class="sub_category">
+                    <ul class="sub_cat_list">
+                        <li>
+                            <span class="sub_name">
+                                <img src="/img/ajax-loader-sub.gif"/> Loading...
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+
+            <td class="{{ row_class }} align-right">
+                <a href="/admin/admin_products/moveUp/Category/{{ key }}" class="btn up-btn"><img src="/admin/img/icons/desc.png" alt="" /></a>
+                <a href="/admin/admin_products/moveDown/Category/{{ key }}" class="btn down-btn"><img src="/admin/img/icons/asc.png" alt="" /></a>
+            </td>
+            <td class="action align-right">
+                <a href='{{ html.url("edit/"~key) }}'>[ Edit ]</a>&nbsp;&nbsp;&nbsp;
+                <a href='{{ key }}' id="product-delete">[ Del ]</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+<div class="empty-result">
+	Items not found
+</div>
+{% endif %}

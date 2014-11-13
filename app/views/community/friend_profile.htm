@@ -1,0 +1,47 @@
+<div class="about-box" id="about">
+    {{ view.element('profile/profile-status')}}
+    {{ view.element('profile/profile-about')}}
+    <div class="about-text">
+        <div class="about-text-i">
+            <h4>{{'About Me'|__}}</h4>
+            <p>
+                {{ basic_info.0.about_me|default('Information is not yet specified.')|nl2br }}
+            </p>
+
+            <h4>{{'Personal Info'|__}}</h4>
+            {% set bInfo = basic_info.0 %}
+            {% set uInfo = user_info.0 %}
+            {% set fInfo = finance_info.0 %}
+            {% if user.email %}<p>{{'Email'|__}}: <strong>{{user.email|__}}</strong></p> {% endif %}
+            {% if uInfo.sex %} <p>{{'Sex'|__}}: <strong>{{uInfo.sex|__}}</strong></p> {% endif %}
+            {% if user.lang %} <p>{{'Language'|__}}: <strong>{{user.lang|__}}</strong></p> {% endif %}
+            {% if uInfo.usa_residence %} <p>{{'Language'|__}}: <strong>{{uInfo.usa_residence|__}}</strong></p> {% endif %}
+            {% if uInfo.inv_before %} <p>{{'Invested before'|__}}: <strong>{{uInfo.inv_before|__}}</strong></p> {% endif %}
+
+            {#<h4>{{'Basic Info'|__}}</h4>#}
+            {% if bInfo.birthday %} <p>{{'Birthday'|__}}: <strong>{{bInfo.birthday|__}}</strong></p> {% endif %}
+            {% if bInfo.marital_status %}<p>{{'Marital Status'|__}}: <strong>{{bInfo.marital_status|__}}</strong></p> {% endif %}
+            {% if bInfo.industry %}<p>{{'Industry'|__}}: <strong>{{bInfo.industry|__}}</strong></p> {% endif %}
+            {% if bInfo.company %}<p>{{'Company'|__}}: <strong>{{bInfo.company|__}}</strong></p> {% endif %}
+            {% if bInfo.position %}<p>{{'Position'|__}}: <strong>{{bInfo.position|__}}</strong></p> {% endif %}
+            {#{% if bInfo.phone %}<p>{{'Phone'|__}}: <strong>{{bInfo.phone|__}}</strong></p> {% endif %}#}
+            {% if bInfo.address %}<p>{{'City'|__}}: <strong>{{bInfo.address|__}}</strong></p> {% endif %}
+
+            {#<h4>{{'Financial Info'|__}}</h4>
+            {% if fInfo.risk_profile %}<p>{{'Risk Profile'|__}}: <strong>{{fInfo.risk_profile|__}}</strong></p> {% endif %}
+            {% if fInfo.goals %}<p>{{'Goals'|__}}: <strong>{{fInfo.goals|__}}</strong></p> {% endif %}
+            {% if fInfo.roi %}<p>{{'Avg. ROI'|__}}: <strong>{{fInfo.roi|__}}</strong></p> {% endif %}
+            {% if fInfo.accounts %}<p>{{'Accounts Held'|__}}: <strong>{{fInfo.accounts|__}}</strong></p> {% endif %}
+            {% if fInfo.net_worth %}<p>{{'Net Worth'|__}}: <strong>{{fInfo.net_worth|__}}</strong></p> {% endif %}#}
+
+            <h4>{{'Interests'|__}}</h4>
+            {% if interests %}
+                {% for item in interests %}
+                <p>{{ item.name|__ }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+       
+    </div>
+    {{ view.element('profile/links-bottom', { 'userID' : view.data.user_id }) }}
+</div>

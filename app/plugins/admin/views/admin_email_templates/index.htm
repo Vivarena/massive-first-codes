@@ -1,0 +1,47 @@
+{#{{ view.data|var_dump }}#}
+<div id="dialog-confirm" title="Delete this template?" class="hidden">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+{#{% if items %}#}
+<table cellpadding="0" cellspacing="1" class="contact-info">
+    <tr>
+        {#<th class="first" width="210">Page Title</th>#}
+        <th class="first sort" width="300">{{ paginator.sort('Title', 'key') }}</th>
+        <th class="sort" width="150">{{ paginator.sort('Subject', 'modified') }}</th>
+        <th class="sort">{{ paginator.sort('Needs confirmation', 'active') }}</th>
+        <th>-</th>
+        <th>-</th>
+    </tr>
+    {% for item in view.data %}
+    {% set row_class = loop.index%2 ? 'odd' : 'even' %}
+    <tr>
+        <td class="first {{ row_class }}">{{ item.title|truncate(50) }}</td>
+        <td class="first {{ row_class }}">{{ item.subject|truncate(15) }}</td>
+        <td class="{{ row_class }}">
+            <a href="/admin/admin_email_templates/duplicate/{{ item.id }}" title="Click to duplicate">
+                <img alt="" src="/admin/img/icons/16x16/001_03.png" />
+            </a>
+        </td>
+        <td class="{{ row_class }}">
+            <a href="/admin/admin_email_templates/edit/{{ item.id }}" title="Click to edit">
+                <img alt="" src="/admin/img/icons/edit.png"/>
+            </a>
+        </td>
+        <td class="{{ row_class }}">
+            <a href="/admin/admin_email_templates/delete/{{ item.id }}" class="delete-link" title="Click to delete">
+                <img alt="" src="/admin/img/icons/delete.png" />
+            </a>
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="5">
+            <div class="empty-result">
+                Items not found
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{{ view.element('paginator') }}

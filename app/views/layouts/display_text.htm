@@ -1,0 +1,101 @@
+{{ view.Html.docType('xhtml-trans') }}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {{ view.Html.charset() }}
+
+    {{ view.Html.meta('icon') }}
+
+    {{ view.element('meta-data') }}
+
+    {{ view.Html.script('jquery/jquery-1.7.1.min') }}
+
+    {{ scripts_for_layout }}
+
+    <!--[if IE]>
+    {{ view.Html.script('http://html5shiv.googlecode.com/svn/trunk/html5.js') }}
+    <![endif]-->
+    <!--[if lte IE 6]>
+    <script src="/js/ie6/warning.js"></script>
+    <script>window.onload = function () {
+        e("/js/ie6/")
+    }</script>
+    <![endif]-->
+    <!--[if IE 7]>
+    {{ view.Html.css('ie7') }}
+    <![endif]-->
+    <!--[if IE 8]>
+    {{ view.Html.css('ie8') }}
+    <![endif]-->
+    <!--[if IE 9]>
+    {{ view.Html.css('ie9') }}
+    <![endif]-->
+    {{ view.Html.css('fonts/stylesheet') }}
+    {{ view.Html.css('titles') }}
+    {{ view.Html.css('layout.css?sdr2rf') }}
+    {{ view.Html.css('menu') }}
+    {{ view.Html.css('buttons') }}
+    {{ view.Html.css('form') }}
+    {{ view.Html.css('style') }}
+    {{ view.Html.css('community.css?sdf4') }}
+
+    {{ view.Html.css('ajax.loader') }}
+    {{ view.Html.script(['jquery/plugins/jquery.blockUI', 'jquery/plugins/jquery.scrollTo-1.4.2-min']) }}
+    {{ view.Html.script('jquery/ajx_cfg') }}
+
+    {{ view.Html.script('custom-form-elements') }}
+    {{ view.Html.script('start') }}
+    {{ view.element('ganalytics') }}
+</head>
+<body>
+{{ jGrowl.flash() }}
+<div id="wrapper">
+    {{ view.element('feedback') }}
+
+    <div class="wrapper">
+        {{ view.element('header') }}
+        <!-- #header-->
+
+        {{ view.element('navi_top') }}
+
+        <div class="privacy-page">
+            <h2>{{ page.title|upper }}</h2>
+
+            <div class="text">
+                {{ content_for_layout }}
+                {#{{ page.content }}#}
+
+            </div>
+            {% if noAddThis is not defined %}
+            <div class="addThis">
+                <div class="shareThis">
+                    <a href="#" class="shareThisLink" title="Send to Vivarena user"></a>
+                </div>
+                <script type="text/javascript" src="/js/share_this.js"></script>
+                <!-- AddThis Button BEGIN -->
+                <div class="addthis_toolbox addthis_default_style ">
+                <a class="addthis_button_preferred_1"></a>
+                <a class="addthis_button_preferred_2"></a>
+                <a class="addthis_button_preferred_3"></a>
+                <a class="addthis_button_preferred_4"></a>
+                <a class="addthis_button_compact"></a>
+                <a class="addthis_counter addthis_bubble_style"></a>
+                </div>
+                <script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4fc37cd05abf990c"></script>
+                <!-- AddThis Button END -->
+            </div>
+            {% endif %}
+        </div>
+
+        <section id="middle" style="margin-top: 17px;">
+
+            {#{{ view.element('invest_now') }}#}
+        </section>
+        <!-- #middle-->
+
+        {{ view.element('footer') }}
+    </div>
+</div>
+
+{#{{ view.element('sql_dump') }}#}
+</body>
+</html>

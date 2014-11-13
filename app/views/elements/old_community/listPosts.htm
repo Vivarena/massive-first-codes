@@ -1,0 +1,86 @@
+{{ jGrowl.flash() }}
+{% if feeds|length %}
+<ul class="itemsPost">
+
+    {% for item in feeds %}
+
+        {% if item.Feeds %}
+        <li class="feedItemLi clearfix" id="feedItem_{{ item.Feeds.id }}">
+            <a href="/community/deleteFromFeed/{{ item.Feeds.id }}" title="Delete" class="deleteFeed hidden"></a>
+            <div class="profile-content__newsfeed__img">
+                <a href='/profile/{{ item.Feeds.user_id }}'>
+                    {{ view.element('ava_common', { 'data' : item.Feeds, 'w' : 30, 'h' : 30, 'thumbAva' : true })}}
+                </a>
+            </div>
+            <div class="profile-content__newsfeed__text clearfix">
+                <p>
+                    <strong><a href="/profile/{{ item.Feeds.userID }}">{{ item.Feeds.userName }}</a></strong>,
+                    {% if item.Feeds.type_feed == 'friend' %}
+                        {{ item.Feeds.text|__ }} - <strong><a href="/profile/{{ item.Feeds.friendID }}">{{ item.Feeds.friendName }}</a></strong>
+                    {% elseif item.Feeds.type_feed == 'suggestion' %}
+                        {{ item.Feeds.text|__ }}: <a href="/profile/suggestions/{{ item.Feeds.userID }}"><i>&quot;{{ item.Feeds.titleSuggestion }}&quot;</i></a> ({{ item.Feeds.urls }})
+                    {% elseif item.Feeds.type_feed == 'poll' %}
+                        {{ item.Feeds.text.text|__ }} - <a href="/profile/polls/{{ item.Feeds.id_affected_tables }}"><i>&quot;{{ item.Feeds.text.question }}&quot;</i></a>
+                    {% elseif item.Feeds.type_feed == 'post' %}
+                        {{ item.Feeds.text.text|__ }} - <a href="/community/post/{{ item.Feeds.id_affected_tables }}"><i>&quot;{{ item.Feeds.text.post_text }}&quot;</i></a>
+                    {% elseif item.Feeds.type_feed == 'comment_post' %}
+                        {{ item.Feeds.text.text|__ }} - <a href="/community/post/{{ item.Feeds.id_affected_tables }}"><i>&quot;{{ item.Feeds.text.comment_text }}&quot;</i></a>
+                    {% endif %}
+                </p>
+            </div>
+            <span class="dateFeed">
+                {{ item.Feeds.created|date('d M Y, H:i') }}
+            </span>
+        </li>
+        {% endif %}
+
+        {% if item.UserPost %}
+            <li class="postItemLi clearfix" id="postItem_{{ item.UserPost.id }}">
+                            <span class="textPost">
+                                {{ item.UserPost.text }}
+                            </span>
+                            <span class="datePost">
+                                {{ item.UserPost.created|date('d M Y, H:i') }}
+                            </span>
+
+                <div class="outputComments clearfix">
+                    <div class="clearfix"></div>
+                    {{ view.element('community/listPostComments', {'commentItems' : item.UserPostComment } ) }}
+                </div>
+                <div class="actionBtnPost">
+                    <a href="#" class="addCommentToPost">Add comment</a>
+
+                </div>
+                {% if isMyProfile %} <a href="#" class="removePostBtn" data-id="{{ item.UserPost.id }}">Delete
+                post</a> {% endif %}
+                <div class="commentsPostBox">
+                    {{ form.create({'action': 'addPostComment'}) }}
+                    {{ form.input('UserPostComment.text', {'label':false, 'class' : 'expand40-110 commentsBoxArea'}) }}
+                    <input type="hidden" id="UserPostId" name="data[UserPostComment][user_post_id]"
+                           value="{{ item.UserPost.id }}">
+
+                    <div class="btn-box clearfix">
+                        <div class="button clearfix">
+                            <span class="left-line-btn">&nbsp;</span>
+                            <input class="btn-bg-line small-font addCommentPostBtn" type="button" value="Add comment">
+                            <span class="right-line-btn">&nbsp;</span>
+                        </div>
+                        <div class="button clearfix">
+                            <span class="left-line-btn">&nbsp;</span>
+                            <input class="btn-bg-line small-font cancelCommentPostBtn" type="button" value="Cancel">
+                            <span class="right-line-btn">&nbsp;</span>
+                        </div>
+                    </div>
+                    {{ form.end() }}
+                </div>
+            </li>
+        {% endif %}
+
+        {% endfor %}
+
+        <li class="feedItemLi clearfix" style="border: none; margin: -5px 10px;">
+        <span class="privacy">{{ privacy['ActivityWall'] }}</span>
+        </li>
+  </ul>
+{% endif %}
+  

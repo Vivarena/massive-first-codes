@@ -1,0 +1,40 @@
+{{ view.addScript('
+<script type="text/javascript" src="/js/project/messaging.js"></script>
+') }}
+
+
+<div class="tabs-box clearfix">
+<span class="shadow-tab">&nbsp;</span>
+    <ul class="tab-list clearfix">
+        <li class="active">Messages</li>
+    </ul>
+    <div class="padd-30"></div>
+    <form action="#">
+        <fieldset>
+            <div class="btn-holder">
+                <a href="/messages/inbox" class="box">In box</a>
+                <a href="/messages/sent" class="sent">Sent</a>
+            </div>
+            <div class="messages-holder">
+                <div class="title">
+                    <a href="#" class="img-holder">
+                        {{ view.element('ava_common', { 'data' : view.data.UserInfo, 'w' : 63, 'h' : 63, 'thumbAva' : true })}}
+                        {#<img src="{{  }}" alt="" width="63" height="63" />#}
+                    </a>
+                    <div class="top">
+                        {% set linkProfile = (view.data.User.login|length > 0) ? view.data.User.login : 'profile-'~view.data.User.id %}
+                        <span class="sendTo">Send to:</span> <a href="/{{ linkProfile }}" class="name">{{ view.data.UserInfo.first_name }} {{ view.data.UserInfo.last_name }}</a>
+                        {#<em class="date">{{ view.data.Message.created|date('M d, H:i, Y') }}</em>#}
+                    </div>
+                    <input type="text" class="txt message-subject" value="{{ view.data.Message.subject }}" />
+                </div>
+                <div class="txtarea-holder clearfix">
+                    <textarea class="big-search message-reply">{{ view.data.Message.content }}</textarea>
+                </div>
+                <div class="bottom clearfix">
+                    <a href="#" class="btn btn-send send-message" data-to-id="{{ view.data.UserInfo.user_id }}" data-to="{{view.data.UserInfo.username}}">Send</a>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

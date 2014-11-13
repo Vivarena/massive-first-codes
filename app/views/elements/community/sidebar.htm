@@ -1,0 +1,121 @@
+<div class="sidebar clearfix">
+    <div class="sidebar_i clearfix">
+        <div class="user-box clearfix">
+                {% if otherUserInfo %}
+                    {% set linkProfile = otherUserInfo.loginThisPage %}
+                    {% set userInfo =  otherUserInfo %}
+                {% else %}
+                    {% set linkProfile = (session.read('Auth.User.login')|length > 0) ? session.read('Auth.User.login') : 'profile-'~session.read('Auth.User.id') %}
+                    {% set userInfo =  session.read('Auth.User.info') %}
+                {% endif %}
+                {% set linkAuthUser = session.read('Auth.User.login') %}
+                <div class="avatarContainer">
+                    <div id="avatarBox">
+                        <a href="/{{ linkProfile }}">{{ view.element('ava_common', { 'data' : userInfo, 'w' : 60, 'h' : 60, 'thumbAva' : true, 'ava' : true })}}</a>
+                    </div>
+                </div>
+            <a href="/{{ linkProfile }}" class="name">{{ userInfo['username'] }}</a><br/>
+            {% if user_type %}
+                <img src="{{ user_type }}" alt="{{ user_type }}"/>
+            {% endif %}
+        </div>
+        <div class="box-tools clearfix">
+            <h3>Tools</h3>
+            <ul class="clearfix">
+                <li class="clearfix">
+                    <div class="bg-hover {{ currentLink['community'] }}">
+                        <span class="profile-icon">&nbsp;</span>
+                        <a href="/community">Profile</a> (<a href="/profile/edit">Edit</a>)
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="bg-hover">
+                        <span class="sponsor-icon">&nbsp;</span><a href="/{{ linkAuthUser }}/gears">Gear (Sponsor)</a>
+                    </div>
+                </li>
+                <li class="clearfix ">
+                    <div class="bg-hover {{ currentLink['albums'] }}">
+                        <span class="photo-icon">&nbsp;</span><a href="/{{ linkAuthUser }}/albums/photos">Photos and Video</a>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="bg-hover {{ currentLink['requests'] }}">
+                        <span><img src="/img/elements/com.png" alt=""></span><a href="/profile/requests">Requests
+                            {% if notify.requests > 0 %}
+                                ({{ notify.requests }})
+                            {% endif %}
+                        </a>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="bg-hover {{ currentLink['messages'] }}">
+                        <span><img src="/img/elements/message_icon.png" alt=""></span><a href="/messages">Messages
+                            {% if notify.unread > 0 %}
+                                ({{ notify.unread }})
+                            {% endif %}
+                        </a>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="bg-hover {{ currentLink['friends'] }}">
+                        <span class="fiends-icon">&nbsp;</span><a href="/{{ linkAuthUser }}/friends">Friends {% if otherUserInfo|length %}{% else %}({{ countFriends }}){% endif %}</a>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="bg-hover">
+                        <span class="store-icon">&nbsp;</span><a href="/profile/products">Products/Services (Add)</a>
+                    </div>
+                </li>
+
+                {#<li class="clearfix" style="padding-left: 10px">
+                    <div class="bg-hover">
+                        <span class="plus-icon">&nbsp;</span><a href="/profile/add-product">Add Product</a>
+                    </div>
+                </li>#}
+                <li class="clearfix">
+                    <div class="bg-hover">
+                        <span class="calendar-icon">&nbsp;</span><a href="/calendar.html">Calendar</a>
+                    </div>
+                </li>
+                {#<li class="clearfix">
+                    <div class="bg-hover">
+                        <span class="store-icon">&nbsp;</span><a href="store.html">Store</a>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="bg-hover">
+                        <span class="results-icon">&nbsp;</span><a href="results.html">Results</a>
+                    </div>
+                </li>#}
+                <li class="clearfix">
+                    <div class="bg-hover">
+                        <span class="news-icon">&nbsp;</span><a href="/sport-news">News</a>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="bg-hover">
+                        <span class="events-icon">&nbsp;</span><a href="/events">Events</a>
+                    </div>
+                </li>
+
+            </ul>
+
+        </div>
+        {% if activeSponsor %}
+            <div class="banner-sponsor" style="margin-bottom: 20px">
+                <h3>Active Sponsor </h3>
+                <div class="bammer-img">
+                    <a href="/{{ activeSponsor.User.login }}/sponsors/view/{{ activeSponsor.UserSponsor.id }}"> <img src="/thumbs/178x120{{ activeSponsor.UserSponsor.logo }}" alt="{{ activeSponsor.UserSponsor.name }}"></a>
+                </div>
+            </div>
+        {% endif %}
+        {% if activeGear %}
+            <div class="banner-sponsor">
+                <h3>Active Gear </h3>
+                <div class="bammer-img">
+                    <a href="/{{ activeGear.User.login }}/gears/view/{{ activeGear.UserSponsor.id }}"> <img src="/thumbs/178x120{{ activeGear.UserSponsor.logo }}" alt="{{ activeSponsor.UserSponsor.name }}"></a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>

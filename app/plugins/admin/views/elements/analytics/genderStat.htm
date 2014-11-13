@@ -1,0 +1,17 @@
+{{ googleChart.setChartAttrs(
+        {
+            'type' : 'pie',
+            'title' : 'Gender',
+            'data' : dataG,
+            'size' : [ 400, 200 ],
+            'color' : [],
+            'labelsXY' : true,
+            'min' : minG,
+            'max' : maxG,
+            'legend' : [ 'Male', 'Female', 'Not specified']
+        }
+) }}
+
+<div class="divChart">
+    {{ googleChart }}
+</div>

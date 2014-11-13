@@ -1,0 +1,92 @@
+{{ view.Html.script('jquery/plugins/plu_uploader/plupload.full', { 'inline': false }) }}
+{{ view.Html.script('jquery/plugins/plu_uploader/jquery.plupload.queue/jquery.plupload.queue', { 'inline': false }) }}
+{{ view.Html.script('project/attach_wallpost', { 'inline': false }) }}
+
+<div class="msg-box">
+    <div class="comment-link clearfix" id="activityPage">
+        {#<ul class="clearfix">
+            <li><a href="#"><span class="photo-icon">&nbsp;</span>Add Photo/Video</a></li>
+        </ul>#}
+        <div class="comment-box clearfix">
+            {{ form.create({'url': '/posts/addPost', 'id' : 'UserAddPostForm'}) }}
+            <div class="clearfix">
+                <textarea id="postTextInput" name="data[UserPost][text]" rows="" cols="" placeholder="What`s on your mind?"></textarea>
+                <div id="imagePlace"></div>
+                <input class="btn btn-post" id="submit" value="Post" type="button"/>
+                <select class="styled" name="data[UserPost][type]" id="getTypePost">
+                    <option value="text">Text</option>
+                    <option value="image">Attach image</option>
+                    <option value="video">Attach video</option>
+                </select>
+                <span class="arrow">&nbsp;</span>
+            </div>
+
+            <div class="input attachPlace clearfix" id="attachVideoDiv">
+                <label class="youtubeIco"><img src="/img/youtube_32x32.png"/> URL: </label>
+                <input type="text" id="urlVideo" name="data[UserVideo][url_video]" class="youtube-link"/>
+                <input type="button" class="btn btn-post" value="Attach" id="attachVideo">
+                <input type="button" class="btn btn-post" value="Albums" id="attachVideoFromAlbum" data-username="{{ loginAuth }}" data-type="videos" style="margin: 10px 200px 0 0;">
+            </div>
+
+            <div class="input attachPlace clearfix" id="attachImageDiv">
+                <div id="filelist"></div>
+                <input type="button" class="btn btn-post" value="Upload" id="attachImage">
+                <input type="button" class="btn btn-post" value="Albums" id="attachImageFromAlbum" data-username="{{ loginAuth }}" data-type="photos">
+            </div>
+
+            <div class="input attachPlace clearfix" id="attachImageBlock">
+                {#<input type="hidden" name="data[AttachImage]" value="" />#}
+                qwe
+            </div>
+
+            {{ form.end() }}
+        </div>
+
+        <div id="userActivityList">
+        {{ view.element('community/activityList') }}
+        </div>
+
+    </div>
+</div>
+{{ view.element('community/rightSidebar') }}
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var loadContent = $("#activityPage"),
+            imagePlace = $('#imagePlace'),
+            attachContent = new AttachWallPost();
+
+
+        loadContent.on('click', '#submit', function() {
+            var thisBtn = $(this),
+                formPost=$("#UserAddPostForm"),
+                updatedListActivity = $('#userActivityList'),
+                contentPost = $('#postTextInput');
+            thisBtn.hide();
+            thisBtn.after(generalSettings.ajaxLoaderURL);
+
+            updatedListActivity.load(formPost.attr('action'), formPost.serialize(), function(){
+                contentPost.val('');
+                generalSettings.removeLoader(loadContent, thisBtn);
+
+                if (updatedListActivity.find('.errorMsg').length > 0) {
+                    var msgRespon = updatedListActivity.find('.errorMsg').text();
+                    showTopMsg(msgRespon, 'error');
+                    attachContent.closeVideoAttach();
+                    attachContent.closeImageAttach();
+                } else {
+                    showTopMsg('Your status has been successfully updated!');
+                    attachContent.closeVideoAttach();
+                }
+
+            });
+        });
+
+        attachContent.initAttach();
+
+
+    });
+
+</script>

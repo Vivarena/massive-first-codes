@@ -1,0 +1,161 @@
+{{ view.Html.css('/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4')}}
+{{ view.Html.script('/js/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min', { 'inline': false }) }}
+{{ view.Html.script('/js/jquery/plugins/scroll.jquery', { 'inline': false }) }}
+<style type="text/css">
+    #inviteForm label.error{
+        font-size: 10px;
+        color: red;
+        display: block;
+        height: 9px;
+        width: 187px;
+    }
+</style>
+<div class="profile-content-i">
+    {% if countFriends %}
+        {% if countFriends > 5 %}
+            <div id="scrollUsers">
+
+                {{ view.element('community/listFriendsInNetwork') }}
+
+            </div>
+        {% else %}
+
+            {{ view.element('community/listFriendsInNetwork') }}
+
+        {% endif %}
+    {% else %}
+    <p style="text-align: center;">
+        {% if not search|length %}
+        {{'Your network is empty now'|__}}
+        {% else %}
+        {{'Search has returned empty result'|__}}
+        {% endif %}
+    </p>
+    {% endif %}
+</div>
+
+{% if popupEmail %}
+
+<script type="text/javascript">
+    $(function() {
+        var divPopup =
+            '<div style="background-color: #fff; text-align: center; height: 100px;">'+
+                '<div style="margin: 10px; text-align: center;">'+
+                '{{ 'No one found. Do you want to invite this person to Vivarena.com?'|__ }}<br/><br/>{{ 'Email'|__ }}: <b>{{ popupEmail }}</b>'+
+                '<input type="hidden" name="data[email]" value="{{ popupEmail }}"/></div>'+
+                '<div class="bottom-box clearfix no-padd marg-20">'+
+                '<a class="btn-changes green marg-10" id="sendInvite">{{ 'Yes'|__ }}</a>'+
+                '<a class="btn-changes green marg-10" id="cancelInvite">{{ 'No'|__ }}</a>'+
+                '</div>'+
+            '</div>';
+        var content = '<form action="/community/sendInvite" method="POST">' + divPopup + '</form>';
+        $.fancybox({
+            showCloseButton: false,
+            type: 'html',
+            titleShow: false,
+            'title':false,
+            'content':content
+
+        });
+
+    });
+</script>
+
+{% endif %}
+
+{% if popupName %}
+
+<script type="text/javascript">
+    $(function() {
+        var divPopup =
+            '<div style="background-color: #fff; text-align: center;">'+
+                '<div style="margin: 10px; text-align: center;">'+
+                '{{ 'No one found. Would you like to invite someone?'|__ }} <br/><br/> <b>{{ 'Email'|__ }}: </b>'+
+                '<input type="text" name="data[email]" class="required email"/></div>'+
+                '<div class="bottom-box clearfix no-padd marg-20">'+
+                '<a class="btn-changes green marg-5-10" id="sendInvite">Yes</a>'+
+                '<a class="btn-changes green marg-5-10" id="cancelInvite">No</a>'+
+                '</div>'+
+            '</div>';
+        var content = '<form action="/community/sendInvite" method="POST" id="inviteForm">' + divPopup + '</form>';
+        $.fancybox({
+            showCloseButton: false,
+            type: 'html',
+            titleShow: false,
+            'title':false,
+            'content':content
+        });
+
+    });
+</script>
+
+{% endif %}
+
+<script type="text/javascript">
+    $(function() {
+        {% if countFriends > 10 %}
+
+        var nextPage = 2,
+            maxPages = {{ countPages|default(1) }};
+        $('#scrollUsers').scrollLoad({
+
+            url : '/community/network',
+            getData : function(){
+                return {'page' : nextPage, 'type' : 'onlyFriends'}
+            },
+            start : function() {
+                $('<div class="loading">Loading...</div>').appendTo(this);
+            },
+            ScrollAfterHeight : 90,
+            onload : function( data ) {
+                nextPage++;
+                $(this).append( data );
+                $('.loading').remove();
+            },
+            continueWhile : function( resp ) {
+                return nextPage <= maxPages;
+            }
+        });
+
+        {% endif %}
+
+
+        $('#sendInvite').click(function(e){
+            var form = $(this).closest('form');
+            initFormValidating(form);
+            if (form.valid()) {
+                $.post(form.attr('action'), form.serialize(),
+                        function(data) {
+                            if(!data.error) {
+                                $.jGrowl('Your invite has been sent', {
+                                    'life': 3000,
+                                    'theme': 'jGrowl-type-success'
+                                });
+                            } else {
+                                $.jGrowl(data.err_desc, {
+                                    'life': 4000,
+                                    'theme': 'jGrowl-type-error'
+                                });
+                            }
+                            $.fancybox.close();
+                        },
+                        "json"
+                );
+            }
+            e.preventDefault();
+        });
+
+        $('#cancelInvite').click(function(e){
+            $.fancybox.close();
+            e.preventDefault();
+        });
+
+        function initFormValidating(form){
+            form.validate();
+        }
+
+
+
+    });
+</script>
+

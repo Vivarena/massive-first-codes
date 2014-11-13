@@ -1,0 +1,85 @@
+<section id="content">
+    <h1>Order & Payment</h1>
+    <form action="/shopping-cart" method="post" id="ProductCartForm" class="form">
+        <fieldset>
+            <table class="shopping-cart">
+                <tbody>
+                <tr>
+                    <th class="ttl">Item</th>
+                    <th class="order-price">Price</th>
+                </tr>
+                {% if payment.items.item.0 %}
+                    {% for item in payment.items.item %}
+                    <tr>
+                        <td>
+                            {{ item.title }}<br/> ({{ item.qty }} pci)
+                        </td>
+                        <td class="order-price">
+                            {{ number.format(item.price,{"places":"2"}) }}<br>
+                            {% if item.tax %}
+                                Tax: {{ number.format(item.tax,{"places":"2"}) }}<br>
+                            {% endif %}
+                            {% if item.shipping %}
+                                Shipping: {{ number.format(item.shipping,{"places":"2"}) }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td>
+                            {{ payment.items.item.title }}<br/> ({{ payment.items.item.qty }} pci)
+                        </td>
+                        <td class="order-price">
+                            {{ number.format(payment.items.item.price,{"places":"2"}) }}<br>
+                            {% if payment.items.item.tax %}
+                                Tax: {{ number.format(payment.items.item.tax,{"places":"2"}) }}<br>
+                            {% endif %}
+                            {% if payment.items.item.shipping %}
+                                Shipping: {{ number.format(payment.items.item.shipping,{"places":"2"}) }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <td class="sub-total" colspan="2">
+                        <span>Sub Total: <strong id="cartSubTotal">{{ number.format(payment.subtotal,{"places":"2"}) }}</strong></span>
+                    </td>
+                </tr>
+                {% if payment.discount %}
+                <tr>
+                    <td style="background: none" class="sub-total" colspan="2">
+                        <span>Discount: <span class="checkout_right">{{ number.format(payment.discount,{"places":"2"}) }}</span></span>
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td style="background: none" class="sub-total" colspan="2">
+                        <span>Total Shipping: <span class="checkout_right">{{ number.format(payment.shipping,{"places":"2"}) }}</span></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background: none" class="sub-total" colspan="2">
+                        <span>Total Tax: <span class="checkout_right">{{ number.format(payment.tax,{"places":"2"}) }}</span></span>
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td class="total-price" colspan="2">
+                        <span>Total: <strong id="tot" style="color: #2974B3">{{ number.format(payment.total,{"places":"2"}) }}</strong></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="btn-holder">
+                <!--input type="button" onclick="window.location.href='/checkout'" class="btn-back-to-shippingbilling" value="Back To Shipping & Billing" /-->
+                <a href="/shop/checkout" class="btn-back-to-shippingbilling">Back To Shipping & Billing</a>
+                <a onclick="/*$('.shipping-form').submit(); return false;*/" href="/shop/paypal/cart">
+                    <img align="right" style="margin-right:7px;cursor:pointer;" src="/img/btn_xpressCheckout-2-card.png" />
+                </a>
+            </div>
+            <div class="secure"><img src="/img/secure.gif" alt=""></div>
+        </fieldset>
+    </form>
+</section>

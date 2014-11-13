@@ -1,0 +1,57 @@
+<div id="listPubs">
+
+ {{ view.element('publications/listPublications') }}
+
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        $('#publish').on('click', 'a', function(e){
+            $(this).closest('.left-menu').find('.current').removeClass('current');
+            $(this).addClass('current');
+        });
+
+        $('#publish').on('click', '.byCategory', function(e){
+            var idCat = $(this).data('catId');
+            $('#listPubs').load('/publications/readPubsInCategory/' + idCat);
+            e.preventDefault();
+
+        });
+
+        $('#publish').on('click', '.mostRecent', function(e){
+            $('#listPubs').load('/publications/mostRecent');
+            e.preventDefault();
+
+        });
+
+        $('#publish').on('click', '.viewFullPub', function(e){
+            var id = $(this).data('id');
+            var idCat = $(this).data('catId');
+
+            $('#listPubs').load('/publications/viewFullPublication/' + id, function(){
+                $('#pubActionBtns').fadeIn('fast', function(){
+                    $('#pubActionBtns').find('input.back-list').data('catId', idCat);
+                });
+            });
+
+            e.preventDefault();
+        });
+
+        $('#pubActionBtns').on('click', '.back-list', function(e){
+            var $this = $(this);
+            var idCat = $this.data('catId');
+
+            $('#listPubs').load('/publications/readPubsInCategory/' + idCat, function(){
+                $this.closest('#pubActionBtns').fadeOut('fast');
+            });
+
+            e.preventDefault();
+        });
+
+
+
+    });
+
+</script>

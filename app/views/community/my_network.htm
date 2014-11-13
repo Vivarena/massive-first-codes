@@ -1,0 +1,53 @@
+{{ view.Html.script('/js/jquery/plugins/scroll.jquery', { 'inline': false }) }}
+{{ view.Html.script('/js/community/community', { 'inline': false }) }}
+
+
+<div class="section clearfix">
+    <div class="section-network network-update-box clearfix">
+        <div class="section-network-title clearfix">
+            <h3>{{'Network'|__}}</h3>
+            <a href="#" class="plus-title"></a>
+        </div>
+        <div id="scrollUsers" class="listScrollUsers">
+            {{ view.element('community/listFriendsInNetwork') }}
+        </div>
+        <div class="loaderSmall">
+            <img src="/img/loader_small.gif" alt="Loading...">
+        </div>
+    </div>
+</div>
+
+
+{% if countFriends > 10 %}
+<script type="text/javascript">
+
+    $(function() {
+
+        var nextPage = 2,
+            maxPages = {{ countPages|default(1) }};
+        $('#scrollUsers').scrollLoad({
+
+            url : '/community/network',
+            getData : function(){
+                return {'page' : nextPage, 'type' : 'onlyFriends'}
+            },
+            start : function() {
+                ajaxGlobalLoader.stopGlobalLoader();
+                $('.loaderSmall').show();
+            },
+            ScrollAfterHeight : 90,
+            onload : function( data ) {
+                nextPage++;
+                $(this).append( data );
+                $('.loaderSmall').hide();
+                ajaxGlobalLoader.initLoader();
+            },
+            continueWhile : function( resp ) {
+                return nextPage <= maxPages;
+            }
+        });
+    });
+
+
+</script>
+{% endif %}

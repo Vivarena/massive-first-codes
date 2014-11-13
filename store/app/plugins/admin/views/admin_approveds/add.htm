@@ -1,0 +1,37 @@
+{{ html.css(['/js/elfinder-1.2/css/elfinder'], null ,{ 'inline' : false }) }}
+{{ html.script([
+    '/js/elfinder-1.2/js/elfinder.full',
+], { 'inline' : false }) }}
+
+
+{{ view.addScript('') }}
+
+<script type="text/javascript">
+	$(function() {
+        $('#ApprovedImage').click(function(){
+            $('<div />').elfinder({
+               url : '/js/elfinder-1.2/connectors/php/connector.php',
+               lang : 'eng',
+               dialog : { width : 900, modal : true },
+               editorCallback : function(url) {
+                $(".ApprovedImage").attr('src', url);
+                $("#ApprovedImage").val(url);
+               }
+            })
+        });
+	});
+</script>
+
+<h2 class="title-page">{{ view.action == 'add' ? 'Add' : 'Edit' }}</h2>
+<div class="top-line">&nbsp;</div>
+<div class="pages-content-block">
+	{{ form.create({'class' : 'simple-form'}) }}
+    {{ form.hidden('Approved.id') }}
+    {{ form.input('Approved.image', {'class' : 'text', 'label':'Image'}) }}
+    <span style="margin-left: 160px"><img class="ApprovedImage" src="{{ view.data.Approved.image|default('/img/no_image/default.png') }}" alt="" height="100"></span>
+    {{ form.input('Approved.title', {'class' : 'text', 'label':'Title'}) }}
+    {{ form.input('Approved.link', {'class' : 'text', 'label':'Link'}) }}
+    {{ form.input('Approved.active') }}
+    {{ form.submit('Save', {'class' : 'submit-btn'}) }}
+	{{ form.end() }}
+</div>

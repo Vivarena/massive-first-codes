@@ -1,0 +1,135 @@
+{{ html.css([
+    '/admin/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4.css',
+    '/admin/js/jquery/plugins/jquery-tooltip/jquery.tooltip'
+], null, {'inline': false}) }}
+{{ html.script([
+    '/admin/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4',
+    '/admin/js/jquery/plugins/nano/jquery.nano',
+    '/admin/js/jquery/plugins/jquery-tooltip/jquery.tooltip'
+], {'inline': false}) }}
+
+
+{{ view.addScript('') }}
+<script type="text/javascript">
+(function($){
+    	$(function() {
+    	$(".fancy-image").fancybox();
+		$(".delete-link").click(function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:170,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$(this).dialog("close");
+						$.get("/admin/admin_products/ajaxDelete/" + link,
+						    function(data){
+						        if (data == "okey") {
+						            $(".row-" + link).fadeOut()
+						        }
+						    }
+						);
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+
+		});
+        $("#popup").live("hover", function(){
+            $(this).tooltip({
+                delay: 0,
+                showURL: false,
+                bodyHandler: function() {
+                    return $("<img/>").attr("src", $(this).attr("abbr"));
+                }
+            });
+        })
+
+	});
+})(jQuery)
+</script>
+
+<img style="position: fixed; top: 20px; left: 358px; border: 1px solid #000; display: none; z-index: 9999" id="img" src="" alt="">
+
+
+<div id="dialog-confirm" title="Delete this page?" class="hidden">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<h2>Products</h2>
+{{ form.create() }}
+<p style="width: 710px">
+    {{ form.input('search', { 'label' : 'Product title', 'div' : false }) }}
+    <input type="submit" value="Go">
+</p>
+{{ form.end }}
+
+
+
+{% if items %}
+<table cellpadding="0" cellspacing="1" class="contact-info">
+	<tr>
+		<th>Title</th>
+		<th width="30">Active</th>
+{#
+		<th width="30">Exclusive</th>
+		<th width="30">Sale</th>
+		<th width="30">Item of the week</th>
+#}
+		<th width="30">Sort</th>
+		<th width="30">Edit</th>
+		<th width="30">Copy</th>
+		<th width="30">Delete</th>
+	</tr>
+	{% for item in items %}
+	{% set row_class = loop.index is even ? 'odd' : 'even' %}
+	<tr class="row-{{ item.id }} first">
+		<td id="popup" abbr="{{ item.image|thumb(100,100) }}" class="{{ row_class }}">{{ item.title }}</td>
+        <td class="{{ row_class }}">
+            {% if item.active %}
+                <a href="/admin/admin_products/activate/Product/{{ item.id }}" title="Click to deactivate">
+                    <img alt="" src="/admin/img/icons/active.png" />
+                </a>
+            {% else %}
+                <a href="/admin/admin_products/activate/Product/{{ item.id }}" title="Click to activate">
+                    <img alt="" src="/admin/img/icons/inactive.png" />
+                </a>
+            {% endif %}
+        </td>
+		<td class="{{ row_class }}">
+		    {% if loop.index != loop.first %}
+		        <a href="/admin/admin_products/moveUp/Product/{{ item.id }}" class="btn up-btn"><img src="/admin/img/icons/desc.png" alt="" /></a>
+            {% endif %}
+            {% if loop.index != loop.last %}
+                <a href="/admin/admin_products/moveDown/Product/{{ item.id }}" class="btn down-btn"><img src="/admin/img/icons/asc.png" alt="" /></a>
+		    {% endif %}
+		</td>
+		<td class="{{ row_class }}">
+		    <a href="/admin/admin_products/edit/{{item.id}}" class="btn edit-btn">
+		        <img src="/admin/img/icons/edit.png" alt="" />
+		    </a>
+		</td>
+		<td class="{{ row_class }}">
+		    <a href="/admin/admin_products/add/copy/{{item.id}}" class="btn edit-btn">
+		        <img src="/admin/img/icons/copy.png" alt="" />
+		    </a>
+		</td>
+		<td class="{{ row_class }}">
+			<a href="{{ item.id }}" class="delete-link" title="Click to delete">
+				<img alt="" src="/admin/img/icons/delete.png" />
+			</a>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{{ view.element('paginator') }}
+{% else %}
+<div class="empty-result">
+	Items not found
+</div>
+{% endif %}

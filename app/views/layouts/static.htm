@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    {{ view.Html.charset() }}
+    {{ view.Html.meta('icon') }}
+    {{ view.element('meta-data') }}
+
+    <!--[if lte IE 6]>
+    <script src="/js/ie6/warning.js"></script><script>window.onload=function(){e("/js/ie6/")}</script>
+    <![endif]-->
+
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
+    {{ view.Html.css('fonts/stylesheet') }}
+    {{ view.Html.css('register') }}
+    {{ view.Html.css('menu') }}
+    {{ view.Html.css('form') }}
+    {{ view.Html.css('dashbord.css') }}
+    {{ view.Html.css('community') }}
+    {{ view.Html.css('/js/jquery/plugins/jgrowl/jquery.jgrowl') }}
+
+    {{ view.Html.script('jquery/jquery-1.7.1.min') }}
+    {{ view.Html.script('jquery/plugins/jgrowl/jquery.jgrowl') }}
+    {{ view.Html.script('selectbox') }}
+    {{ view.Html.script('share_this') }}
+    {{ view.element('ganalytics') }}
+</head>
+
+<body>
+{{ jGrowl.flash() }}
+<div class="bg-woman" id="wrapper-outer">
+    <div  id="wrapper">
+        {{ view.element('headerCommunity',{'noSearch' : true}, {'viewDashboard' : true}) }}
+        {{ content_for_layout }}
+    </div>
+</div>
+{{ view.element("registerFooter")}}
+</body>
+</html>

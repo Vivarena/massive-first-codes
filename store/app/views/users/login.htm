@@ -1,0 +1,115 @@
+{{ view.addScript('
+<script type="text/javascript">
+<!--
+
+(function($) {
+
+    $(function() {
+        $("#UserUsername").focus();
+    });
+
+})(jQuery)
+
+//-->
+</script>
+') }}
+
+
+        <style type="text/css">
+        body {
+            background: url("/img/home-bg.png") no-repeat scroll center top #315F8C !important;
+        }
+        #wrapper {
+            background: none;
+        }
+        #header {
+            position: relative;
+            width: 100%;
+            min-width: 1000px;
+            top: 0;
+        }
+        #header .header {
+            width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        #header .header-shadow {
+            padding: 10px 20px;
+            height: 95px;
+        }
+        #header .shadow {
+            background: none;
+            height: 6px;
+            position: absolute;
+            left: 0;
+            bottom: -6px;
+            width: 100%;
+            min-width: 1000px;
+            z-index: 99;
+        }
+        .login {
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            border: 1px solid #DEDEDE;
+            padding: 40px;
+            width: 250px;
+            margin: 100px auto 0 auto;
+            text-align: right;
+            border-top-left-radius: 15px 15px;
+            border-top-right-radius: 15px 15px;
+            border-bottom-right-radius: 15px 15px;
+            border-bottom-left-radius: 15px 15px;
+        }
+            .login .button {
+            margin-right: 39px;
+            margin-top:20px;
+        }
+        .login input.text {
+            -moz-border-radius: 15px;
+            -webkit-border-radius: 15px;
+            border: 1px solid #DEDEDE;
+            width: 150px;
+            padding: 4px 5px;
+            margin: 8px 0 8px 10px;
+            vertical-align: middle;
+            border-top-left-radius: 15px 15px;
+            border-top-right-radius: 15px 15px;
+            border-bottom-right-radius: 15px 15px;
+            border-bottom-left-radius: 15px 15px;
+        }
+
+        input.login-butt {
+            background: url(../img/btn-submit.png) left top no-repeat;
+            width: 136px;
+            height: 29px;
+            text-indent:9999px;
+            border: none;
+
+        }
+        label {
+            font-size: 13px;
+        }
+    </style>
+
+
+<div id="header" style="color: #000">
+		<div class="header">
+			<div class="header-shadow clearfix">
+				<div class="logo"><a href="/"><img alt="" src="/img/logo.png" /></a></div>
+			</div>
+</div><div class="shadow">&nbsp;</div></div>
+
+
+
+
+<div class="login">
+    <!--{{ session.flash('auth') }}-->
+    {{ form.create('User', {"type":"post", "action":"login"}) }}
+        <label style="font-size: 13px;">Username:</label>{{ form.text("User.username", {"class":"text"}) }}<br />
+        <label style="font-size: 13px;">Password:</label>{{ form.password("User.password", {"class":"text"}) }}
+        <div class="button float-r">
+            <input type="submit" class="login-butt" />
+        </div>
+        <div class="clear"></div>
+    {{ form.end() }}
+</div>

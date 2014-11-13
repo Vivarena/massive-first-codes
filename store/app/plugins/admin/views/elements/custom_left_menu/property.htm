@@ -1,0 +1,23 @@
+{#
+ Created by CNR Miami.
+ User: nike
+ Date: 1/22/12
+ Time: 10:07 PM
+ ...And dont forget to take your towel...
+#}
+<h3><a href="#">Owner Properties</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_owner_properties" {% if _hovers.subscribers %}class="hover"{% endif %}>Property list</a></li>
+        <li><a href="/admin/admin_owner_properties/add" {% if _hovers.subscribers %}class="hover"{% endif %}>Add property</a></li>
+    </ul>
+</div>
+
+<h3><a href="#">Property</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_properties/types" {% if _hovers.subscribers %}class="hover"{% endif %}>Property types</a></li>
+        <li><a href="/admin/admin_properties/slider" {% if _hovers.add %}class="hover"{% endif %}>Property slider</a></li>
+        <li><a href="/admin/admin_properties/featured" {% if _hovers.add %}class="hover"{% endif %}>Featured properties</a></li>
+    </ul>
+</div>

@@ -1,0 +1,15 @@
+{% if categories %}
+{{ extTree.generate(categories, { 'class' : 'categorySorting', 'type' : 'ol', 'id' : 'allCategories', 'element' : 'publications/itemOfPubCategory'}) }}
+{% else %}
+<ol>
+    <li>
+        <div class="categoryDiv">
+            <span class="categoryItem">No categories</span>
+        </div>
+    </li>
+</ol>
+{% endif %}
+<div class="actionBtns">
+    <a href="#" class="addCat actionBtn"><img src="/admin/img/icons/add.png" alt="Add"/> Add category</a>
+    <a href="#" class="editCategories actionBtn"><img src="/admin/img/icons/edit.png" alt="Edit"/> Edit categories</a>
+</div>

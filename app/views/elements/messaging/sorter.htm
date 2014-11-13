@@ -1,0 +1,44 @@
+{#{% set action = %}#}
+{% if view.data.0.From|length %}
+{% set action = 'inbox' %}
+{% endif %}
+{% if view.data.0.To|length %}
+{% set action = 'outbox' %}
+{% endif %}
+{% if view.data.0.To|length and view.data.0.To|length %}
+{% set action = 'junk' %}
+{% endif %}
+<div class="table-box__caption">
+    <table cellpadding="0" cellspacing="0" class="mail-list">
+        <tr class="caption">
+            <td class="checkbox"><input type="checkbox" id="masterDel" /></td>
+            <td class="sender cap">
+                <div class="sender float-l">
+                    {% if action == 'inbox' %}
+                    {{ 'Sender'|__ }}
+                    {% else %}
+                    {{ 'Receiver'|__ }}
+                    {% endif %}
+                </div>
+                <div class="float-r">
+                    {{ view.Html.image('a5.png', {'url': '/emails/'~action~'/page:1/sort:status/direction:desc'}) }}
+                    {{ view.Html.image('a6.png', {'url': '/emails/'~action~'/page:1/sort:status/direction:asc'}) }}
+                </div>
+            </td>
+            <td  class="cap"><div class="subject">{{ 'Subject'|__ }}</div></td>
+            <td class="recieved cap">
+                <div class="recieved  float-l">
+                    {% if action == 'inbox' %}
+                    {{ 'Received'|__ }}
+                    {% else %}
+                    {{ 'Sent'|__ }}
+                    {% endif %}
+                </div>
+                <div class="float-r">
+                    {{ view.Html.image('a5.png', {'url': '/emails/'~view.action~'/page:1/sort:created/direction:desc'}) }}
+                    {{ view.Html.image('a7.png', {'url': '/emails/'~view.action~'/page:1/sort:created/direction:asc'}) }}
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

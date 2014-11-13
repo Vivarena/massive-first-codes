@@ -1,0 +1,45 @@
+{{ html.css("/rating/css/rating") }}
+{{ html.script("/rating/js/rating_jquery", { "inline" : false }) }}
+{% if youIsOwnerPage %}
+    <div class="subButtons clearfix">
+        <a href="#" class="btn addSponsor">Add {% if type == 'sponsor' %}sponsor{% else %}gear{% endif %}</a>
+        <div id="">
+            {{ form.create('UserSponsor', {'id' : 'sponsorForm', 'url' : '/sponsors/add', 'enctype' : 'multipart/form-data' }) }}
+            <div class="input clearfix">
+                {{ form.hidden('id', {'div' : false, 'label' : 'Name of '~type~' : ', 'class' : 'fieldSponsor empty-valid'}) }}
+                {{ form.input('name', {'div' : false, 'label' : 'Name of '~type~' : ', 'class' : 'fieldSponsor empty-valid'}) }}
+            </div>
+            <div class="input clearfix">
+                {{ form.input('description', {'div' : false, 'label' : 'Small description: ', 'class' : 'fieldSponsor'}) }}
+            </div>
+
+            <div class="input clearfix">
+                <label>Rating : </label>
+                <div id="ratingStarsForm">
+                    {{ view.element('rating_form',{
+                    'plugin' : 'rating',
+                    'model' : 'UserSponsor',
+                    'id' : 0,
+                    'rating_init' : rating,
+                    'rating_id' : rating_id
+                    }) }}
+                </div>
+            </div>
+
+            <div class="input clearfix">
+                <img src="/thumbs/100x100{{ view.data['UserSponsor']['logo'] }}">
+                {{ form.input('logo', {'div' : false, 'label' : 'Logo of '~type~': ', 'type' : 'hidden', 'class' : 'fieldSponsor empty-valid'}) }}
+            </div>
+            <div class="input clearfix">
+                {{ form.input('logoFile', {'div' : false, 'label' : 'Logo of '~type~': ', 'type' : 'file', 'class' : 'fieldSponsor empty-valid'}) }}
+            </div>
+            {{ form.hidden('type', {'value': type}) }}
+            <div class="buttons">
+                <input type="button" value="Cancel" name="submitSponsor" class="btn no-float cancelSponsor"/>
+                <input type="submit" value="Save {{ type }}" name="submitSponsor" class="btn no-float"/>
+            </div>
+            <br class="clear"/>
+            {{ form.end() }}
+        </div>
+    </div>
+{% endif %}

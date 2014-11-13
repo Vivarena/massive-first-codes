@@ -1,0 +1,89 @@
+{{ jGrowl.flash() }}
+{{ view.Html.script('/js/jquery/plugins/nicEdit/nicEdit', { 'inline': false }) }}
+
+<div class="netfeed-box clearfix" xmlns="http://www.w3.org/1999/html">
+    <div class="profile-content clearfix">
+        <div class="profile-content-title clearfix">
+            <h2>{{'COMMUNITY CENTER'|__}}</h2>
+        </div>
+        <div class="state-all clearfix">
+
+            <div id="add-post" class="state-box add-post clearfix">
+                {{ form.create({'action': 'addPost'}) }}
+                <textarea id="postTextInput" name="data[UserPost][text]" rows="" cols="">
+                </textarea>
+                <input id="submit" type="button" value="{{'Add post'|__}}">
+                <input id="reset" type="button" value="{{'Cancel'|__}}">
+                {{ form.end() }}
+            </div>
+
+            <div id="state-box" class="state-box clearfix">
+                <span>{{'Status'|__}}</span>
+                <p>{{ user_status ? user_status.postText|truncate(60) : ''}}</p>
+                <a id="toggle" href="#">{{ 'New'|__ }}</a>
+            </div>
+        </div>
+    </div>
+
+<div class="section clearfix">
+    <div class="message-block feed-block">
+        <div class="section-title clearfix">
+            <h3>{{'Activity Feed'|__}}</h3>
+
+            <span id="deleteAll">
+                {{ "Delete all" |__ }}
+            </span>
+        </div>
+
+{% if aWall %}
+{% for item in aWall %}
+
+        <div class="message-block-one clearfix aWallItem">
+            <div class="message-block-one__img">
+                {% set linkProfile = (item.login|length > 0) ? item.login : 'profile-'~item.user_id %}
+                <a href='/{{ linkProfile }}'>
+                    {{ view.element('ava_common', { 'data' : item, 'w' : 40, 'h' : 40, 'thumbAva' : true })}}
+                </a>
+            </div>
+            <div class="message-block-one__text">
+            <a href="/{{ linkProfile }}">{{ item.userName }}</a>
+
+            {% if item.type_feed == 'friend' %}
+            {{ item.text|__ }} - <span class="green"><a href="/profile-{{ item.friendID }}" class="friendLink">{{ item.friendName }}</a></span>
+            {% elseif item.type_feed == 'suggestion' %}
+            {{ item.text|__ }}: <span class="green"><a href="/{{ linkProfile }}/suggestions/">
+                <p>&quot;{{ item.titleSuggestion }}&quot;</p>
+            </a></span>
+            {% elseif item.type_feed == 'poll' %}
+            {{ item.text.text|__ }} - <span class="green"><a href="/profile/polls/">
+                <p>&quot;{{ item.text.question }}&quot;</p>
+            </a></span>
+            {% elseif item.type_feed == 'post' %}
+            {{ item.text.text|__ }} - <span class="green"><a href="/{{ linkProfile }}/activity">
+                <p>&quot;{{ item.text.post_text }}&quot;</p>
+            </a></span>
+            {% elseif item.type_feed == 'comment_post' %}
+            {{ item.text.text|__ }} - <span class="green"><a href="/{{ linkProfile }}/activity">
+                <p>&quot;{{ item.text.comment_text }}&quot;</p>
+            </a></span>
+            {% endif %}
+                <span class="date-actualizar">{{ item.created|date('M j, Y H:i') }}</span>
+            </div>
+            <div class="action-box clearfix">
+                <input type="checkbox" value="{{ item.id }}" class="feed_del" name="data[DeletedActivityWall][][activity_wall_id]" />
+                <a class="deleteFeed" href="/community/deleteFeed/{{ item.id }}" title="Delete"><span class="close-btn">&nbsp;</span></a>
+            </div>
+        </div>
+
+{% endfor %}
+{% else %}
+<p style="text-align: center;">
+    No activity in your network
+</p>
+{% endif %}
+</div>
+</div>
+</div>
+<script type="text/javascript">
+    $("#add-post").hide(0);
+</script>

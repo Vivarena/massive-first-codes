@@ -1,0 +1,86 @@
+{{ html.script('/admin/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4', {'inline': false}) }}
+{{ html.css('/admin/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4.css', null, {'inline': false}) }}
+{{ html.script('/admin/js/jquery/plugins/nano/jquery.nano', {'inline': false}) }}
+
+{{ view.addScript('
+<script type="text/javascript">
+(function($){
+    	$(function() {
+    	$(".fancy-image").fancybox();
+		$(".delete-link").click(function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:170,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$(this).dialog("close");
+						$.get("/admin/admin_coupons/ajaxDelete/Coupon/" + link,
+						    function(data){
+						        if (data == "okey") {
+						            $(".row-" + link).fadeOut()
+						        }
+						    }
+						);
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
+	});
+})(jQuery)
+</script>
+') }}
+
+<div id="dialog-confirm" title="Delete this page?" class="hidden">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<h2>Products</h2>
+{% if items %}
+<table cellpadding="0" cellspacing="1" class="contact-info">
+	<tr>
+		<th width="100">Code</th>
+		<th width="30">Value</th>
+		<th width="30">Start</th>
+		<th width="30">Stop</th>
+		<th width="30">Edit</th>
+		<th width="30">Delete</th>
+	</tr>
+	{% for item in items %}
+	{% set row_class = loop.index is even ? 'odd' : 'even' %}
+	<tr class="row-{{ item.id }} first">
+		<td class="{{ row_class }}">{{ item.code }}</td>
+		<td class="{{ row_class }}">
+            {% if item.type == "cur" %}
+                {{ number.format(item.value, { "places" : 2 }) }}
+            {% else %}
+                {{ number.format(item.value, { "places" : 2, "before" : false }) }}%
+            {% endif %}
+        </td>
+		<td class="{{ row_class }}">{{ item.start }}</td>
+		<td class="{{ row_class }}">{{ item.stop }}</td>
+		<td class="{{ row_class }}">
+		    <a href="/admin/admin_coupons/edit/{{item.id}}" class="btn edit-btn">
+		        <img src="/admin/img/icons/edit.png" alt="" />
+		    </a>
+		</td>
+		<td class="{{ row_class }}">
+			<a href="{{ item.id }}" class="delete-link" title="Click to delete">
+				<img alt="" src="/admin/img/icons/delete.png" />
+			</a>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{{ view.element('paginator') }}
+{% else %}
+<div class="empty-result">
+	Items not found
+</div>
+{% endif %}

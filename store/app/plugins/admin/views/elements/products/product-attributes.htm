@@ -1,0 +1,116 @@
+<input type="button" class="btn" value="Add group" id="agroupAdd"  data-bind="click: addGroup" />
+<table>
+    {% if view.data.ProductAttributeGroup !=null %}
+    <td>
+            {{ form.hidden("Product.copy", { 'value' : "copy" }) }}
+            {% for group in view.data.ProductAttributeGroup %}
+            <table class="" id="agroup{{ loop.index0 }}">
+                <tr>
+                    <td colspan="5">
+                        <hr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Group Name: 
+                        {{ form.hidden("attr"~loop.index0~".ProductAttributeGroup.id", {"value":group.id}) }}
+                        {{ form.hidden("attr"~loop.index0~".ProductAttributeGroup.product_id", {"value":group.product_id}) }}
+                        {{ form.text("attr"~loop.index0~".ProductAttributeGroup.name", {"value":group.name, 'class':"text",  'style' : "margin-left: 87px"}) }}&nbsp;&nbsp;&nbsp;
+                        <input type="button" class="btn" value="Add attribute" data-id="{{ loop.index0 }}"  data-bind="click: function() { this.addAttr({{ loop.index0 }})}" />&nbsp;&nbsp;&nbsp;
+                        <input type="button" class="btn" value="Del group" data-bind="click: function() { this.removeGroup({{ loop.index0 }}) }" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+
+                        {% for attribute in group.ProductAttribute %}
+                        <table id="propId{{ attribute.id }}">
+
+                            <tr>
+                                <th>Title</th>
+                                <th>Value</th>
+                                <th>Quantity</th>
+                                <th> </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ form.text("attr"~loop.parent.loop.index0~".ProductAttribute."~loop.index~".title", {"value":attribute.title, "class":"text"}) }}
+                                </td>
+                                <td>
+                                    {{ form.hidden("attr"~loop.parent.loop.index0~".ProductAttribute."~loop.index~".id", {"value":attribute.id}) }}
+                                    {{ form.hidden("attr"~loop.parent.loop.index0~".ProductAttribute."~loop.index~".product_attribute_group_id", {"value":attribute.product_attribute_group_id}) }}
+                                    {{ form.text("attr"~loop.parent.loop.index0~".ProductAttribute."~loop.index~".value", {"value":attribute.value, "class":"text"}) }}
+                                </td>
+                                <td>
+                                    {{ form.text("attr"~loop.parent.loop.index0~".ProductAttribute."~loop.index~".quantity", {"value":attribute.quantity, 'class':"text",  'style' : "width: 110px;"}) }}
+                                </td>
+                                <td>
+                                    <input style="padding: 7px 10px;" type="button" class="btn" value="Del"  data-bind="click: function() { this.removeProp({{ attribute.id }}) }" />
+                                </td>
+                            </tr>
+
+
+                        </table>
+                        {% endfor %}
+                        <table id="attributes{{ loop.index0 }}">
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            {% endfor %}
+
+    </td>
+    {% endif %}
+    <tr id="agroup" data-bind="template: { name : 'templateAgroup', foreach : groups }">
+    </tr>
+</table>
+
+
+<script type="text/html" id="templateAgroup">
+    <table id="agroup${id}">
+        <tr>
+            <td colspan="5">
+                <hr>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                Group Name:
+                <input style="margin-left: 87px" value="" name="data[attr${id}][ProductAttributeGroup][name]" type="text" class="text" id="attr${id}ProductAttributeGroupName"> &nbsp;&nbsp;&nbsp;
+                {#<input type="button" class="btn" value="Add attribute" data-bind="click: addAttr" />#}
+                <input type="button" class="btn" value="Add attribute" data-bind="click: function() { this.addAttr(id) }" />
+                <input type="button" class="btn" value="Del group" data-bind="click: function() { this.removeGroup(id) }" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table id="attributes${id}" data-bind="template: { name : 'templateAttribute', foreach : attrs }">
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</script>
+
+<script type="text/html"  id="templateAttribute">
+    <table id="propId${propId}">
+        <tr>
+            <th>Title</th>
+            <th>Value</th>
+            <th>Quantity</th>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" class="text" name="data[attr${attrId}][ProductAttribute][${propId}][title]" />
+            </td>
+            <td>
+                <input type="text" class="text" name="data[attr${attrId}][ProductAttribute][${propId}][value]" />
+            </td>
+            <td>
+                <input type="text" class="text" name="data[attr${attrId}][ProductAttribute][${propId}][quantity]" style="width: 110px;" />
+            </td>
+            <td>
+                <input style="padding: 7px 10px;" type="button" class="btn" value="Del" data-bind="click: function() { this.removeProp(propId) }" />
+            </td>
+        </tr>
+    </table>
+</script>

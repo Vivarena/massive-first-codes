@@ -1,0 +1,61 @@
+{#{% if msg %}
+    <h2>{{ msg }}</h2>
+{% endif %}#}
+{% if usersInversion %}
+
+<fieldset class="boxUsersInvers">
+    <legend> Vivarena users </legend>
+
+    <ul class="listUserByEmail">
+        {% for user in usersInversion %}
+
+        <li>
+            <span class="photoUser avaCommonStyle">
+                {{ view.element('ava_common', { 'data' : user.UserInfo, 'w' : 30, 'h' : 30, 'thumbAva' : true })}}
+            </span>
+            <span class="nameUser">
+                {{ user.UserInfo.username }} - <a class="addToFriends" data-id="{{ user.User.id }}" href="/users/addUserToNetwork">Add to Friends</a>
+            </span>
+
+        </li>
+
+        {% endfor %}
+    </ul>
+
+</fieldset>
+
+{% endif %}
+
+{% if inviteUsers %}
+
+<fieldset class="boxUsersInvers">
+    <legend> Invited users </legend>
+
+    {% if inviteUsers %}
+    <ul class="listUserByEmail invitedUsers">
+
+        {% for email in inviteUsers %}
+
+            <li>
+                {{ email }}
+            </li>
+
+        {% endfor %}
+
+    </ul>
+    {% endif %}
+
+</fieldset>
+
+{% endif %}
+
+{% if message %}
+
+<fieldset class="boxUsersInvers">
+    <legend> Invited users </legend>
+
+    <h3>{{ message }}</h3>
+
+</fieldset>
+
+{% endif %}

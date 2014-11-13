@@ -1,0 +1,152 @@
+<div style="font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 12px">
+    <table cellpadding="0" cellspacing="0" border="0" width="820" align="center">
+        <tr>
+            <td width="120">
+            </td>
+            <td valign="bottom" width="140">
+            </td>
+            <td width="290">
+                <table cellpadding="5" cellspacing="0" border="0" width="280" align="center" bgcolor="#a2998b">
+                    <tr>
+                        <td align="right"><font size="2" color="#ffffff">Purchased by</font></td>
+                        <td><font color="#ffffff"><b>{{ data.payment_name }}</b></font></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><font size="2" color="#ffffff">Order Number</font></td>
+                        <td><font color="#ffffff"><b>{{ data.order_id }}</b></font></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><font size="2" color="#ffffff">{#Order ID#}</font></td>
+                        <td><font color="#ffffff"><b>{##1320688924#}</b></font></td>
+                    </tr>
+                </table>
+            </td>
+            <td width="250">
+                <table cellpadding="5" cellspacing="0" border="0" width="250" align="center">
+                    <tr>
+                        <td><font size="2" color="#a4a4a9">Shipping Method</font></td>
+                        <td><font size="3">{{ data.shipping.method }}</font></td>
+                    </tr>
+                    <tr>
+                        <td><font size="2" color="#a4a4a9">Order Date</font></td>
+                        <td>{{ data.shipping.date|date("m/d/Y") }}</td>
+                    </tr>
+                    <tr>
+                        <td><font size="2" color="#a4a4a9">Payment method</font></td>
+                        <td><b>{{ data.shipping.payment_method }}</b></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table cellpadding="5" cellspacing="0" style="border-top: 1px solid #000000; border-right: 1px solid #000000" width="810" align="center">
+        <tr>
+            <th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Product</font></th>
+            <th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Attributes</font></th>
+            <th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Quantity</font></th>
+            {#<th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Ship Date</font></th>#}
+            {#<th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Discount</font></th>#}
+            <th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Total</font></th>
+        </tr>
+        {% set dataProducts = data.products %}
+        {% if data.products.product.0 %}
+            {% set dataProducts = data.products.product %}
+        {% endif %}
+        {% for item in dataProducts %}
+        <tr>
+            <td align="center" style="border-left: 1px solid #000000"><font size="2">{{ item.name }}</font></td>
+            <td align="center" style="border-left: 1px solid #000000">
+                {% if item.attribs|length > 0 %}
+                <ul style="list-style: none; padding-left: 5px">
+                    <li style="font-weight: bold; line-height: 15px;">Attributes:</li>
+                    {% for val in item.attribs %}
+                    <li style="line-height: 13px;">{{ val }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </td>
+            <td align="center" style="border-left: 1px solid #000000"><font size="2">{{ item.quantity }}</font></td>
+            {#<td align="center" style="border-left: 1px solid #000000"><font size="2">Jan/11/2011</font></td>#}
+            {#<td align="center" style="border-left: 1px solid #000000"><font size="2">$00.00</font></td>#}
+            <td align="center" style="border-left: 1px solid #000000"><font size="2">
+                {% if item.price != 0 %}
+                    {{ number.format(item.price*item.quantity|percent, {"places":"2"}) }}
+                {% else %}
+                    Gift
+                {% endif %}</font>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="2" style="border-top: 1px solid #000000; ">&nbsp;</td>
+            <td align="right" style="border-top: 1px solid #000000;border-left: 1px solid #000000 "><font size="2"><b>Subtotal</b></font></td>
+            <td align="center" style="border-top: 1px solid #000000; border-left: 1px solid #000000"><font size="2">{{ number.format(data.subtotal|percent, {"places":"2"}) }}</font></td>
+        </tr>
+        {% if data.sales_tax %}
+        <tr>
+            <td colspan="2" >&nbsp;</td>
+            <td align="right" style="border-top: 1px solid #000000;border-left: 1px solid #000000 "><font size="2"><b>Sales Tax</b></font></td>
+
+            <td align="center" style="border-top: 1px solid #000000; border-left: 1px solid #000000"><font size="2">
+                {{ number.format(data.sales_tax, {"places":"2"}) }}
+            </font>
+            </td>
+
+        </tr>
+        {% endif %}
+        {% if data.shipping_price %}
+        <tr>
+            <td colspan="2" >&nbsp;</td>
+            <td align="right" style="border-top: 1px solid #000000;border-left: 1px solid #000000 "><font size="2"><b>Shipping</b></font></td>
+            <td align="center" style="border-top: 1px solid #000000; border-left: 1px solid #000000"><font size="2">
+                {{ number.format(data.shipping_price, {"places":"2"}) }}<br />
+            </font>
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td colspan="2" >&nbsp;</td>
+            <td align="right" style="border-top: 1px solid #000000;border-left: 1px solid #000000; border-bottom: 1px solid #000000 "><font size="2"><b>Grand Total</b></font></td>
+            <td align="center" style="border-top: 1px solid #000000; border-left: 1px solid #000000;  border-bottom: 1px solid #000000 "><font size="2">{{ number.format(data.grand_total, {"places":"2"}) }}</font></td>
+        </tr>
+    </table>
+
+
+    <table cellpadding="5" cellspacing="0" border="0" width="820" align="center">
+        <tr>
+            <td width="50%">
+                <table cellpadding="5" cellspacing="0" style="border-top: 1px solid #000000; border-right: 1px solid #000000" width="100%" align="center">
+                    <tr>
+                        <th bgcolor="#a2998b" align="left" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Ordered By</font></th>
+                    </tr>
+                    <td valign="top" style="border-left: 1px solid #000000;
+                    border-bottom: 1px solid #000000">
+                        {{ data.order_by.payment_name }}, {{ data.Order.payment_fname }}<br />
+                        {{ data.order_by.payment_address_1 }},<br />
+                        {{ data.order_by.payment_location }}<br />
+                        {{ data.order_by.payment_country }}<br />
+                        Phone: {{ data.order_by.phone }}<br />
+                        Email: {{ data.order_by.email }}
+                    </td>
+                </table>
+            </td>
+            <td width="50%">
+                <table cellpadding="5" cellspacing="0" style="border-top: 1px solid #000000; border-right: 1px solid #000000" width="100%" align="center">
+                    <tr>
+                        <th bgcolor="#a2998b" align="left" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Shipped to</font></th>
+                    </tr>
+                    <td valign="top" style="border-left: 1px solid #000000;
+                    border-bottom: 1px solid #000000">
+                        {{ data.shipping_to.shipping_name }}, {{ data.Order.shipping_fname }}<br />
+                        {{ data.shipping_to.shipping_address_1 }},<br />
+                        {{ data.shipping_to.location }}<br />
+                        {{ data.shipping_to.shipping_country }}<br />
+                        Phone: {{ data.shipping_to.phone }}<br />
+                        Email: {{ data.shipping_to.email }}
+                    </td>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>

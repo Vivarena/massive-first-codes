@@ -1,0 +1,37 @@
+{{ html.script('/admin/js/jquery/plugins/chosen/chosen/chosen.jquery.min', { 'inline' : false }) }}
+{{ html.css('/admin/js/jquery/plugins/chosen/chosen/chosen', null,{ 'inline' : false }) }}
+<script type="text/javascript">
+$(function(){
+    $(".datePicker").datepicker({ dateFormat: "yy-mm-dd" });
+    $("#CouponsProductProductId").chosen()
+})
+</script>
+
+<h2 class="title-page">{{ view.action == 'add' ? 'Add' : 'Edit' }} Product</h2>
+<div class="top-line">&nbsp;</div>
+<div class="pages-content-block">
+	{{ form.create({'class' : 'simple-form'}) }}
+    {{ form.hidden('Coupon.id') }}
+
+    {{ form.input('Coupon.status', {'class' : 'text', 'label':'Active'}) }}
+    
+    {{ form.input('Coupon.code', {'class' : 'text', 'label':'Coupon Code'}) }}
+    {{ form.input('Coupon.value', {'class' : 'text', 'label':'Value', "style" : "float: left; margin-top: 6px"}) }}
+
+    {{ form.select('Coupon.type', { "cur" : "$", "per" : "%" }, null, { "empty" : false, "style" : "margin-bottom: 5px" }) }}
+    {{ form.input('Coupon.amount', {'class' : 'text', 'label':'Start from($)'}) }}
+    {{ form.input('Coupon.uses', {'class' : 'text', 'label':'Num uses'}) }}
+
+    <p style="margin-left: 160px; margin-top: 5px; margin-bottom: -10px">
+        {{ form.select('CouponsProduct.product_id', productList, null,{'empty':"Select", "multiple":true, 'title' : 'Select Product'}) }}
+    </p>
+
+    {{ form.input('Coupon.start', {'type' : 'text', 'class' : 'text datePicker', 'label':'Start'}) }}
+    {{ form.input('Coupon.stop',  {'type' : 'text', 'class' : 'text datePicker', 'label':'Stop'}) }}
+
+
+
+    {{ form.submit('Save', {'class' : 'submit-btn'}) }}
+
+	{{ form.end() }}
+</div>

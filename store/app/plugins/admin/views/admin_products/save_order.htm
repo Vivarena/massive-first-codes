@@ -1,0 +1,145 @@
+<script type="text/javascript">
+    $(function(){
+        $("input.shippingRadio[data-name='{{ session.read('Cart.ShippingMethod') }}']").attr('checked', true);
+
+        var blockKey = "{{ session.read("blockId")|default("priority_mail") }}";
+        blocksOperation(blockKey);
+
+        $(".shippingRadio").live("click", function(){
+            $(".shipping-block").addClass("shipping-hover");
+            var value = $(this).val();
+            var name = $(this).attr("data-name");
+            $.get("/products/set_shipping/" + value + "/" + name + "/" + blockKey,
+                    function(data) {
+                        $(".total-value").text("$" + data);
+                        $(".shipping-value").text("$" + value);
+                        $(".shipping-block").removeClass("shipping-hover");
+                    }
+            )
+        });
+
+        $(".title").live('click', function(){
+            blockKey = $(this).attr("data-id");
+            blocksOperation(blockKey)
+        });
+
+        function blocksOperation(id) {
+            $(".sShippingBlock").hide();
+            $(".sRates" + id).show();
+        }
+    })
+</script>
+<style type="text/css">
+    .shipping-hover {
+        opacity: .4;
+        background: url(../img/ajax-loader.gif) no-repeat 50% 50%;
+    }
+</style>
+<h2>Shipping</h2>
+<table style="width: 350px;">
+{% if uspsDomasticRates|length > 0 %}
+{% for key, uspsTypes in uspsDomasticRates %}
+<tr>
+    <td colspan="2">
+        <div class="block-orange" style="border-bottom: 1px solid white;">
+            <div class="block-left">
+                <div class="block-right">
+                    <div class="block-top">
+                        <div class="block-bottom">
+                            <div class="block-inner">
+                                <div class="clearfix">
+                                    <div class="total-block"
+                                         style="width: 380px;">
+                                        <div class="title"
+                                             style="padding-left:10px; width: 335px; text-align: left; cursor: pointer; background: #ffffcc"
+                                             data-id="{{ key }}">
+                                            USPS {{ key|normalize }} rates
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>
+<tr class="shipping-block sShippingBlock sRates{{ key }}"
+    style="display: none;">
+    <td class="order-shipping">
+        <table cellpadding="0" cellspacing="" style="width: 350px;">
+
+            {% for item in uspsTypes %}
+            <tr>
+                <td style="padding-right: 0">
+                    <input class="shippingRadio" type="radio" name="shipping"
+                           value="{{ item.RATE }}"
+                           data-name="USPS - {{ item.MAILSERVICE }}"/>
+                </td>
+                <td style="padding-left: 25px">{{ item.MAILSERVICE }}</td>
+                <td class="total">{{ number.format(item.RATE, {"places":"2"}) }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </td>
+</tr>
+{% endfor %}
+{% endif %}
+{% if shipRates|length > 0 %}
+<tr>
+    <td colspan="2">
+        <div class="block-orange" style="border-bottom: 1px solid white;">
+            <div class="block-left">
+                <div class="block-right">
+                    <div class="block-top">
+                        <div class="block-bottom">
+                            <div class="block-inner">
+                                <div class="clearfix">
+                                    <div class="total-block"
+                                         style="width: 380px;">
+                                        <div class="title"
+                                             style="padding-left: 10px; background: #ffffcc; width: 335px; text-align: left; cursor: pointer"
+                                             data-id="Fedex">
+                                            Fedex rates
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>
+<tr class="shipping-block sShippingBlock sRatesFedex">
+    <td class="order-shipping">
+        <table cellpadding="0" cellspacing="" style="width: 350px;">
+            {% for item in shipRates %}
+            <tr>
+                <td style="padding-right: 0">
+                    <input class="shippingRadio" type="radio" name="shipping"
+                           {% if item.amount == Cart.Shipping %}checked="true"{% endif %}
+                           value="{{ item.amount }}"
+                           data-name="{{ item.serviceType|normalize }}"/>
+                </td>
+                <td style="padding-left: 0">{{ item.serviceType|normalize }}</td>
+                <td class="total">{{ number.format(item.amount, {"places":"2"}) }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </td>
+</tr>
+{% if notifications|length > 0 %}
+{% for note in notifications %}
+<tr>
+    {#<td><span style="color: red">Warning:</span> {{ note }}</td>#}
+                                </tr>
+{% endfor %}
+{% endif %}
+{% endif %}
+</table>
+<br>
+<input type="button" value="Save order" class="btn-update"  onclick="window.location.href='/admin/admin_products/preCharge'" />

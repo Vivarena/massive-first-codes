@@ -1,0 +1,19 @@
+<div class="login-padd">
+    <div style="color: red; text-align: center;">{{ error }}</div>
+    {{ form.create(User, {'url' : view.here , 'class' : 'form grid-left'}) }}
+        <fieldset class="field">
+            <legend></legend>
+            <label>Login:</label>
+            {{ form.text('username', {'class' : 'text'}) }}
+        </fieldset>
+        <fieldset class="field">
+            <legend></legend>
+            <label>Password:</label>
+            {{ form.password('password', {'class' : 'text'}) }}
+        </fieldset>
+        <fieldset class="field submit">
+            <legend></legend>
+            {{ form.submit('Login') }}
+        </fieldset>
+    {{ form.end() }}
+</div>

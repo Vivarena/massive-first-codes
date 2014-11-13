@@ -1,0 +1,84 @@
+.error-message {
+	clear:both;
+	font-size:11px;
+	color:#FF0000;
+	}
+
+input[type=text],
+input[type=password],
+textarea,
+select {
+	border:1px solid #888;
+	padding:2px;
+	margin:0;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+	}
+input[type=submit],
+input[type=button] {
+	cursor:pointer;
+	border:0
+	}
+
+input[type=submit]::-moz-focus-inner,
+input[type=button]::-moz-focus-inner,
+input[type=reset]::-moz-focus-inner {
+	margin:0;
+	padding:0;
+	border:0
+	}
+
+
+
+
+.contact-form {
+    padding: 70px 30px;
+    font-size: 16px
+}
+.contact-form .input,
+.contact-form .textarea,
+.contact-form .button {
+    padding: 5px 0
+}
+.contact-form .input label,
+.contact-form .textarea label {
+    width: 100px;
+    display: block;
+    float: left;
+    padding: 3px 0 0 0
+}
+.contact-form .input input.text {
+    padding: 4px;
+    width: 220px;
+    box-shadow:inset 1px 1px 3px #999999;
+    -moz-box-shadow:inset 1px 1px 3px #999999;
+    -webkit-box-shadow:inset 1px 1px 3px #999999;
+}
+.contact-form .textarea textarea  {
+    padding: 4px;
+    width: 320px;
+    height: 100px;
+    box-shadow:inset 1px 1px 3px #999999;
+    -moz-box-shadow:inset 1px 1px 3px #999999;
+    -webkit-box-shadow:inset 1px 1px 3px #999999;
+}
+.contact-form .button,
+.contact-form .error-message {
+    padding-left: 100px
+}
+
+.contact-form .button input {
+    background:url(../img/nav/bg-manu-item.png) left top no-repeat;
+    text-transform: uppercase;
+    padding: 5px 0 12px 0;
+    font-size: 17px;
+    width:170px;
+    text-align:center;
+    color:#FFFFFF
+}
+
+.contact-form .button {
+    padding-left: 90px
+}

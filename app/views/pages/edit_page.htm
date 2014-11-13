@@ -1,0 +1,105 @@
+{{ html.css('/js/jquery/plugins/jquery-ui/bs-theme/jquery-ui-1.8.custom.css') }}
+{{ html.script('/js/jquery/plugins/jquery-ui/jquery-ui-1.8.custom.min.js') }}
+{{ html.css('/js/jquery/plugins/elrte-1.3/css/elrte.min') }}
+{{ html.script('/js/jquery/plugins//elrte-1.3/js/elrte.full') }}
+
+<div class="profile-custom-page clearfix">
+    {#<h3>{{'Suggestions'|__}}</h3>#}
+    <div class="network-box-i clearfix">
+        <div class="profile-content profile-content-left for-edit-page clearfix">
+
+            <div class="profile-content-title clearfix">
+                <h2 class="rss">{{'EDIT PAGE'|__}}</h2>
+            </div>
+            <div class="section clearfix">
+
+                <div class="suggestion-title">
+                    <h4>Edit page</h4>
+                </div>
+                <div class="add-content" id="addContent">
+                    <h4>{{'Details'|__}} </h4>
+                    {{ form.create('', {'url': '/profile/editPage'}) }}
+
+
+                    <div id="tabs">
+                        <ul>
+                            {% for key, value in languages %}
+                            <li><a href="#tabs-{{ key }}">{{ value }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <div style="margin: 15px; padding: 0;">
+                            <label class="labelOutTabs">SEO Url</label>
+                            {{ form.input('Page.key', {'label' : false, 'class': 'text-input onlyInputField', 'div' : false}) }}
+                        </div>
+
+                        {% for key, value in languages %}
+                        <div id="tabs-{{ key }}" class="editPage">
+                            {{ form.input('Page.title.' ~ key, {'label' : 'Title', "div" : false, 'class': 'text-input onlyInputField'}) }}
+                            <label class="clear" style="margin: 26px 10px 0 0;">Content</label>
+                            <div style="margin: 15px; padding: 0;">
+                                {{ form.input('Page.content.' ~ key, {'type' : 'textarea' , 'class' : 'text-input wysiwygContent' , 'label' : false, 'div' : false}) }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <span class="editPage">
+                            {{ form.input('Page.meta_title', {'label' : 'Meta Title', 'class' : 'text-input onlyInputField'}) }}
+                            {{ form.input('Page.meta_keywords', {'label' : 'Meta Keywords', 'class' : 'text-input'}) }}
+                            {{ form.input('Page.meta_description', {'label' : 'Meta Description', 'class' : 'text-input'}) }}
+                        </span>
+
+
+                        {#{{ form.submit('Save', {'class' : 'submit-btn'}) }}#}
+                        <div class="button clearfix" style="margin: 20px; text-align: center">
+                            {{ form.submit('Save'|__, {'class': 'btn-send btn-post', 'div' : false}) }}
+                        </div>
+                    </div>
+
+                    {{ form.hidden('Page.id') }}
+
+                    {{ form.end() }}
+                </div>
+             </div>
+
+            <div class="profile-custom-content">
+                <br/><br/>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var opts = {
+            lang         : "en",
+            styleWithCSS : true,
+            absoluteURLs: true,
+            height       : 200,
+            allowSource: false,
+            toolbar  : "web2pyToolbar"
+        };
+
+        $("#tabs").tabs({
+            show: function(event, ui)
+            {
+                elRTE.prototype.options.panels.web2pyPanel = [
+                             "copy", "cut", "paste", "pasteformattext", "bold", "italic", "underline", "forecolor", "justifyleft", "justifyright",
+                             "justifycenter", "justifyfull", "insertorderedlist", "insertunorderedlist",
+                             "link", "image", "flash", "fontname", "fontsize", "fullscreen"
+                ];
+                elRTE.prototype.options.toolbars.web2pyToolbar = ["web2pyPanel"];
+                $(ui.panel).find('.wysiwygContent').elrte(opts);
+            }
+        });
+
+
+
+
+
+    });
+
+
+</script>

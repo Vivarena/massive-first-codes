@@ -1,0 +1,302 @@
+<section id="content">
+    <h1>Billing/Shipping</h1>
+    {#<form class="form" id="ProductCheckoutForm" method="post" action="http://tateyoko.project-release.info/checkout">#}
+    {{ form.create({'url': '/shop/checkout', 'id': 'ShopCheckOut'}) }}
+        <fieldset>
+            <div class="billing-shipping-block">
+                <div class="ttl-holder">
+                    <strong class="billing-ttl">Billing Information</strong>
+                    <strong class="shipping-ttl">Shipping Information</strong>
+                </div>
+                <div class="billing-shipping">
+                    <div class="radio">&nbsp;</div>
+                    <div class="row">
+                        <label>First name:</label>
+                        {{ form.text("User.first_name", {"class":"txt", "div":false, "label":false}) }}
+                        {{ form.error("User.first_name") }}
+                        {#<input type="text" name="data[Billing][first_name]" class="txt" id="UserFirstName" value="{{ user.User.info.first_name }}" />#}
+                        {#<span class="error-message"></span>#}
+                    </div>
+                    <div class="row">
+                        <label>Last name:</label>
+                        {{ form.text("User.name", {"class":"txt forValidate", "div":false, "label":false}) }}
+                        {{ form.error("User.name") }}
+                        {#<input type="text" name="data[Billing][last_name]" class="txt" id="UserLastName" value="{{ user.User.info.last_name }}" />#}
+                        {#<span class="error-message"></span>#}
+                    </div>
+                    <div class="row">
+                        <label>Address 1:</label>
+                        {#<input type="text" name="data[Billing][address1]" class="txt" id="UserAddress1" />#}
+                        {#<span class="error-message"></span>#}
+                        {{ form.text("User.address1", {"class":"text forValidate", "div":false, "label":false}) }}
+                        {{ form.error("User.address1") }}
+                    </div>
+                    <div class="row">
+                        <label>Address 2:</label>
+                        {#<input type="text" name="data[Billing][address2]" class="txt" id="UserAddress2" />#}
+                        {#<span class="error-message"></span>#}
+                        {{ form.text("User.address2", {"class":"text", "div":false, "label":false}) }}
+                        {{ form.error("User.address2") }}
+                    </div>
+                    <div class="row">
+                        <label>Country:</label>
+                        {#<select id="UserCountry" name="data[Billing][country]">
+                            <option>Please select</option>
+                        </select>#}
+                        {{ form.select("User.country", countries, null, {'label':false, "empty":"Please select", 'class': 'forValidate'}) }}
+                        {{ form.error("User.country") }}
+                    </div>
+                    <div class="row selecterRegion">
+                        <label>Province/State:</label>
+                        {#<select id="UserState" name="data[Billing][state]">
+                            <option>Select country first</option>
+                        </select>#}
+                        {{ form.select("User.state", null, null, {'label':false, "empty":"Please select", 'class': 'forValidate'}) }}
+                        {{ form.error("User.state") }}
+                        <div class="lowerText addRegionBtn" style="display:none;">
+                            (<a class="addCustomRegion" href="#user">Dont see your state? Add it</a>)
+                        </div>
+                        <input type="hidden" name="" id="userCustomRegion" />
+                    </div>
+                    <div class="row" id="userAddonRegion" style="display: none;">
+                        <label>Province/State:</label>
+                        <input type="text" id="UserAddonRegion" class="text" name="data[User][addonRegion]">
+                    </div>
+                    <div class="row">
+                        <label>City:</label>
+                        {#<input type="text" name="data[Billing][city]" class="txt" id="UserCity" />#}
+                        {#<span class="error-message"></span>#}
+                        {{ form.text("User.city", {"class":"text forValidate", "div":false, "label":false}) }}
+                        {{ form.error("User.city") }}
+                    </div>
+                    <div class="row">
+                        <label>Postal code:</label>
+                        {#<input type="text" name="data[Billing][postal_code]" class="txt" id="UserZip" />#}
+                        {#<span class="error-message"></span>#}
+                        {{ form.text("User.zip", {"class":"text forValidate", "div":false, "label":false}) }}
+                        {{ form.error("User.zip") }}
+                    </div>
+                    <div class="row">
+                        <label>Phone number:</label>
+                        {#<input type="text" name="data[Billing][phone_number]" class="txt" id="UserPhone" />#}
+                        {#<span class="error-message"></span>#}
+                        {{ form.text("User.phone", {"class":"text forValidate", "div":false, "label":false}) }}
+                        {{ form.error("User.phone") }}
+                    </div>
+                    <div class="row">
+                        <label>Email:</label>
+                        {#<input type="text" name="data[Billing][email]" class="txt" id="UserEmail" />#}
+                        {#<span class="error-message"></span>#}
+                        {{ form.text("User.email", {"class":"text", "div":false, "label":false}) }}
+
+                        {{ form.hidden("User.user_id", {'value': myID}) }}
+
+                        {{ form.error("User.email") }}
+                    </div>
+                </div>
+                <div class="billing-shipping right-side">
+                    <div id="billingData">
+                        <div class="radio">
+                            {#<input type="hidden" name="" value="0" id="OrderSame_" />#}
+                            {#<input type="checkbox" name="" id="OrderSame" value="1" />#}
+                            {{ form.checkbox("Order.same") }}
+                            <label>Billing and shipping information are the same.</label>
+                        </div>
+                        <div class="row">
+                            <label>First name:</label>
+                            {#<input type="text" name="data[Shipping][first_name]" class="txt" id="UserFirstName" />#}
+                            {#<span class="error-message"></span>#}
+                            {{ form.text("Order.first_name", {"class":"text", "div":false, "label":false}) }}
+                            {{ form.error("Order.first_name") }}
+                        </div>
+                        <div class="row">
+                            <label>Last name:</label>
+                            {#<input type="text" name="data[Shipping][last_name]" class="txt" id="UserLastName" />#}
+                            {#<span class="error-message"></span>#}
+                            {{ form.text("Order.name", {"class":"text forValidate", "div":false, "label":false}) }}
+                            {{ form.error("Order.name") }}
+                        </div>
+                        <div class="row">
+                            <label>Address 1:</label>
+                            {#<input type="text" name="data[Shipping][address1]" class="txt" id="UserAddress1" />#}
+                            {#<span class="error-message"></span>#}
+                            {{ form.text("Order.address1", {"class":"text forValidate", "div":false, "label":false}) }}
+                            {{ form.error("Order.address1") }}
+                        </div>
+                        <div class="row">
+                            <label>Address 2:</label>
+                            {#<input type="text" name="data[Shipping][address2]" class="txt" id="UserAddress2" />#}
+                            {#<span class="error-message"></span>#}
+                            {{ form.text("Order.address2", {"class":"text", "div":false, "label":false}) }}
+                            {{ form.error("Order.address2") }}
+                        </div>
+                        <div class="row">
+                            <label>Country:</label>
+                            {#<select id="UserCountry" name="data[Shipping][country]">
+                                <option>Please select</option>
+                            </select>#}
+                            {{ form.select("Order.country", countries, null, {'label':false, "empty":"Please select", 'class': 'forValidate'}) }}
+                            {{ form.error("Order.country") }}
+                        </div>
+                        <div class="row selecterRegion">
+                            <label>Province/State:</label>
+                            {#<select id="UserState" name="data[Shipping][state]">
+                                <option>Select country first</option>
+                            </select>#}
+                            {{ form.select("Order.state", null, null, {'label':false, "empty":"Please select", 'class': 'forValidate'}) }}
+                            {{ form.error("Order.state") }}
+                            <div class="lowerText addRegionBtn" style="display:none;">
+                                (<a class="addCustomRegion" href="#user">Dont see your state? Add it</a>)
+                            </div>
+                            <input type="hidden" name="" id="userCustomRegion" />
+                        </div>
+                        <div class="row" id="userAddonRegion" style="display: none;">
+                            <label>Province/State:</label>
+                            <input type="text" id="UserAddonRegion" class="text" name="data[User][addonRegion]">
+                        </div>
+                        <div class="row">
+                            <label>City:</label>
+                            {#<input type="text" name="data[Shipping][city]" class="txt" id="UserCity" />#}
+                            {#<span class="error-message"></span>#}
+                            {{ form.text("Order.city", {"class":"text forValidate", "div":false, "label":false}) }}
+                            {{ form.error("Order.city") }}
+                        </div>
+                        <div class="row">
+                            <label>Postal code:</label>
+                            {#<input type="text" name="data[Shipping][postal_code]" class="txt" id="UserZip" />#}
+                            {#<span class="error-message"></span>#}
+                            {{ form.text("Order.zip", {"class":"text forValidate", "div":false, "label":false}) }}
+                            {{ form.error("Order.zip") }}
+                        </div>
+                        <div class="row">
+                            <label>Phone number:</label>
+                            {#<input type="text" name="data[Shipping][phone_number]" class="txt" id="UserPhone" />#}
+                            {#<span class="error-message"></span>#}
+                            {{ form.text("Order.phone", {"class":"text forValidate", "div":false, "label":false}) }}
+                            {{ form.error("Order.phone") }}
+                        </div>
+                        <div class="row">
+                            <label>Email:</label>
+                            {#<input type="text" name="data[Shipping][email]" class="txt" id="UserEmail" />#}
+                            {#<span class="error-message"></span>#}
+                            {{ form.text("Order.email", {"class":"text", "div":false, "label":false}) }}
+                            {{ form.error("Order.email") }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-holder">
+                    <!--input type="button" onclick="window.location.href='shopping-cart.html'" class="btn-back-to-shopping-cart" value="Back to Shopping Cart">
+                    <input type="submit" class="btn-continue" value="Continue"-->
+                    <a href="/shop/cart" class="btn-back-to-shopping-cart">Back to Shopping Cart</a>
+                    <a href="/shop/checkout/summary" class="btn-continue">Continue</a>
+                </div>
+            </div>
+        </fieldset>
+    {{ form.end() }}
+    {#</form>#}
+</section>
+
+<script type="text/javascript">
+    <!--
+    (function($) {
+        $(function() {
+
+            _getState("User");
+            _getState("Order");
+
+            $('.btn-continue').click(function(e) {
+                //$('#ShopCheckOut').submit();
+                e.preventDefault();
+                var flag = true;
+                var fields = $('#ShopCheckOut').find('.forValidate');
+                fields.each(function(index, node) {
+                    if($(node).val() == '') {
+                        flag = false;
+                        $(node).css('border', '1px solid red');
+                    }
+                });
+                if(flag) {
+                    $('#ShopCheckOut').submit();
+                }
+            });
+
+            $("#OrderSame").click(function() {
+                if(this.checked) {
+                    $("#billingData").fadeTo("fast", 0.4);
+                    $("#billingData").find("input[type!=checkbox]").attr("disabled", true);
+                    $("#billingData").find("select").attr("disabled", true);
+                    $("#billingData").find('.forValidate').removeClass('forValidate');
+                } else {
+                    $("#billingData").fadeTo("fast", 1);
+                    $("#billingData").find("input[type!=checkbox]").removeAttr("disabled");
+                    $("#billingData").find("select").removeAttr("disabled");
+                    $("#billingData").find('#OrderName').addClass('forValidate');
+                    $("#billingData").find('#OrderAddress1').addClass('forValidate');
+                    $("#billingData").find('#OrderCountry').addClass('forValidate');
+                    $("#billingData").find('#OrderState').addClass('forValidate');
+                    $("#billingData").find('#OrderCity').addClass('forValidate');
+                    $("#billingData").find('#OrderZip').addClass('forValidate');
+                    $("#billingData").find('#OrderPhone').addClass('forValidate');
+                }
+            });
+
+            $("#UserCountry").change(function(){  _getState("User"); });
+
+            $("#UserState").change(function(){ _getCity("User"); });
+
+            $("#OrderCountry").change(function(){ _getState("Order"); });
+
+            $("#OrderState").change(function(){ _getCity("Order"); });
+
+
+            function _getState(model) {
+                var countryId = $("#" + model + "Country :selected").val();
+                if (countryId != "") {
+                    $("#" + model + "State").empty();
+                    $("#" + model + "State").append( $("<option>Loading...</option>"))
+                    $.getJSON("/shop/ajaxGetStates/" + countryId,
+                            function(data){
+                                $("#" + model + "State").empty();
+                                $("#" + model + "State").append( $("<option value=''>Select region</option>"))
+                                $.each(data, function(key, value) {
+                                    $("#" + model + "State").append( $("<option value=\"" + key + "\">" + value + "</option>"))
+                                });
+
+                                if (model == "User") {
+                                    $("#" + model + "State option[value={{ session.read("BillingShipping.Billing.state") }}]").attr("selected", "selected");
+                                } else {
+                                    $("#" + model + "State option[value={{ session.read("BillingShipping.Shipping.state") }}]").attr("selected", "selected");
+                                }
+                            }
+                    )
+                } else {
+                    $("#" + model + "State").empty();
+                    $("#" + model + "State").append( $("<option value=''>Select country first</option>"))
+                }
+            }
+
+            function _getCity(model) {
+                var stateId = $("#" + model + "State :selected").val();
+                if (stateId != "") {
+                    $("#" + model + "City").empty();
+                    $("#" + model + "City").append( $("<option>Loading...</option>"))
+                    $.getJSON("/pages/ajaxGetCities/" + stateId,
+                            function(data){
+                                $("#" + model + "City").empty();
+                                $("#" + model + "City").append( $("<option value=''>Select city</option>"))
+                                $.each(data, function(key, value) {
+                                    $("#" + model + "City").append( $("<option value=\"" + key + "\">" + value + "</option>"))
+                                })
+                            }
+                    )
+                } else {
+                    $("#" + model + "City").empty();
+                    $("#" + model + "City").append( $("<option value=''>Select region first</option>"))
+                }
+            }
+
+        });
+    })(jQuery)
+    //-->
+</script>

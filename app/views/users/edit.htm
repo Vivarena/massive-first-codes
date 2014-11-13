@@ -1,0 +1,125 @@
+<div class="tabs-box clearfix">
+    <span class="shadow-tab">&nbsp;</span>
+
+    <div class="tabs-box-left clearfix">
+
+        <ul class="tab-list clearfix">
+            <li class="active">Edit Profile</li>
+
+        </ul>
+        <div class="profile-box clearfix">
+            <div class="profile-box-user clearfix">
+                <div class="profile-box-user__img  clearfix">
+                    {{ view.element('ava_common', { 'data' : view.data.UserInfo, 'w' : 150, 'h' : 150, 'thumbAva' : true })}}
+                    <a href="/profile/edit-photo" class="editAva"><img src="/img/elements/edit_icon.png"/></a>
+                </div>
+                <div class="profile-box-user__text clearfix">
+                    <h3 id="updateName">{{ view.data.UserInfo.first_name }} {{ view.data.UserInfo.last_name }}</h3>
+                    {{ form.create('User', {"class" : "clearfix", 'id' : 'formEdit'}) }}
+                    <div class="input clearfix">
+                        <label>First Name: </label>
+                        {{ form.input('UserInfo.first_name', {'div': false, 'label': false, 'id' : 'input_first_name', 'class':'inputSignup' }) }}
+                    </div>
+                    <div class="input clearfix">
+                        <label>Last Name:</label>
+                        {{ form.input('UserInfo.last_name', {'div': false, 'label': false, 'id' : 'input_last_name', 'class':'inputSignup' }) }}
+                    </div>
+                    <div class="input clearfix">
+                        <label>Your Email:</label>
+                        {{ form.input('email', {'div': false, 'label': false, 'id' : 'input_email', 'class':'inputSignup' }) }}
+                    </div>
+                    <div class="input clearfix">
+                        <label>Hometown:</label>
+                        {{ form.input('UserInfo.hometown', {'div': false, 'label': false, 'id' : 'input_hometown', 'class':'inputSignup' }) }}
+                    </div>
+                    <div class="input clearfix">
+                        <label>City:</label>
+                        {{ form.input('UserInfo.city', {'div': false, 'label': false, 'id' : 'input_city', 'class':'inputSignup' }) }}
+                    </div>
+                    <div class="input clearfix">
+                        <label>Education:</label>
+                        {{ form.input('UserInfo.education', {'div': false, 'label': false, 'id' : 'input_education', 'class':'inputSignup' }) }}
+                    </div>
+                    <div class="input clearfix">
+                        <label>Account Type:</label>
+                        {{ form.select('User.user_type_id', user_types, view.data.User.user_type_id, {'empty' : true}) }}
+                    </div>
+                    <div class="input clearfix">
+                        <label> I am:</label>
+                        {{ form.select('UserInfo.sex', sex, view.data.UserInfo.sex, {'empty' : false}) }}
+                    </div>
+                    <div class="input clearfix">
+                        <label> Birthday:</label>
+                        <div class="select-box clearfix">
+                            {{ form.month('UserPrivateInfo.birthday', null, { 'class' : 'month', 'empty' : false}) }}
+                            {{ form.day('UserPrivateInfo.birthday', null, { 'class' : 'date', 'empty' : false }) }}
+                            {{ form.year('UserPrivateInfo.birthday', 1930, ""|date('Y'), view.data.UserPrivateInfo.birthday|date('Y'), { 'class' : 'year', 'empty' : false}) }}
+                        </div>
+                    </div>
+                    <div class="input clearfix">
+                        <label> Profile:</label>
+                        {{ form.select('User.private', {1:'Private',0:'Public'}, view.data.User.private, {'empty' : false}) }}
+                    </div>
+                    {{ form.hidden('User.id') }}
+                    {{ form.hidden('UserInfo.id') }}
+                    {{ form.hidden('UserPrivateInfo.user_id', {'value': view.data.User.id}) }}
+                    {{ form.hidden('UserPrivateInfo.id') }}
+                    <input type="submit" value="Save" class="btn btn-sign "/>
+
+                    {{ form.end() }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="padd-15"></div>
+
+    {{ view.element('community/rightSideInProfile') }}
+    {#{{ view.element('community/rightSidebarFriends') }}#}
+
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        var formContainer = $('#formEdit'),
+                ajaxLoader = '<span class="btn loaderAjax"><img src="/img/loader2.gif"/></span>';
+
+
+        formContainer.on('click', '.btn-sign', function (e) {
+
+            var formData = formContainer.serialize(),
+                    thisBtn = $(this);
+            thisBtn.hide();
+            thisBtn.after(ajaxLoader);
+            $.post("/users/edit", formData,
+                    function (data) {
+                        $('.loaderAjax').remove();
+                        thisBtn.show();
+                        if (data.status) {
+                            $('#updateName').text(data.new_name);
+                            showTopMsg('Profile information saved', 'success');
+
+                        } else {
+                            $('.error-span').remove();
+                            for (err in data.errors) {
+                                $('#input_' + err).after('<span class="error-span">' + data.errors[err] + '</span>');
+                            }
+                        }
+
+                    },
+                    "json"
+            );
+
+            e.preventDefault();
+        });
+
+        formContainer.on('keypress', '.inputSignup', function (e) {
+            $(this).next('span').remove();
+        });
+
+    });
+
+</script>

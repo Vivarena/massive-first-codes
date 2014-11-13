@@ -1,0 +1,254 @@
+html {
+    overflow-y: scroll;
+ 	}
+html, body {
+	height:100%;
+	width:100%;
+    min-width:999px;
+	margin: 0;
+	padding: 0;
+}		
+body {
+	background:#FFFFFF;
+    color:#000000;
+    font-size:13px;
+	}
+a {
+	text-decoration:none;
+	}
+a:hover {
+	text-decoration:underline;
+	}
+img { border:0 none}
+table, tr, td, th {
+	border:0 none;
+	border-collapse:collapse;
+	}
+h1, h2, h3, h4, h5, h6 {
+    margin:0;
+    padding:10px 0
+}
+p {
+    margin:0;
+    padding:10px 0
+}
+.clearfix:after {content:"."; display:block; height:0px; clear:both; visibility:hidden;}
+
+.clear { clear:both; font-size:0px; overflow:hidden}
+.float-l { float:left}
+.float-r { float:right}
+.align-center { text-align:center}	
+.align-left { text-align:left}	
+.align-right { text-align: right}	
+
+
+.example-pie-css3 {
+	border: 1px solid #696;
+	padding: 60px 0;
+	text-align: center; width: 200px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	-webkit-box-shadow: #666 0px 2px 3px;
+	-moz-box-shadow: #666 0px 2px 3px;
+	box-shadow: #666 0px 2px 3px;
+	background: #EEFF99;
+	background: -webkit-gradient(linear, 0 0, 0 bottom, from(#EEFF99), to(#66EE33));
+	background: -moz-linear-gradient(#EEFF99, #66EE33);
+    background: -o-linear-gradient(#EEFF99, #66EE33);
+	background: linear-gradient(#EEFF99, #66EE33);
+	-pie-background: linear-gradient(#EEFF99, #66EE33);
+	behavior: url(css/PIE.htc);
+	
+	-pie-lazy-init: true
+	}
+
+.rounded-img {
+	display: inline-block;
+	overflow: hidden;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+}
+#wrapper {
+   
+    background:url(../img/bg-middle.png) no-repeat top center !important;
+	width: 100%;
+	min-width: 999px;
+    max-width: 2000px;
+	/*margin: 0 auto;*/
+
+    
+    min-height:100%;
+    height:auto!important;
+    height:100%;
+    overflow:hidden;
+}
+#header .logo img {
+    display:block;
+}
+
+/* Header
+-----------------------------------------------------------------------------*/
+#header .logo {
+    padding:40px 0 4px 30px;
+    height:90px
+}
+.body-saber #header .logo {
+    padding:40px 0 4px 30px;
+    height:210px
+}
+
+
+/* Middle
+-----------------------------------------------------------------------------*/
+#middle {
+
+
+    padding:0 0 0 190px;
+	position: relative;
+    /*height:1200px; */
+
+}
+#container {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	margin-right: -100%;
+}
+#content {
+	padding: 0 30px;
+}
+
+
+
+
+/* Sidebar Left
+-----------------------------------------------------------------------------*/
+#sidebar {
+	float: left;
+	width: 190px;
+	position: relative;
+	left: -190px;
+}
+#sidebar .sidebar-inner {
+    background:url(../img/sidebar/eagle.png) left top no-repeat;
+}
+/* Footer
+-----------------------------------------------------------------------------*/
+#footer {
+    margin:-50px 0 0 0;
+	height: 50px;
+    width:190px;
+    position:relative;
+    z-index:5;
+    color:#5f5f5f
+}
+#footer .copyright {
+    font-size:10px;
+    padding:12px 10px 0 10px
+}
+
+.half {
+    width:48%
+}
+
+
+.body-home {
+    background:url(../img/bgs-pages/bg-home.jpg) right top fixed no-repeat #000000;
+}
+.body-about {
+    background:url(../img/bgs-pages/bg-about.jpg) right top fixed no-repeat #ededed;
+}
+.body-music {
+    background:url(../img/bgs-pages/bg-music.jpg) right top fixed no-repeat #ced0d4;
+}
+.body-trevel-with-me {
+    background:url(../img/bgs-pages/bg-travel-with-me.jpg) right top fixed no-repeat;
+}
+.body-fan-club {
+    background:url(../img/bgs-pages/bg-fan-club.jpg) right top fixed no-repeat;
+}
+.body-be-with-me {
+    background:url(../img/bgs-pages/bg-be-with-me.jpg) right top fixed no-repeat #d6d6d6;
+}
+.body-be-with-me-control {
+    background:url(../img/bgs-pages/bg-be-with-me-control.jpg) right top fixed no-repeat #000000;
+}
+.body-be-with-me-professional {
+    background:url(../img/bgs-pages/bg-be-with-me-professional.jpg) right top fixed no-repeat #000000;
+}
+.body-be-with-me-action {
+    background:url(../img/bgs-pages/bg-be-with-me-action.jpg) right top fixed no-repeat #000000;
+}
+.body-be-with-me-action #content {
+    min-height:650px
+}
+
+.body-be-with-me-flesh {
+    background:url(../img/bgs-pages/bg-be-with-me-flesh.jpg) right top fixed no-repeat #f9f9f9;
+}
+.body-be-with-me-drive-you {
+    background:url(../img/bgs-pages/bg-be-with-me-drive-you.jpg) right top fixed no-repeat;
+}
+.body-music-love {
+    background:url(../img/bgs-pages/bg-music-love.jpg) right top fixed no-repeat #FFFFFF;
+}
+.body-music-este {
+    background:url(../img/bgs-pages/bg-music-este.jpg) right top fixed no-repeat #eceff2;
+}
+.body-music-vintage {
+    background:url(../img/bgs-pages/bg-music-vintage.jpg) right top fixed no-repeat;
+}
+.body-photos {
+    background:url(../img/bgs-pages/bg-photos.jpg) right top fixed no-repeat;
+}
+.body-news {
+    background:url(../img/bgs-pages/bg-news.jpg) right top fixed no-repeat #fbfbfb;
+}
+.body-videos  {
+    background:url(../img/bgs-pages/bg-videos.jpg) right top fixed no-repeat;
+}
+
+
+.body-videos-behind  {
+    background:url(../img/bgs-pages/bg-videos-behind.jpg) right top no-repeat;
+}
+
+.body-videos-vintage   {
+    background:url(../img/bgs-pages/bg-videos-vintage.jpg) right top no-repeat;
+}
+.body-videos-love {
+    background:url(../img/bgs-pages/bg-videos-love.jpg) right top no-repeat;
+}
+
+.body-saber  {
+    background:url(../img/bgs-pages/bg-saber.gif) left top repeat;
+}
+
+.title-page {
+    width:250px;
+    text-align:right;
+    text-transform:uppercase;
+    font-size:18px;
+    white-space:nowrap;
+}
+
+.body-be-with-me-action .title-page,
+.body-be-with-me-control .title-page,
+.body-be-with-me-professional .title-page,
+.body-fan-club .title-page,
+.body-videos-love .title-page,
+.body-videos-love .title-page,
+.body-videos-behind .title-page,
+.body-videos .title-page{
+    color:#FFFFFF
+}
+
+
+
+.popup {
+    background:#000000;
+    color:#FFFFFF;
+    padding:10px
+}

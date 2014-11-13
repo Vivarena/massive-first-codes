@@ -1,0 +1,66 @@
+{{ html.css('pages/text.css') }}
+
+{{ view.Html.script('jquery/plugins/fancybox/jquery.fancybox-1.3.4.pack')}}
+{{ view.Html.css('/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4')}}
+
+<div id="middle" class="middle clearfix">
+    <div class="search-block clearfix">
+    </div>
+    <div class="register-box contact-form">
+        <div class="register-box-i clearfix">
+            <div class="register-box-title">
+                <h3>{{'CONTACT INVERSIONES'|__}}</h3>
+            </div>
+            <div class="register-form ">
+                <p>
+                    <i>{{'We look forwared to hearing from you. Please let us know how we can assist you.'|__}}</i>
+                </p>
+                {{ form.create() }}
+                    <div class="input clearfix">
+                        {{ form.input('first_name', {'class' : 'input-field', 'label': 'Name'|__, 'div' : false}) }}
+                    </div>
+                    <div class="input clearfix">
+                        {{ form.input('email', {'class' : 'input-field', 'label': 'Email'|__, 'div' : false}) }}
+                    </div>
+                    <div class="input clearfix">
+                        <label>{{'Comments'|__}}</label>
+                        {{ form.textarea('comment', {'label': false, 'div' : false}) }}
+                    </div>
+                    <div class="input-null clearfix">
+                        <div class="reg-checkbox">
+                        {{ form.checkbox('send_cc', {'class' : 'input-cc', 'div' : false}) }}
+                        <label class="checkbox-label">{{'Send copy to myself'|__}}</label>
+                        </div>
+                    </div>
+                    <div class="input clearfix">
+                        <img class="captcha" id="cImg" src='/kcaptcha?id={{first_captcha}}' title="{{'Click me to reload!'|__}}"/>
+                    </div>
+                    <div class="input clearfix btn-reg">
+                        <input class="input-field captcha" id="Captcha" name="data[Page][captcha]" type="text" class="text" />
+                    </div>
+                    <div class="btn-reg">
+                    {{ form.submit('Submit'|__, {'class' : 'btn-register btn-send', 'div' : false, 'id':'btnOk'}) }}
+                    </div>
+                </form>
+                </div>
+            <div class="right-img">
+                <div class="logo-contact clearfix">
+                    <img alt="" src="img/registration/logo-contact.jpg">
+                    <span class="border-left">&nbsp;</span>
+                    <span class="border-right">&nbsp;</span>
+                    <span class="border-bot">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+        <span class="angle">&nbsp;</span>
+        <span class="shadow-register">&nbsp;</span>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $('#cImg').on('click', function(){
+            $(this).attr('src', '/kcaptcha?id=' + new Date().getTime());
+        });
+    });
+</script>

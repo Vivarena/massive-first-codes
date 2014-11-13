@@ -1,0 +1,7 @@
+{{ jGrowl.flash() }}
+{#{% set typeSugges = (uid == session.read('Auth.User.id')) ? '' : 'NoEdit' %}#}
+{% for item in suggestData %}
+    <div class="oneItemSuggest">
+        {{ view.element('community/oneItemSuggest'~typeSugges, { 'item' : item }) }}
+    </div>
+{% endfor %}

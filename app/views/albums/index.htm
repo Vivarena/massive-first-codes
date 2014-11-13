@@ -1,0 +1,141 @@
+<div class="tabs-box clearfix">
+    <span class="shadow-tab">&nbsp;</span>
+
+    <ul class="tab-list clearfix">
+        <li class="{{ activeTab['photos'] }}"><a href="/{{ loginThisPage }}/albums/photos">Photos</a></li>
+        <li class="{{ activeTab['videos'] }}"><a href="/{{ loginThisPage }}/albums/videos">Video</a></li>
+    </ul>
+
+    <div class="box-list clearfix">
+        <div class="padd-17"></div>
+        <div class="photo-album clearfix" id="listPhotos">
+            <div class="photo-album_i clearfix">
+                <span class="date-album">{% if albums|length < 1 %}No albums...{% else %}List of albums:{% endif %}</span>
+
+                <div class="sub_album clearfix">
+                    <div class="sub_album_i clearfix">
+                        {% if iOwnerAlbum %}
+                        <div class="sub_album_one clearfix">
+                            <div class="sub_album_one_inner">
+                                <div class="sub_album_one_i dotted clearfix">
+                                    <a href="#" class="addAlbum">
+                                        <div class="newAlbum">
+                                            <span>+ New Album</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="border">
+                                    <div id="divNewAlbum">
+                                        {{ form.create(modelAlbum, {'id':'formNewAlbum', 'url' : '/albums/create/'~type}) }}
+                                        <div class="input clearfix">
+                                            {{ form.input('name', {'label' : false, 'div' : false, 'placeholder' : 'Album name...', 'class' : 'message-subject txt empty-valid'} ) }}
+                                        </div>
+                                        <input type="submit" value="Create album" class="btn no-float btnNewAlbum"/>
+                                        {{ form.end() }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% for album in albums %}
+                            <div class="sub_album_one clearfix">
+                                <div class="sub_album_one_inner">
+                                    <div class="sub_album_one_i clearfix">
+                                        <a href="/{{ loginThisPage }}/albums/{{ type }}/{{ album[modelAlbum].id }}">
+                                            {% if album[modelAlbum].cover %}
+                                                <img src="/thumbs/167x111{{ album[modelAlbum].cover }}" alt="" width="167" height="111">
+                                            {% else %}
+                                                <div class="newAlbum">
+                                                    <span>{{ album[modelAlbum].name }}</span>
+                                                </div>
+                                            {% endif %}
+                                        </a>
+                                        {% if iOwnerAlbum %}
+                                            <div class="actionsAlbum">
+                                                <a href="#" class="deleteAlbum" data-album-id="{{ album[modelAlbum].id }}">Delete</a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="border"></div>
+                                </div>
+                                <div class="sub_album_one__text">
+                                    <a href="/{{ loginThisPage }}/albums/photos/{{ album[modelAlbum].id }}" class="name-link">{{ album[modelAlbum].name }}</a>
+                                    <span class="count">{{ album.0.Count }} {{ type }} </span>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var photosContainer = $('#listPhotos'),
+            formNewAlbum = '#formNewAlbum',
+            validateNewAlbum = new ValidateForm();
+
+
+        photosContainer.on('click', '.addAlbum', function(e){
+            var $this = $(this),
+                formDiv = $('#divNewAlbum'),
+                closedDiv = $this.closest('.sub_album_one_i');
+
+            closedDiv.fadeOut('normal', function(){
+                formDiv.show();
+                validateNewAlbum.initValidate({
+                    formValidate: formNewAlbum
+                });
+                $(formNewAlbum).submit(function(){
+                    if (validateNewAlbum.checkValidate()) {
+                        $.post("/albums/create/{{ type }}", $(formNewAlbum).serialize(),
+                            function(data) {
+                                if(!data.error) {
+                                    window.location = data.redirectURL;
+                                } else {
+                                    window.alert(data.err_desc);
+                                }
+
+                            },
+                            "json"
+                        );
+                    }
+                    return false;
+                });
+            });
+
+            e.preventDefault();
+
+        });
+
+        $('#listPhotos').on('click', '.deleteAlbum', function(e){
+            var $this = $(this);
+            modalPopup.confirmPopup('Delete', 'Do you sure want to delete this item?', function(){
+                var itemId = $this.data('albumId');
+                $.post("/albums/deleteAlbum", {'data[id]' : itemId, 'data[Type]' : '{{ type }}'},
+                    function(data) {
+                        if(!data.error) {
+                            $this.closest('.sub_album_one').fadeOut('normal', function(){
+                                $(this).remove();
+                            });
+                            showTopMsg('Item was successfully removed');
+                        } else {
+                            showTopMsg(result.err_desc, 'error');
+                        }
+                    },
+                    "json"
+                );
+
+            });
+            e.preventDefault();
+        });
+
+    });
+
+</script>

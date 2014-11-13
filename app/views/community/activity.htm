@@ -1,0 +1,22 @@
+<div class="about-box" id="about">
+    {{ view.element('profile/profile-status')}}
+    {{ view.element('profile/profile-about')}}
+    <h2 class="title-home">{{ 'Activity Feed'|__}}</h2>
+    <div class="about-text activation">
+        <div class="about-text-i">
+            <div class="activation-box__all clearfix">
+                <div id="activation-block" class="activation-block clearfix">
+                    {{ view.element('community/activity_items') }}
+                </div>
+{#
+                <div class="activation-box__pagination">
+                    <span>Más actividad</span>
+                    <a class="more-link-top" href="#"></a>
+                    <a class="more-link-bot" href="#"></a>
+                </div>
+#}
+            </div>
+        </div>
+    </div>
+</div>
+{{ view.element('profile/links-bottom', { 'userID' : view.data.user_id }) }}

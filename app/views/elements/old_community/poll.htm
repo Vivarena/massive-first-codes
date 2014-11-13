@@ -1,0 +1,41 @@
+<div class="poll">
+{% if not viewPolls %}
+    <h3>{{'Poll'|__}}</h3>
+{% endif %}
+
+
+<div class="block1">
+    <div class="block1-inner">
+        {% if poll.PollQuestion|length %}
+        {% set q = poll.PollQuestion %}
+        {% set as = poll.PollAnswer %}
+        {{ form.create('VoteForPoll', {'url': '/vote', 'class': 'vote-poll'}) }}
+            <p class="poll-text">{{ q.q_text }}</p>
+            {{ form.hidden('Poll.poll_question_id', {'value': q.id}) }}
+                <div class="pols-radio">
+                    <div class="pols-radio__btn clearfix">
+                        {{ form.radio('Poll.poll_answer_id', as, {'legend': false, 'separator': '</div><div class="pols-radio__btn clearfix">', 'class': 'styled'}) }}
+                    </div>
+            </div>
+
+            <div class="button clearfix">
+                {{ form.submit('', {'class': 'btn-send'}) }}
+            </div>
+            <input type="hidden" name="viewYourAnswer" value="{% if viewPolls %}1{% else %}0{% endif %}" class="viewYourAnswer"/>
+        {{ form.end() }}
+        {% endif %}
+        {% if poll.question|length %}
+            <p class="poll-text">{{ poll.question }}</p>
+            <ul class="poll-answers">
+                {% for ans in poll.answers %}
+                <li class="ans{% if ans.yourAnswer %} yourAnswer{% endif %}">
+                    <span class="percent">{{ ans.percent }}</span>
+                    {{ 'voted for'|__ }}
+                    <span class="text">"{{ ans.text }}"</span>
+                </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+</div>

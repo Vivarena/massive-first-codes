@@ -1,0 +1,92 @@
+{{ view.addScript('
+<script type="text/javascript">
+	$(function() {
+		$("#content").on("click", ".delete-link", function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:160,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$(this).dialog("close");
+						location.href = link;
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
+	});
+</script>
+') }}
+
+<div id="dialog-confirm" title="Delete this user?" class="hidden">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>User will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+{% if users %}
+
+<table cellpadding="0" cellspacing="1" class="common-style-table" id="bla">
+	<tr>
+		<th class="first" width="160" colspan="2">Full name</th>
+		<th width="180">{{ paginator.sort('Created', 'created') }}</th>
+		<th>-</th>
+		<th>-</th>
+	</tr>
+    {% for item in users %}
+    {% set row_class = loop.index%2 ? 'odd' : 'even' %}
+    <tr>
+        <td class="first {{ row_class }}">
+            <span class="userPhoto">
+               {% if item.UserInfo.photo %}
+               {% set ava = (item.UserInfo.avatar) ? item.UserInfo.avatar : item.UserInfo.photo %}
+               <img src="{{ ava }}" width="50" height="50" alt="Avatar">
+               {% else %}
+                   {% if view.data.sex == 'M' %}
+                   {{ view.Html.image('/img/demo/man.png'|thumb(50, 50), { 'width' : 50, 'height' : 50} ) }}
+                   {% endif %}
+                   {% if view.data.sex == 'F' %}
+                   {{ view.Html.image('/img/demo/woman.png'|thumb(50, 50), { 'width' : 50, 'height' : 50} ) }}
+                   {% endif %}
+                   {% if view.data.sex|length == 0 %}
+                   {{ view.Html.image( view.data.photo|thumb(50, 50), { 'width' : 50, 'height' : 50} ) }}
+                   {% endif %}
+               {% endif %}
+           </span>
+        </td>
+        <td class="{{ row_class }} userName">
+            {{ item.UserInfo.first_name }} {{ item.UserInfo.last_name }}
+        </td>
+        <td class="{{ row_class }}">{{ item.User.created|date('l, F d, Y - h:iA') }}</td>
+        <td class="{{ row_class }}">
+            {#<a href="/admin/admin_users/view/{{ item.User.id }}" title="Click to edit">#}
+            <a href="/admin/admin_users/view/{{ item.User.id }}" title="Click to view">
+                <img alt="" src="/admin/img/icons/view.png" />
+            </a>
+        </td>
+        <td class="{{ row_class }}">
+            <a href="/admin/admin_users/delete/{{ item.User.id }}" class="delete-link" title="Click to delete">
+                <img alt="" src="/admin/img/icons/delete.png" />
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<br class="clear"/>
+<div class="pagi">
+    {{ view.element('paginator') }}
+</div>
+
+
+{% else %}
+
+<div class="empty-result">
+	Items not found
+</div>
+
+{% endif %}

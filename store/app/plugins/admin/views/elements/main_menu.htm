@@ -1,0 +1,14 @@
+<ul id="nav">
+{#
+	<li>
+		<a href="/admin/admin_pages" {% if _hovers.content %}class="currently"{% endif %}> Content<span class="currently">&nbsp;</span></a>
+	</li>
+#}
+	<li>
+		<a href="/admin/admin_products" {% if _hovers.product %}class="gallery"{% endif %}> Products<span class="currently">&nbsp;</span></a>
+	</li>
+
+    <li>
+        <a href="/admin/admin_configs" {% if _hovers.config %}class="gallery"{% endif %}> Config<span class="currently">&nbsp;</span></a>
+    </li>
+</ul>

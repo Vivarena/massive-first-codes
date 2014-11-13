@@ -1,0 +1,46 @@
+{{ view.element('editor') }}
+{{ html.script('/admin/js/translate.js', { 'include' : false }) }}
+<script type="text/javascript">
+	$(function() {
+		$("#tabs").tabs();
+        {% for key, value in languages %}
+            $('#FaqAnswer{{ key|capitalize }}').elrte(opts);
+        {% endfor %}
+	});
+</script>
+
+<h2 class="title-page">{{ groupsFaq[view.data.Faq.group_faq_id]|capitalize }} FAQ ({{ view.params.action == 'add' ? 'Add new' : 'Edit' }}) </h2>
+
+<div class="top-line">&nbsp;</div>
+<div class="pages-content-block">
+	{{ form.create({'class' : 'simple-form'}) }}
+    <div id="tabs">
+        <ul>
+            {% for key, value in languages %}
+            <li><a href="#tabs-{{ key }}">{{ value }}</a></li>
+            {% endfor %}
+        </ul>
+        {{ form.input('Faq.active') }}
+        {% for key, value in languages %}
+        <div id="tabs-{{ key }}">
+            <label>Question</label>{{ form.text('Faq.quention.' ~ key, {'class':'text', 'style':'width:300px'}) }}
+            {% if loop.first == false %}
+                <img alt='{"id":"FaqQuention", "from":"eng", "to":"{{ key }}"}' class="translate" title="Translate" src="/admin/img/icons/translate.png" />
+                <img id="translate-loader" style="display: none" src="/img/ajax-loader-sub.gif" alt="">
+            {% endif %}
+            {{ form.error('Faq.quention') }}
+            {{ form.textarea('Faq.answer.' ~ key, {'class' : 'tinymce'}) }}
+            {{ form.error('Faq.answer') }}
+
+            {% if loop.first == false %}
+                <img alt='{"id":"FaqAnswer", "from":"eng", "to":"{{ key }}"}' class="translate" title="Translate" src="/admin/img/icons/translate.png" />
+                <img id="translate-loader" style="display: none" src="/img/ajax-loader-sub.gif" alt="">
+            {% endif %}
+
+        </div>
+        {% endfor %}
+        {{ form.hidden('group_faq_id') }}
+		{{ form.submit('Save', {'class' : 'submit-btn'}) }}
+    </div>
+	{{ form.end() }}
+</div>

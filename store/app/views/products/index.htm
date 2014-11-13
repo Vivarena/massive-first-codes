@@ -1,0 +1,29 @@
+<script type="text/javascript">
+$(function(){
+    $("#paging, #sort").change(function(){
+        $("#pagingForm").submit();
+    })
+})
+</script>
+
+<div class="check-out-title">
+    <h3>{{ categoryName }}</h3>
+</div>
+
+{{ view.element('paginator')}}
+
+{% if items %}
+    {{ view.element('listProducts', {'listProducts' : items} )}}
+{% else %}
+<div class="products-box clearfix">
+    <div class="products-one">
+        <div class="products-one-i clearfix">
+            <div class="products-one-text">
+                <h3>No products</h2>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+

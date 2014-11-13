@@ -1,0 +1,61 @@
+
+
+
+@font-face {
+    font-family: 'LucidaGrandeRegular';
+    src: url('6216_-_-webfont.eot');
+    src: url('6216_-_-webfont.eot?#iefix') format('embedded-opentype'),
+         url('6216_-_-webfont.woff') format('woff'),
+         url('6216_-_-webfont.ttf') format('truetype'),
+         url('6216_-_-webfont.svg#LucidaGrandeRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'LucidaGrandeBold';
+    src: url('6215_0-webfont.eot');
+    src: url('6215_0-webfont.eot?#iefix') format('embedded-opentype'),
+         url('6215_0-webfont.woff') format('woff'),
+         url('6215_0-webfont.ttf') format('truetype'),
+         url('6215_0-webfont.svg#LucidaGrandeBold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+
+
+@font-face {
+    font-family: 'lucida_grandebold';
+    src: url('6215-webfont-webfont.eot');
+    src: url('6215-webfont-webfont.eot?#iefix') format('embedded-opentype'),
+    url('6215-webfont-webfont.woff') format('woff'),
+    url('6215-webfont-webfont.ttf') format('truetype'),
+    url('6215-webfont-webfont.svg#lucida_grandebold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body, .logo-text h2, .input-check  input, .input  input,
+.sign-box select, .input a, .banner-sponsor  h3,
+.selectbox .select .logo-text, .box-cld__table th ,
+.box-cld__table td, input.text, .map-box-text p
+{font-family: 'LucidaGrandeRegular';}
+.product-box_one_i h5, .price-text, .box-tools h3,
+.banner-sponsor h3, .photo-block h3, .tab-list  li , .tab-list  li a ,
+.date-album, .sub_album_one__text a, .paginator-block  .current,
+.paginator-block a:hover, .back-link, .table-result tr h5,.table-result td:nth-child(3),.msg-box  .comment-link li  a.active,.msg-box  .comment-link li  a:hover,
+.msg-box-text .name_link, .block-shared__text a,.featured-icon a, .product-block__one__text h4, .price, .title-calendar, .date_text, .btn_etc,
+.td-text  p, .create-event input.text_large, .select_privacy  label,.event-form label, .btn-cancel, .group_btn  a, .map-box-text p span, .map-box-text h4  a, .map-inner h4,
+.map-contact .map-info span
+
+{font-family: 'lucida_grandebold';}

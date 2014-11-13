@@ -1,0 +1,81 @@
+<div class="home-blocks clearfix">
+    <div class="home-block">
+        <div class="title-outer">
+            <div class="title-inner clearfix">
+                <p class="title" id="tools">
+                    <span class="green_text">{{ 'TOOLS'|__ }}</span>
+                    <span class="gray_text">{{ 'CENTER'|__ }}</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="block-inner">
+            <ul>
+                {% for item in toolsCenterMenu %}
+                <li>{{ view.Html.link(item.Menu.name, item.Menu.url) }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="home-block">
+        <div class="title-outer">
+            <div class="title-inner clearfix">
+                <p class="title" id="invest">
+                    <span class="green_text">{{ 'INVESTMENT'|__ }}</span>
+                    <span class="gray_text">{{ 'CENTER'|__ }}</span>
+                </p>
+            </div>
+        </div>
+        <div class="block-inner">
+            <ul>
+                {% for item in investCenterMenu %}
+                <li>{{ view.Html.link(item.Menu.name, item.Menu.url) }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="home-block">
+        <div class="title-outer">
+            <div class="title-inner clearfix">
+                <p class="title" id="comm">
+                    <span class="green_text">{{ 'COMMUNITY'|__ }}</span>
+                    <span class="gray_text">{{ 'CENTER'|__ }}</span>
+                </p>
+            </div>
+        </div>
+        <div class="block-inner">
+            <ul>
+                {% for item in commCenterMenu %}
+                <li>{{ view.Html.link(item.Menu.name, item.Menu.url) }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="home-block ask-vivarena-get-help">
+        <div class="title-outer">
+            <div class="title-inner clearfix">
+                <p class="title" id="ask">
+                    <span class="green_text">{{ 'ASK INVERSIONES'|__ }}</span>
+                    <span class="gray_text">{{ 'GET HELP'|__ }}</span>
+                </p>
+            </div>
+        </div>
+        <div class="block-inner">
+            {{ form.create('Page', {'action': 'contact'}) }}
+                <div class="input clearfix">
+                    {{ form.input('first_name', {'class' : 'text', 'label': 'Name'|__, 'div' : false}) }}
+                </div>
+                <div class="input clearfix">
+                    {{ form.input('email', {'class' : 'text', 'div' : false}) }}
+                </div>
+                <div class="textarea clearfix">
+                    <label for="PageComment">{{'Message'|__}}</label>
+                    {{ form.textarea('comment') }}
+                </div>
+                <div class="button">
+                    {{ form.submit('', {'class': 'btn-send', 'label': false, 'div': false}) }}
+                </div>
+            {{ form.end() }}
+        </div>
+    </div>
+</div>

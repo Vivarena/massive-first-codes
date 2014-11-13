@@ -1,0 +1,74 @@
+<div style="text-align: center">
+
+    <p style="font-size: 14px">
+        Please be advised that the following products are out of stock and due to be reordered.<br>
+        The following orders are below 15 pieces in inventory.
+    </p>
+    <p style="font-size: 12px">
+        See the bolow for reorder information.
+    </p>
+</div>
+<div style="font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 12px;">
+
+    <table cellpadding="0" cellspacing="0" border="0" width="820" align="center">
+        <tr>
+            <td width="120">
+                <img src="http://officialsituation.com/img/logo.gif" alt="" vspace="0" hspace="0" border="0" width="120" height="105" />
+            </td>
+            <td valign="bottom" width="140">
+                <h4><font face="arial"><a href="http://Officialsituation.com">Officialsituation.com</a></font></h4>
+            </td>
+            {#<td width="290">
+                <table cellpadding="5" cellspacing="0" border="0" width="280" align="center" bgcolor="#a2998b">
+                    <tr>
+                        <td align="right"><font size="2" color="#ffffff">Partner</font></td>
+                        <td><font color="#ffffff"><b>FRANK SORRENTINO</b></font></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><font size="2" color="#ffffff">Order Date</font></td>
+                        <td><font color="#ffffff"><b>{{ order.Order.id }}</b></font></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><font size="2" color="#ffffff"></font></td>
+                        <td><font color="#ffffff"><b></b></font></td>
+                    </tr>
+                </table>
+            </td>#}
+            <td width="250">
+                &nbsp;
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table cellpadding="5" cellspacing="0" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px;border-bottom-style: solid; border-bottom-color: #000000; border-bottom-width: 1px; border-right-style: solid; border-right-color: #000000; border-right-width: 1px;" width="810" align="center">
+        <tr>
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Product</font></th>
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Vendor #</font></th>
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Sitch Style #</font></th>
+            {% if message.attrData.attrGroupName %}
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">{{ message.attrData.attrGroupName }}</font></th>
+            {% endif %}
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Quantity</font></th>
+        </tr>
+
+        <tr>
+            <td align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">{{ message.title }}</font></td>
+            <td align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">{{ message.vendor }}</font></td>
+            <td align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">{{ message.sitch_style }}</font></td>
+            {% if message.attrData.attrTitle %}
+            <td align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">{{ message.attrData.attrTitle }}</font></td>
+            {% endif %}
+            <td align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">
+                {% if message.attrData.attrQty %}
+                    {{ message.attrData.attrQty }}
+                {% else %}
+                    {% if message.quantity %}
+                        {{ message.quantity }}
+                    {% else %}
+                        -
+                    {% endif %}
+                {% endif %}
+            </font></td>
+        </tr>
+    </table>
+</div>

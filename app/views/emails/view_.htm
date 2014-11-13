@@ -1,0 +1,142 @@
+<div id="container" class="block">
+    <div id="content" class="filter-map">
+        <div class="clearfix shouldBeAlignedByHeight">
+            <div style="float: right; margin-right: 50px; font-size: 20px; font-weight: bold;">
+                {% set box = session.read('box') %}
+                {{ box|capitalize }}
+            </div>
+            <div class="profile-information local clearfix">
+
+<div id="mail-system">
+
+    {{ view.element('entered_emails_left_side') }}
+    <div class="right-side">
+
+        <div class="block">
+            <div class="mail-open">
+                <div class="bg-line">
+                    <div class="float-l padd-10">
+                        <div class="title">{{ messageInfo.User.id == messageInfo.From.id ? 'sender' : 'receiver' }}:</div>
+                        {% if messageInfo.Message.type == 'system' %}
+                            <div class="float-l" style="color: #F32420; font-weight: bold;">system</div>
+                        {% elseif messageInfo.From.status == 'removed' %}
+                            <div class="float-l" style="font-weight: bold;">deleted</div>
+                        {% else %}
+                            <div class="float-l"><a href="/view-profile/{{ messageInfo.User.url_alias }}">{{ messageInfo.User.fname }} {{ messageInfo.User.lname }}</a>, {{ messageInfo.User.age }}</div>
+                        {% endif %}
+                        <div class="title">recieved:</div><div class="float-l">{{ messageInfo.Message.created|date("F jS Y h:i A") }}</div>
+                    </div>
+                    {{ view.element('entered_emails_view_navigation_toolbar') }}
+                    <div class="clear"></div>
+                </div>
+                <div class="bg-line">
+                    <div class="padd-10"></div>
+                    <div class="float-l">
+                        <div class="title">subject:</div><div class="float-l font12">
+                            {{ text.truncate(messageInfo.Message.subject|e, 100) }}
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="padd-10"></div>
+                </div>
+                <div class="bg-line">
+                    <div class="bg-white">
+                        <div class="padd10">
+                            {% if messageInfo.Message.type != 'system' %}
+                                {{ view.element('entered_mini_profile_email_view', {'miniProfileUser' : messageInfo.User}) }}
+                            {% endif %}
+                            <div class="message font12" style="{{ messageInfo.Message.type == 'system' ? 'padding: 0px;' : '' }}">
+                              {{ messageInfo.Message.content|e|nl2br }}
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="padd-10"></div>
+                <a href="#" class="btn float-l delete-button"><span><img alt="" src="{{ html.url('/img/design/trash1-icon.gif') }}" /> Delete Message</span></a>
+                {% if messageInfo.User.id == messageInfo.From.id %}
+                    {% if messageInfo.Message.type != 'system' %}
+                        <a style="margin-left: 10px;" href="#" class="btn float-l send-email-message delete-button"><span>Reply</span></a>
+                    {% endif %}
+                {% endif %}
+                {{ view.element('entered_emails_view_navigation_toolbar') }}
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function(){
+
+        $("a.send-email-message").click(function(e){
+            var popup = $(".send-window").html();
+            $.fancybox.showActivity();
+            $.fancybox(popup);
+            e.preventDefault();
+        });
+
+        $(".button-send").live("click", function(e){
+            var formData = $("form#send_alert_to_user").serialize();
+            $.post("/emails/ajaxSendMessage", formData ,
+                function(data){
+                    if (data.complete) {
+                        $.fancybox("<p>Message sent successfully</p>");
+                    }
+                },
+                'json'
+            );
+            e.preventDefault();
+        });
+
+        $(".delete-button").click(function(e){
+            var messageId = "{{messageInfo.Message.id}}";
+            if (messageId) {
+                $.get("/emails/{{ deleted ? 'destroy' : 'ajaxDeleteMessages' }}/" + messageId + "/{{ box }}",
+                    function(data) {
+                        if (data == "okey") {
+                            window.location = "/emails/{{ box }}";
+                        }
+                    }
+
+                );
+            }
+            e.preventDefault();
+        });
+    })
+</script>
+
+<div class="send-window" style="display: none">
+    <form id="send_alert_to_user" action="" method="post">
+        <div id="send-mail" class="bg-white client-view-send-mail">
+
+            <div class="mail-top">
+                <img alt="" src="{{ messageInfo.User.profile_pic|thumb(49, 48) }}" width="49" height="48" class="float-l" />
+                <div class="mail-info">
+                <div class="input">subject: {{ form.text('Message.subject', {'class' : 'text', 'value' : 'Re: '~text.truncate(messageInfo.Message.subject, 100)}) }}</div>
+                    {{ form.hidden("Message.to_id", { 'value' : messageInfo.From.id }) }}
+                <div class="error-message error-header" style="display:none"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="textarea">
+                {{ form.textarea('Message.content', {'label' : false , 'div' : false}) }}
+                <div class="error-message error-content" style="display:none"></div>
+            </div>
+            <div class="buttons">
+                <div class="float-r"><a href="#" onclick="$.fancybox.close()" class="btn1 float-l modal-button-close"><span>Cancel</span></a><a href="#" class="btn float-l send-btn button-send"><span><img alt="" src="{{ html.url('/img/design/send-icon.gif') }}">Send</span><input type="submit" value=""></a></div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </form>
+</div>
+

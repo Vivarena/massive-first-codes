@@ -1,0 +1,278 @@
+{{ view.Html.css([
+    '/admin/css/dynamic_menu', '/js/fancybox/jquery.fancybox-1.3.4',
+    '/admin/js/jquery/jquery-ui/cupertino/jquery-ui-1.8.6.custom'
+], null, {'inline': false}) }}
+
+{{ view.Html.script([
+    '/admin/js/jquery/plugins/nano/jquery.nano', 'fancybox/jquery.fancybox-1.3.4',
+    '/admin/js/jquery/jquery-ui/jquery-ui-1.8.custom.min'
+], {'inline': false}) }}
+
+{{ view.addScript('
+<style type="text/css">
+    a.btn {
+        display: inline;
+        border: none;
+        background: transparent;
+    }
+    a {
+        text-decoration: none;
+    }
+</style>
+') }}
+
+
+{{ html.script('/admin/js/jquery/plugins/jquery.json-2.3.min', {'inline': false}) }}
+{{ html.script('/admin/js/jquery/plugins/nestedSortable/jquery.ui.nestedSortable', {'inline': false}) }}
+
+{{ view.addScript('
+<script type="text/javascript">
+	$(function() {
+		$(".delete-link").click(function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:140,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$(this).dialog("close");
+						$.get("/admin/admin_menus/ajaxDelete/Menu/" + link,
+                            function(data){
+                                if (data.status) {
+                                    $("#list_" + link).remove();
+                                }
+                            },"json"
+                        );
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
+
+        $(".activeItem").live("click", function(e) {
+            var id = $(this).attr("href");
+            var object = $(this);
+            $.get("/admin/admin_menus/ajaxActivate/Menu/" + id,
+                function(data) {
+                    if(data.status) {
+                        if (object.hasClass("ui-icon-check")) {
+                            object.removeClass("ui-icon-check");
+                            object.addClass("ui-icon-cancel");
+                        } else {
+                            object.removeClass("ui-icon-cancel");
+                            object.addClass("ui-icon-check");
+                        }
+                    }
+                }
+            );
+            e.preventDefault();
+        });
+
+        $("ol.packagesSorting").nestedSortable({
+            disableNesting: "no-nest",
+            forcePlaceholderSize: true,
+            handle: "div",
+            helper:	"clone",
+            items: "li",
+            maxLevels: 2,
+            opacity: .6,
+            placeholder: "placeholder",
+            revert: 250,
+            tabSize: 25,
+            tolerance: "pointer",
+            toleranceElement: "> div",
+            update: function(e){
+                $(".contact-info").addClass("hover");
+                $(".loader").show();
+                $.post("/admin/admin_menus/saveSorting/Menu", {"items" : $.toJSON($("ol.packagesSorting").nestedSortable("toArray", {startDepthCount: 0}))},
+                        function(data) {
+                            if(!data.error) {
+                                $(".contact-info").removeClass("hover");
+                                $(".loader").hide();
+                            } else {
+                                window.alert(data.err_desc);
+                            }
+                        },
+                        "json"
+                );
+            }
+        });
+
+	});
+</script>
+') }}
+
+<div id="dialog-confirm" title="Delete this item?" class="hidden">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+<h2 style="margin-bottom: -20px; margin-left: 20px;">{{ menuName|capitalize }} navigation menu</h2>
+    <a href="#add_menu_container" title="Add sub menu" class="add_menu" style="float: right; margin-right: 32px"
+        data-id="0" data-title="{{ item.name }}">
+        <img src="/admin/img/icons/add.png" alt="" />
+    </a>
+<img src="/admin/img/ajax-loader-sub.gif" style="display: none;" class="loader" />
+<table cellpadding="0" cellspacing="1" class="contact-info">
+    <tr>
+        <td colspan="3" class="tdSorting">
+    {{ extTree.generate(menu, { 'class' : 'packagesSorting', 'type' : 'ol', 'id' : 'allPackages', 'element' : 'itemOfMenu'}) }}
+        </td>
+    </tr>
+</table>
+
+
+<div id="form_template">
+    <div id="{action}_menu_dialog" title="Add menu item to {title}">
+        <p class="validate-error"></p>
+
+        {{ form.create('Menu', {'url': '/admin/admin_menus/{action}', 'class': 'menu-form', "enctype":"multipart/form-data"}) }}
+        {{ form.hidden("site_menu_id", { "value" : menuType }) }}
+        <fieldset>
+
+
+                {% for key, value in languages %}
+                    <label>Menu name ({{ value }}) </label>
+                    {{ form.text('name.' ~ key, {'class': 'text ui-widget-content ui-corner-all', 'value': '{menu.name.' ~key ~ '}'}) }}
+                {% endfor %}
+
+
+            <div>
+                <div>
+                    <div>
+                        <label class="float-l">Menu URL</label>
+                        <span class="url-description float-r">Please put address or select below</span>
+                        <div class="clear">&nbsp;</div>
+                        {{ form.text('url', {'class': 'text ui-widget-content ui-corner-all menu-url', 'value': '{menu.url}'}) }}
+                    </div>
+
+                    <div>
+                        <label>Select static page: </label>
+                        {{ form.select('static_page', static_pages, null, {'empty': 'Please Select', 'class': 'staticPageSelect'}) }}
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="data[Menu][parent_id]" value="{parent_id}" />
+
+        </fieldset>
+        {{ form.end() }}
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('.page_preview').fancybox({
+                    'width': '90%',
+                    'height': '90%',
+                    'autoScale': false,
+                    'transitionIn': 'none',
+                    'transitionOut': 'none',
+                    'type': 'iframe'
+                });
+
+        $('.add_menu').click(function(event) {
+            var data = {
+                'title': $(this).attr('data-title'),
+                'parent_id': $(this).attr('data-id'),
+                'action': 'add',
+                'menu': {
+                    'name': '',
+                    'url': ''
+                }
+            }
+            var content = $.nano($('#form_template').html(), data);
+            showDialog(content);
+            event.preventDefault();
+        });
+
+        $('.edit-btn').click(function(event) {
+            var id = $(this).attr('data-id');
+            $.getJSON('/admin/admin_menus/read/' + id, function(data) {
+                if(data.status) {
+                    var data = {
+                        'title': data.name,
+                        'action': 'edit/' + id,
+                        'parent_id' : data.parent_id,
+                        'menu': {
+                            'name': {
+                                {% for key, value in languages %}
+                                    '{{ key }}': data.name.{{ key }}{% if loop.index != loop.last %},{% endif %}
+                                {% endfor %}
+                                },
+                        'url': data.url,
+                        'image': data.image
+                        }
+                    };
+                    var content = $.nano($('#form_template').html(), data);
+                    showDialog(content);
+                }
+            });
+
+            event.preventDefault();
+        });
+
+        function showDialog(content) {
+            $("#tabs").tabs();
+            $(content).dialog({
+                        'modal': true,
+                        'resizable': false,
+                        'draggable': false,
+                        'width': 450,
+                        'buttons': {
+                            'Cancel': function()
+                            {
+                                $(this).dialog("close");
+                            },
+                            'Save': function()
+                            {
+                                $(this).find('form').submit();
+                            }
+                        }
+                    });
+        }
+
+        $('#MenuStaticPage, #MenuCollectionPage').live('change', function() {
+            var $context = $(this).closest('form');
+            var $this = $(this);
+
+            if($this != '') {
+                var msg = 'Menu URL field is not empty, overwrite the data?';
+                var $urlField = $('.menu-url', $context);
+                if($.trim($urlField.val()) != '' && !confirm(msg)) {
+                    $this.val('');
+                } else {
+                    $urlField.val($this.val());
+
+                    if($(this).hasClass('staticPageSelect')) {
+                        $('.collectionSelect', $context).val('');
+                    } else {
+                        $('.staticPageSelect', $context).val('');
+                    }
+                }
+            }
+        });
+        $("#tabs").tabs();
+        $('.menu-form').live('submit', function(event) {
+            var isValid = true;
+            $(':text', $(this)).each(function(index, elem) {
+                $elem = $(elem);
+                if($.trim($elem.val()) == '') {
+                    $elem.effect('highlight');
+
+                    isValid = false;
+                }
+            });
+
+            if(!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>

@@ -1,0 +1,85 @@
+{{ view.addScript('') }}
+<script type="text/javascript">
+	$(function() {
+		$(".delete-link").click(function(event) {
+			event.preventDefault();
+			var id = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:140,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+                        $(this).dialog("close");
+                        $.get("/admin/admin_payments/ajaxDelete/" + id,
+                                function(data){
+                                    if (data.status) {
+
+                                        if (data.count == 0) {
+                                            $(".contact-info").fadeOut().remove();
+                                            $(".empty-result").fadeIn();
+                                        } else {
+                                            $("#list_" + id).fadeOut().remove();
+                                        }
+                                    }
+                                },
+                                "json"
+                        );
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
+	});
+</script>
+
+<div id="dialog-confirm" title="Delete this page?" class="hidden">
+    <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<h2 class="title-page">Payments </h2>
+
+{% if orders %}
+<table cellpadding="0" cellspacing="1" class="contact-info">
+    <tr>
+        <th class="first" width="100">First name</th>
+        <th class="first" width="100">Last name</th>
+        <th class="sort" width="100">Created</th>
+        <th>Amount</th>
+        <th>-</th>
+        <th>-</th>
+    </tr>
+    {% for item in orders %}
+    {% set row_class = loop.index%2 ? 'odd' : 'even' %}
+    <tr id="list_{{ item.Payment.id }}">
+        <td class="first {{ row_class }}">{{ item.Payment.payment_fname }}</td>
+        <td class="first {{ row_class }}">{{ item.Payment.payment_lname }}</td>
+        <td class="{{ row_class }}">{{ item.Payment.created|date("m/d/Y H:i:s A") }}</td>
+        <td class="{{ row_class }}">${{ item.Payment.total }}</td>
+        <td class="{{ row_class }}">
+            <a href="/admin/admin_payments/view/{{ item.Payment.id }}" title="Click to view">
+                <img alt="" src="/admin/img/icons/view.png" />
+            </a>
+        </td>
+        <td class="{{ row_class }}">
+            <a href="{{ item.Payment.id }}" class="delete-link" title="Click to delete">
+                <img alt="" src="/admin/img/icons/delete.png" />
+            </a>
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+{{ view.element('paginator') }}
+{% else %}
+<div class="empty-result">
+    Items not found
+</div>
+        {% endif %}
+
+<div class="empty-result" style="display: none">
+    Items not found
+</div>

@@ -1,0 +1,49 @@
+
+<div class="tabs-box clearfix">
+<span class="shadow-tab">&nbsp;</span>
+<ul class="tab-list clearfix">
+    <li class="active">Messages</li>
+</ul>
+<div class="padd-30"></div>
+<form action="#">
+    <fieldset>
+       <div class="btn-holder">
+            <input type="button" name="" class="sent" value="Sent" />
+            <a href="#" class="box">In box</a>
+            <input type="button" name="" class="write" value="Write" />
+       </div>
+       <div class="box-table-holder">
+           <table class="box-table">
+                <tbody>
+                    <tr>
+                        <th class="col">from</th>
+                        <th class="col-02">Subject</th>
+                        <th class="col-03">date</th>
+                        <th class="col-04">time</th>
+                        <th class="col-05">delete</th>
+                        <th class="col-06"><input type="checkbox" name="" /></th>
+                    </tr>
+                </tbody>
+           </table>
+       </div>
+
+
+        {{ view.element('messaging/messages_item') }}
+
+        <div class="bottom">
+            <input type="submit" class="sbm" name="" value="Delete" />
+            <div class="paging">
+                <span>Messages 3-1 of</span>
+                <span class="current">1</span>
+                <span><a href="#">First</a></span>|
+                <span><a class="prev" href="#">Previous</a></span>|
+                <span><a class="next" href="#">Next</a></span>|
+                <span><a href="#">Last</a>
+
+            </div>
+
+        </div>
+
+        </fieldset>
+        </form>
+</div>

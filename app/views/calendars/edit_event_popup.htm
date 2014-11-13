@@ -1,0 +1,71 @@
+<div id="editEventBox" >
+    {{ form.create('CalendarEvent') }}
+        {{ form.hidden('id') }}
+        <fieldset>
+            <div class="messages-holder">
+                <div class="title clearfix">
+                    <div class="top clearfix">
+                        <p class="invFriends">Invite friends</p>
+                        <select multiple id="friendsTag" name="data[Calendar][users][]" style="width:497px">
+                            {% for id, name in friendsList %}
+                                <option value="{{ id }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                       {# <a class="btn" id="invite">Invite All</a>#}
+                        {{ form.checkbox('all') }} Invite All
+                    </div>
+                </div>
+                <div class="txtarea-holder clearfix">
+                    {{ form.text('subject', {'readonly' : (view.data.CalendarEvent.iAmOwner) ? '' : 'readonly','class':'cal-subject'}) }}
+                </div>
+
+
+                <div class="txtarea-holder clearfix">
+                    {{ form.textarea('description', {'readonly' : (view.data.CalendarEvent.iAmOwner) ? '' : 'readonly'}) }}
+                </div>
+                <ul id="listInvitedFriends">
+                     <span class="invitedName">
+                          <span class="status">Total: {{ totalInv }}</span><br/>
+                          {% if ( totalUserStatus.0) %}<span class="status">Pending: {{ totalUserStatus.0 }}</span><br/>{% endif %}
+                          {% if ( totalUserStatus.1) %}<span class="status">Approved: {{ totalUserStatus.1 }}</span><br/>{% endif %}
+                          {% if ( totalUserStatus.2) %}<span class="status">Rejected: {{ totalUserStatus.2 }}</span><br/>{% endif %}
+                     </span>
+                    {% set statusInvite = {0:'pending', 1:'approved', 2:'rejected'} %}
+                    {% if cal_owner %}
+                    {% else %}
+                        {% set cal_owner = session.read('Auth.User.id') %}
+                    {% endif %}
+                    {% for friend in view.data.UserCalendar %}
+
+                        {% if (friend.User.UserInfo.user_id   ==  cal_owner) %}
+                            {% set ava = (friend.User.UserInfo.avatar) ? friend.User.UserInfo.avatar : friend.User.UserInfo.photo %}
+                            <li class="clearfix">
+                                <a href="/{{ friend.User.login }}" target="_blank"><span class="ava"><img src="/thumbs/43x43{{ ava|default('/no_ava.jpg') }}" alt=""/></span></a>
+                                <span class="invitedName"><a href="/{{ friend.User.login }}" target="_blank">{{ friend.User.UserInfo.username }}</a><br/>
+                                    <span class="status">({{ statusInvite[friend.status] }})</span>
+                                </span>
+                            </li>
+                        {% endif  %}
+                    {% endfor %}
+                    {% for friend in view.data.UserCalendar %}
+                        {% if (friend.User.UserInfo.user_id   !=  cal_owner) %}
+                            {% set ava = (friend.User.UserInfo.avatar) ? friend.User.UserInfo.avatar : friend.User.UserInfo.photo %}
+                            <li class="clearfix">
+                                <a href="/{{ friend.User.login }}" target="_blank"><span class="ava"><img src="/thumbs/43x43{{ ava|default('/no_ava.jpg') }}" alt=""/></span></a>
+                                <span class="invitedName"><a href="/{{ friend.User.login }}" target="_blank">{{ friend.User.UserInfo.username }}</a><br/>
+                                    <span class="status">({{ statusInvite[friend.status] }})</span>
+                                </span>
+                            </li>
+                        {% endif  %}
+                    {% endfor %}
+                </ul>
+                <div class="bottom clear">
+                    {% if view.data.CalendarEvent.iAmOwner %}
+                        <input type="button" class="btn deleteEvent" name="" data-cal-id="{{ view.data.CalendarEvent.id }}" value="Delete" />
+                    {% endif %}
+                    <input type="button" class="btn saveEditEvent" name="" value="Save" />
+                </div>
+            </div>
+        </fieldset>
+    {{ form.end() }}
+</div>

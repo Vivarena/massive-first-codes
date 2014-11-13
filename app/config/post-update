@@ -1,0 +1,62 @@
+#!/bin/bash
+
+cd ~/public_html
+
+if [ $1 == 'git' ]; then
+
+    echo '-----------------------------------------------'
+    echo '------------------- GIT -----------------------'
+    echo '-----------------------------------------------'
+
+
+    git reset --hard HEAD
+    if [ $? -eq 0 ]; then
+    echo 'git reset success'
+    fi
+
+    git pull
+    if [ $? -eq 0 ]; then
+    echo 'git pull success'
+    fi
+
+fi
+
+if [ $2 == 'acl' ]; then
+
+    echo '-----------------------------------------------'
+    echo '------------------- ACL -----------------------'
+    echo '-----------------------------------------------'
+
+    ./cake acl_extras aco_sync
+    if [ $? -eq 0 ]; then
+    echo 'ACO/ARO successfully updated'
+    fi
+
+fi
+
+if [ $3 == 'chmod' ]; then
+
+    find . -type d -exec chmod 755 {} \; && find . -type f -exec chmod 644 {} \;
+    if [ $? -eq 0 ]; then
+    echo 'change permissions success'
+    fi
+    chmod 777 ~/public_html/app/config/post-update
+
+fi
+
+if [ $4 == 'cc' ]; then
+
+    echo '-----------------------------------------------'
+    echo '---------------- CLEAR CACHE ------------------'
+    echo '-----------------------------------------------'
+
+    find ~/public_html/app/tmp/cache -type f -exec rm {} \; && rm -rf "~/public_html/app/plugins/cakephp-twig/tmp/"*;
+    if [ $? -eq 0 ]; then
+    echo 'ALL cache successfully clear'
+    fi
+
+fi
+
+echo '-----------------------------------------------'
+echo '------------------- DONE ----------------------'
+echo '-----------------------------------------------'

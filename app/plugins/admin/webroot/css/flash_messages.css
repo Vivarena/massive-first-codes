@@ -1,0 +1,33 @@
+div.flash_block {
+    border-top: 2px solid;
+    border-bottom: 2px solid;
+    text-align: center;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 5px;
+	margin: 5px 22px;
+}
+
+div.flash_error {
+    background-color: #ffcfcf;
+    border-color: #d37474;
+    color: #900;
+}
+
+div.flash_message {
+    background-color: #fff6bf;
+    border-color: #ffd324;
+    color: #993;
+}
+
+div.flash_warning {
+    background-color: #fff6bf;
+    border-color: #ffd324;
+    color: #993;
+}
+
+div.flash_success {
+    background-color: #cfffcf;
+    border-color: #94d394;
+    color: #090;
+}

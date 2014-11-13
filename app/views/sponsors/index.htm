@@ -1,0 +1,174 @@
+{{ html.css("/rating/css/rating") }}
+{{ html.script("/rating/js/rating_jquery", { "inline" : false }) }}
+<div class="tabs-box clearfix">
+    <span class="shadow-tab">&nbsp;</span>
+    <div class="tabs-box-left tabs-box-left-full clearfix">
+
+        <ul class="tab-list clearfix">
+            <li class="{{ activeTab['gears'] }}"><a href="/{{ loginThisPage }}/gears">Gear</a></li>
+            <li class="{{ activeTab['sponsors'] }}"><a href="/{{ loginThisPage }}/sponsors">Sponsor</a></li>
+        </ul>
+
+            <div class="padd-30"></div>
+
+            {% if youIsOwnerPage %}
+            <div class="subButtons clearfix">
+                <a href="#" class="btn addSponsor">Add {% if type == 'sponsor' %}sponsor{% else %}gear{% endif %}</a>
+                <div id="sponsorDiv">
+                    {{ form.create('UserSponsor', {'id' : 'sponsorForm', 'url' : '/sponsors/add', 'enctype' : 'multipart/form-data' }) }}
+                    <div class="input clearfix">
+                        {{ form.input('name', {'div' : false, 'label' : 'Name of '~type~' : ', 'class' : 'fieldSponsor empty-valid'}) }}
+                    </div>
+                    <div class="input clearfix">
+                        {{ form.input('description', {'div' : false, 'label' : 'Small description: ', 'class' : 'fieldSponsor'}) }}
+                    </div>
+
+                    <div class="input clearfix">
+                        <label>Rating : </label>
+                        <div id="ratingStarsForm">
+                            {{ view.element('rating_form',{
+                            'plugin' : 'rating',
+                            'model' : 'UserSponsor',
+                            'id' : 0
+                            }) }}
+                        </div>
+                    </div>
+                    <div class="input clearfix">
+                        {{ form.input('logoFile', {'div' : false, 'label' : 'Logo of '~type~': ', 'type' : 'file', 'class' : 'fieldSponsor empty-valid'}) }}
+                    </div>
+
+                    {{ form.hidden('type', {'value': type}) }}
+                    <div class="buttons">
+                        <input type="button" value="Cancel" name="submitSponsor" class="btn no-float cancelSponsor"/>
+                        <input type="submit" value="Save {{ type }}" name="submitSponsor" class="btn no-float"/>
+                    </div>
+                    <br class="clear"/>
+                    {{ form.end() }}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="box-list clearfix" id="listOfSponsors">
+                {{ form.create('UserSponsor', {'id' : 'activeForm', 'url' : '' }) }}
+
+                {% for sponsor in allSponsors %}
+                    <div class="box-list_sponsor clearfix {% if sponsor.UserSponsor.active %}b-red{% endif %} boxSponsor">
+                        {% if youIsOwnerPage %}
+                            {#position: absolute; right: 5px; background: url('/img/store/det.png') repeat-x scroll 0 0 transparent;border: 1px solid #DDDDDD;border-radius: 3px 3px 3px 3px;color: #717171;padding: 1px 5px#}
+                            {#position: absolute; top: -8px; right: 5px; background: url('/img/store/det.png') repeat-x scroll 0 0 transparent;border: 1px solid #DDDDDD;border-radius: 3px 3px 3px 3px;color: #717171;padding: 1px 5px#}
+                            <div class="btnActionsSponsors">
+                                <a href="/sponsors/delete/{{ sponsor.UserSponsor.id }}" class="details"><img src="/img/cancel.png" alt=""/></a>
+                                <a href="{{ type ~'s' }}/edit/{{ sponsor.UserSponsor.id }}" class="details"><img src="/img/elements/edit_icon.png" alt=""/></a>
+                            </div>
+                            {% if sponsor.UserSponsor.active %}<div class="statusTxt">ACTIVE</div>{% endif %}
+                        {% endif %}
+                        <div class="sponsor_img">
+                            <a href="{{ type ~'s' }}/view/{{ sponsor.UserSponsor.id }}"><img src="/thumbs/150x110{{ sponsor.UserSponsor.logo }}" alt="Logo"></a>
+                        </div>
+                        <span>{{ sponsor.UserSponsor.name }} </span>
+                        <div class="box-list_sponsor__text clearfix">
+                            <p class="sponsorDesc">{{ sponsor.UserSponsor.description|truncate(33) }}<br/>
+                                <a href="{{ type ~'s' }}/view/{{ sponsor.UserSponsor.id }}" class="more">Read More</a>
+                            </p>
+                            <div id="ratingStarsGears">
+                                {{ view.element('rating',{
+                                'plugin' : 'rating',
+                                'model' : 'UserSponsor',
+                                'id' : sponsor.UserSponsor.id,
+                                'showVotes': 1
+                                }) }}
+                            </div>
+                            {% if youIsOwnerPage %}
+                            <br class="clearfix"/>
+                            <div class="activeActions">
+                                {% if sponsor.UserSponsor.active %}
+                                    <input type="button" value="Inactive" data-status="inactive" class="btn no-float inactiveBtn"/>
+                                {% else %}
+                                    <input type="button" value="Set as active" data-status="active" class="btn no-float activeBtn"/>
+                                {% endif %}
+                                <input type="hidden" id="sponsorId_{{ sponsor.UserSponsor.id }}" value="{{ sponsor.UserSponsor.id }}" name="item_{{ loop.index }}" class="idSponsor">
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <h3>No {{ type }}...</h3>
+                {% endfor %}
+
+                {{ form.end() }}
+
+            </div>
+    </div>
+</div>
+
+{% if youIsOwnerPage %}
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var sponsorDiv = $('#sponsorDiv'),
+            addBtn = $('.addSponsor'),
+            cancelBtn = $('.cancelSponsor'),
+            formAddSponsor = '#sponsorForm',
+            inputFields = $('.fieldSponsor'),
+            listSponsors = $('#listOfSponsors'),
+            activeBtn = $('.activeBtn'),
+            inactiveBtn = $('.inactiveBtn'),
+            validateSponsor = new ValidateForm();
+        validateSponsor.initValidate({
+            formValidate: formAddSponsor
+        });
+
+        addBtn.click(function(e) {
+            var $thisBtn = $(this),
+                parentDiv = $thisBtn.closest('div');
+            sponsorDiv.slideDown('normal', function(){
+                $thisBtn.hide();
+            });
+            e.preventDefault();
+        });
+
+        $(formAddSponsor).submit(function(){
+            var $thisFrom = $(this);
+            return validateSponsor.checkValidate();
+        });
+
+        cancelBtn.click(function(e) {
+            addBtn.show();
+            sponsorDiv.slideUp('normal', function(){
+                inputFields.val('');
+            });
+            e.preventDefault();
+        });
+
+
+        $('.activeBtn, .inactiveBtn').click(function(e) {
+            var $thisBtn = $(this),
+                statusInfo = $thisBtn.data('status'),
+                idSponsor = $thisBtn.closest('.activeActions').find('.idSponsor').val();
+            updateStatus(statusInfo, idSponsor, $thisBtn);
+            e.preventDefault();
+        });
+
+        function updateStatus(status, idSponsor, thisBtn){
+            $.post("/sponsors/setStatus/"+status, {'data[idSponsor]' : idSponsor, 'data[type]' : '{{ type }}' },
+                function(data) {
+                    if(!data.error) {
+                        location.reload();
+                    } else {
+                        showTopMsg(data.err_desc, 'error');
+                    }
+                },
+                "json"
+            );
+        }
+
+
+
+
+    });
+
+</script>
+
+{% endif %}

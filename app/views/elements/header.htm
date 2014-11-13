@@ -1,0 +1,83 @@
+<div id="header">
+    <div class="header clearfix">
+        <div class="clearfix">
+            <div class="logo"><a href="/" class="text-hide">Vivarena</a></div>
+            <div class="login-btn clearfix">
+                {% if session.check('Auth.User.id') %}
+                    <div class="logout">
+                        <div class="logout-i clearfix login">
+                            {{ view.element('ava_common', { 'data' : session.read('Auth.User.info'), 'w' : 40, 'h' : 40, 'thumbAva' : true } ) }}
+                            <span>{{ session.read('Auth.User.info.first_name') }} {{ session.read('Auth.User.info.last_name') }}</span>
+                        </div>
+                    </div>
+                {% else %}
+                    <a href="#" class="login">{{'Member LogIn'|__}}</a>
+                {% endif %}
+                <div class="login-box {% if not session.check('Auth.User.id') %}beforeLogged{% endif %} hidden" id="forLoginBox">
+                    <span class="close">&nbsp;</span>
+
+                    {% if not session.check('Auth.User.id') %}
+                    {{ form.create('User', {"type":"post", "url":"/users/login"}) }}
+                        <div class="clearfix">
+                            <div class="input">
+                                {{ form.text("User.email", {"class":"text",
+                                    "onblur": "this.value = (this.value == '') ? 'Email' : this.value",
+                                    "onfocus": "this.value = (this.value == 'Email') ? '' : this.value",
+                                    "value": "Email"}) }}
+                                {{ session.flash('auth') }}
+                            </div>
+                            <div class="input">
+                                {{ form.password("User.password", {"class":"text",
+                                    "onblur": "this.value = (this.value == '') ? 'Password' : this.value",
+                                    "onfocus": "this.value = (this.value == 'Password') ? '' : this.value",
+                                    "value": "Password"}) }}
+                            </div>
+                              <div class="clearfix remember-block">
+                                {{ form.checkbox('remember') }} <label>{{'Remember me'|__}}</label>
+                                <div class="login-links">
+                                   <a class='forgot' href="/forgotten-password.html">{{'Forgot Password?'|__}}</a>
+                                <a class='registration' href="/registration.html">{{ 'Register'|__}}</a>
+                                </div>
+                                 <div class="button">
+                                {{ form.submit('Login', {'class': 'btn-login', 'div': false})}}
+                                {{ facebook.login({ 'perms' : 'email,read_stream,publish_stream,user_birthday,user_location,user_hometown,user_photos,friends_photos, user_checkins, publish_checkins, friends_checkins, read_friendlists, read_mailbox', 'style' : 'height:0px; width:0px;' }) }}
+                                {{ facebook.init() }}
+                              </div>
+                            </div>
+                        </div>
+                    {{ form.end() }}
+                    {% else %}
+                    <div class="clearfix">
+                            <ul>
+                                <li>{{ view.Html.link('View Dashboard'|__, '/profile') }}</li>
+                                <li>{{ view.Html.link('Edit Profile'|__, '#') }}</li>
+                                <li>{{ view.Html.link('Logout', '/users/logout') }}</li>
+                            </ul>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        $('.login').click(function(e){
+            $('#forLoginBox').slideToggle('fast');
+            e.preventDefault();
+        });
+
+        $('.close').click(function(e) {
+            $('#forLoginBox').slideToggle('fast');
+            e.preventDefault();
+        });
+
+
+    });
+
+</script>

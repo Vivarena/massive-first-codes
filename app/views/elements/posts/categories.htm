@@ -1,0 +1,22 @@
+<div id='category-search'>
+  {% set len = categories|length %}
+  {% for category in categories %}
+
+    {% if search_term is not empty and category == search_term %}
+      {{ html.link(category, { 'controller':'posts', 'action':'search', 'search_term':category }, { 'class':'highlight'} ) }}
+    {% else %}
+      {{ html.link(category, { 'controller':'posts', 'action':'search', 'search_term':category } ) }}
+    {% endif %}
+
+    {% if len > 1 %}
+      |
+      {% set len = len - 1 %}
+    {% endif %}
+
+  {% endfor %}
+
+  {% if search_term is not empty or show_back is not empty %}
+    {{ html.link("<< "~'Back'|__, { 'controller':'posts', 'action':'index'}) }}
+  {% endif %}
+</div>
+

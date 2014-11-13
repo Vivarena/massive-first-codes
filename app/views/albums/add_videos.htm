@@ -1,0 +1,104 @@
+
+<br class="clear"/>
+<div id="imagesContainer">
+    {{ form.create('UserVideo', {'id' : 'videoItemForm'}) }}
+        <div class="input clearfix"><label class="youtubeIco"><img src="/img/youtube_32x32.png"/> URL: </label><input type="text" id="urlVideo" name="data[UserVideo][url_video]" class="youtube-link"/></div>
+        <div class="input clearfix"><label>Title: </label><input type="text" name="data[UserVideo][title]"/></div>
+        <div id="coverYoutube">
+            {{ youtube.getImage(videoURL, 'small', null) }}
+        </div>
+        <input type="submit" value="Save video" name="submitVideo" class="btn saveYoutube"/>
+        <input type="hidden" value="{{ album[modelAlbum].id }}" id="albumId" name="data[UserVideo][video_album_id]"/>
+        <br class="clear"/>
+    {{ form.end() }}
+</div>
+
+
+
+<script type="text/nano-template" id="videoItem">
+    <div class="img-block__one clearfix">
+        <a href="{youtubeLink}" class="videoPlay"><img src="/thumbs/103x80{coverImg}"></a>
+        <div class="actionsPhoto">
+            <a href="#" class="deletePhoto" data-photo-id="{videoId}">Delete</a>
+            <a href="{coverImg}" class="coverPhoto" data-album-id="{albumId}">Cover</a>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var albumID = $('#albumId').val(),
+            cacheVideoCover = null,
+            container = $('#imagesContainer'),
+            listVideoItems = $('.img-block-all'),
+            formItemVideo = '#videoItemForm',
+            validateVideoItem = new ValidateForm();
+
+        $('#urlVideo').blur(function(){
+            var $this = $(this),
+                videoURL = $this.attr('value');
+            if (videoURL != '' && cacheVideoCover != videoURL) {
+                var videoID = videoURL.match(/http:\/\/(?:youtu\.be\/|(?:[a-z]{2,3}\.)?youtube\.com\/watch(?:\?|#\!)v=)([\w-]{11}).*/);
+                if (videoID != null) {
+                    videoID = videoID[1];
+                    $('#coverYoutube').load('/albums/getYoutubeCover/small', {videoURL: videoURL}, function(){
+                        $('#youtubeCoverHref').attr('href', 'http://youtube.com/embed/'+videoID);
+                        $(".videoPlay").colorbox({iframe:true, innerWidth:425, innerHeight:344});
+                        $this.attr('value', 'http://youtube.com/embed/'+videoID);
+                    });
+                }
+                cacheVideoCover = videoURL;
+            }
+
+        });
+
+        validateVideoItem.setRules({
+            '.youtube-link' : /youtube.com\/embed\/([\w-]{11})/
+        });
+        validateVideoItem.initValidate({
+            formValidate: formItemVideo
+        });
+        $(formItemVideo).submit(function(){
+            var $thisFrom = $(this);
+            if (validateVideoItem.checkValidate()) {
+                $.post("/albums/addItemVideo", $thisFrom.serialize(),
+                    function(data) {
+                        if(!data.error) {
+                            $('#videoItemForm').find('input[type=text]').val('');
+                            cacheVideoCover = null;
+                            var setTemplate = {
+                                    'youtubeLink'   : data.itemVideo.url_video,
+                                    'coverImg' : data.itemVideo.cover_img,
+                                    'videoId' : data.itemVideo.id,
+                                    'albumId' : albumID
+                                },
+                               videoItemsTemplate = $.nano($('#videoItem').html(), setTemplate);
+                            listVideoItems.append(videoItemsTemplate);
+                            $(".videoPlay").colorbox({iframe:true, width:"90%", height:"90%", fixed: true});
+                            showTopMsg('New video item successfully added');
+                        } else {
+                            showTopMsg(data.err_desc, 'error');
+                        }
+
+                    },
+                    "json"
+                );
+            }
+            return false;
+        });
+
+
+
+
+
+    });
+
+
+
+
+</script>
+
+

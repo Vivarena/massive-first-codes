@@ -1,0 +1,15 @@
+{{ extTree.addItemAttribute('id', 'list_' ~ data.Testimonial.id ) }}
+<div class="categoryDiv">
+    <span>
+        <span class="float-l"></span>
+        <span>
+            <span class="manufacturerItem">{{data.Testimonial.name}}</span>
+        </span>
+    </span>
+    <span class="margin-r float-r ui-state-default ui-corner-all red-border"><a href='{{data.Testimonial.id}}' class="package-del ui-icon ui-icon-trash">[ Del ]</a></span>
+    <span class="margin-r float-r ui-state-default ui-corner-all"><a href="/admin/admin_testimonials/edit/{{data.Testimonial.id}}" class="ui-icon ui-icon-pencil">[ Edit ]</a></span>
+    <span class="margin-r float-r ui-state-default ui-corner-all">
+        <a href="{{ data.Testimonial.id }}" class="activeItem ui-icon ui-icon-{% if data.Testimonial.active == 1%}check{% else %}cancel{% endif %}" title="Active or inactive"></a>
+    </span>
+    <br clear="all"/>
+</div>

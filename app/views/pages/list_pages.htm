@@ -1,0 +1,76 @@
+{{ view.Html.script('/js/jquery/plugins/nicEdit/nicEdit', { 'inline': false }) }}
+
+<div class="profile-custom-page clearfix" id="newsfeedList">
+  <div class="updateFeedItems">
+
+      {{ jGrowl.flash() }}
+
+
+      <div class="netfeed-box clearfix" xmlns="http://www.w3.org/1999/html">
+          <div class="profile-content clearfix">
+              <div class="profile-content-title clearfix">
+                  <h2 class="noIcon">{{'LIST OF PAGES'|__}}</h2>
+              </div>
+          </div>
+
+      <div class="section clearfix">
+          <div class="message-block feed-block">
+              <div class="section-title clearfix">
+                  <h3>{{'Pages'|__}}</h3>
+
+                  <span id="deleteAll">
+                      {{ "Delete all" |__ }}
+                  </span>
+              </div>
+
+      {% if pages %}
+      {% for item in pages %}
+
+              <div class="message-block-one clearfix aWallItem">
+                  {% set linkProfile = (session.read('Auth.User.login')|length > 0) ? session.read('Auth.User.login') : 'profile-'~session.read('Auth.User.id') %}
+                  <div class="message-block-one__text">
+                  <a href="/{{ linkProfile }}/page/{{ item.key }}" target="_blank">{{ item.title }}</a>
+                      <span class="txtContent">{{ item.content }}</span>
+                      <span class="date-actualizar">{{ item.created|date('M j, Y H:i') }}</span>
+                  </div>
+                  <div class="action-box in-list-pages clearfix">
+                      <a class="deletePage" href="/profile/deletePage/{{ item.id }}" title="Delete"><span class="close-btn">&nbsp;</span></a>
+                      <a class="editPage" href="/profile/editPage/{{ item.id }}" title="Edit page"><span class="edit-btn">&nbsp;</span></a>
+                  </div>
+              </div>
+
+      {% endfor %}
+      {% else %}
+      <p style="text-align: center;">
+          No project/brand page in your network
+      </p>
+      {% endif %}
+      </div>
+      </div>
+      </div>
+
+
+
+  </div>
+  {{ html.script('rec.js', {'inline':false}) }}
+  <div id="rec_friends">
+  </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        $('.updateFeedItems').on('click', '.deletePage', function(e){
+            var thisHref = $(this).attr('href');
+            if (confirm('Are you sure want to delete this page?')) {
+                window.location = thisHref;
+            }
+            e.preventDefault();
+        });
+
+
+    });
+
+
+</script>

@@ -1,0 +1,121 @@
+<div id="pubsList">
+
+    {{ view.element('publications/pubList', { 'first':true }) }}
+
+</div>
+
+
+<script type="text/html" id="templateAddPublication">
+    <div id="{action}_pubDialog" title="{title}">
+
+        {{ form.create('Publication', {'url': '/admin/admin_publications/{action}', 'class': 'menu-form', "enctype":"multipart/form-data"}) }}
+        {{ form.hidden("Publication.id", { "value" : '{idPub}' }) }}
+        {{ form.hidden("Publication.publication_category_id", { "value" : '{idCat}' }) }}
+        <fieldset>
+
+            <ul>
+                {% for key, value in languages %}
+                <li><a href="#tabs-{{ key }}">{{ value }}</a></li>
+                {% endfor %}
+            </ul>
+
+            {% for key, value in languages %}
+            <div id="tabs-{{ key }}">
+                <label>Publication name ({{ value }}) </label>
+                {{ form.input('Publication.name.' ~ key, {'class': 'text ui-widget-content ui-corner-all', 'label':false, 'value': '{publication.name.' ~key ~ '}'}) }}
+                <br/>
+                <label>Publication content ({{ value }}) </label>
+                {{ form.input('Publication.content.' ~ key, {'class': 'text ui-widget-content ui-corner-all', 'label':false, 'value': '{publication.content.' ~key ~ '}'}) }}
+                <br/>
+            </div>
+            {% endfor %}
+            <hr/>
+            <label>Publication affiliate link: </label>
+            {{ form.input('Publication.affiliate_link', {'class': 'text ui-widget-content ui-corner-all', 'label':false, 'value': '{affLink}'}) }}
+
+
+        </fieldset>
+        {{ form.end() }}
+    </div>
+</script>
+
+
+<script type="text/javascript">
+    $(function() {
+
+        $('#publicationsInCategory').on('click', '.addPub', function(e){
+
+            var idCat = $(this).data('catId');
+            var data = {
+                'title' : 'Add publication',
+                'action': 'savePublication',
+                'idPub' : '',
+                'idCat' : idCat,
+                'affLink': '',
+                'publication': {
+                    'name': '',
+                    'content': ''
+                }
+            };
+            var content = $.nano($('#templateAddPublication').html(), data);
+            showDialog(content, 'pubsList', 450, true);
+            e.preventDefault();
+        });
+
+        $('#publicationsInCategory').on('click', '.editPublications', function(e){
+            ajaxLoader('', 'pubsList');
+            var idCat = $(this).data('catId');
+            $('#pubsList').load('/admin/admin_publications/readPubsInCategory/' + idCat + '/Edit');
+            e.preventDefault();
+        });
+        $('#publicationsInCategory').on('click', '.cancelPublications', function(e){
+            ajaxLoader('', 'pubsList');
+            var idCat = $(this).data('catId');
+            $('#pubsList').load('/admin/admin_publications/readPubsInCategory/' + idCat);
+            e.preventDefault();
+        });
+
+        $('#publicationsInCategory').on('click', '.delPub', function(e){
+            if (confirm('Delete this. Are you sure?')) {
+                var id = $(this).data("id");
+                var idCat = $(this).data("catId");
+                ajaxLoader('', 'pubsList');
+                $('#pubsList').load('/admin/admin_publications/deletePublication/' + id + '/' + idCat);
+            }
+            e.preventDefault();
+        });
+
+        $('#publicationsInCategory').on('click', '.editPub', function(e){
+            var id = $(this).data("id");
+            ajaxLoader();
+            $.getJSON('/admin/admin_publications/readPublication/' + id, function(data) {
+                if(!data.error) {
+                    var dataTemplate = {
+                        'title' : 'Edit category',
+                        'action': 'savePublication/' + id,
+                        'idCat' : data.publication.publication_category_id,
+                        'idPub' : id,
+                        'affLink': data.publication.affiliate_link,
+                        'publication': {
+                            'name': {
+                                {% for key, value in languages %}
+                                    '{{ key }}': data.publication.name.{{ key }}{% if loop.index != loop.last %},{% endif %}
+                                {% endfor %}
+                                },
+                            'content': {
+                                {% for key, value in languages %}
+                                    '{{ key }}': data.publication.content.{{ key }}{% if loop.index != loop.last %},{% endif %}
+                                {% endfor %}
+                            }
+                        }
+                    };
+                    var content = $.nano($('#templateAddPublication').html(), dataTemplate);
+                    showDialog(content, 'pubsList', 450, true);
+                }
+            });
+
+            e.preventDefault();
+        });
+
+    });
+</script>

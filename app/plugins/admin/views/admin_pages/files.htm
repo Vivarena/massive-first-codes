@@ -1,0 +1,14 @@
+<script src="/js/elfinder/js/elfinder.min.js"  type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="/js/elfinder/css/elfinder.css" type="text/css" media="screen" charset="utf-8" />
+<script type="text/javascript" charset="utf-8">
+    $().ready(function() {
+        var f = $('#finder').elfinder({
+            url : "/js/elfinder/connectors/php/connector.php",
+            lang : 'en',
+            docked : true,
+            height: 490
+        })
+    })
+</script>
+
+<div id="finder">finder</div> 

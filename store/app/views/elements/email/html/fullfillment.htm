@@ -1,0 +1,101 @@
+<div style="text-align: center">
+    <p style="font-size: 14px">
+        Please be advised that the following order was purchased from officialsituation.com in<br>
+        conjuction with a product partner.<br />
+        Please see the below invoise with the order to be filled.
+    </p>
+</div>
+<div style="font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 12px;">
+
+    <table cellpadding="0" cellspacing="0" border="0" width="820" align="center"><tr><td width="120">
+        <img src="http://officialsituation.com/img/logo.gif" alt="" vspace="0" hspace="0" border="0" width="120" height="105" /></td>
+        <td valign="bottom" width="140">
+            <h4><font face="arial"><a href="http://Officialsituation.com">Officialsituation.com</a></font></h4>
+        </td>
+        <td width="290">
+            <table cellpadding="5" cellspacing="0" border="0" width="280" align="center" bgcolor="#a2998b"><tr><td align="right"><font size="2" color="#ffffff">Purchased by</font></td>
+                <td><font color="#ffffff"><b>{{ billing.Billing.first_name }} {{ billing.Billing.name }}</b></font></td>
+            </tr><tr><td align="right"><font size="2" color="#ffffff">Order Number</font></td>
+                <td><font color="#ffffff"><b>{{ orderId }}</b></font></td>
+            </tr><tr><td align="right"><font size="2" color="#ffffff"></font></td>
+                <td><font color="#ffffff"><b></b></font></td>
+            </tr></table></td>
+        <td width="250">
+            <table cellpadding="5" cellspacing="0" border="0" width="250" align="center"><tr><td><font size="2" color="#a4a4a9">Shipping Method</font></td>
+                <td><font size="2">{{ shippingType }}</font></td>
+            </tr><tr><td><font size="2" color="#a4a4a9">Order Date</font></td>
+                <td><font size="2">{{ now|date('m/d/Y') }}</font></td>
+            </tr><tr><td><font size="2" color="#a4a4a9">Payment method</font></td>
+                <td><font size="2">{{ paymentType }}</font></td>
+            </tr></table></td>
+    </tr></table><br />
+    <table cellpadding="5" cellspacing="0" style="border-bottom-style: solid; border-bottom-color: #000000; border-bottom-width: 1px;border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-right-style: solid; border-right-color: #000000; border-right-width: 1px;" width="810" align="center">
+        <tr>
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Product</font></th>
+
+            {% if attributes|length > 0 %}
+                {% for key, attribute in attributes %}
+                    <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">{{ key }}</font></th>
+                {% endfor %}
+            {% endif %}
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Quantity</font></th>
+            <th bgcolor="#a2998b" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Total</font></th>
+        </tr>
+
+        <tr>
+            <td align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">{{ message }}</font></td>
+            {% if attributes|length > 0 %}
+                {% for key, attribute in attributes %}
+                    <td align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font size="2">{{ attribute }}</font></td>
+                {% endfor %}
+            {% endif %}
+
+            <td align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;">
+                <font size="2">{{ qty }}</font>
+            </td>
+            <td align="center" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;">
+                <font size="2">{{ number.format(price, { 'places' : 2 }) }}</font>
+            </td>
+        </tr>
+
+    </table>
+    <table cellpadding="5" cellspacing="0" border="0" width="820" align="center">
+        <tr>
+            <td width="50%">
+                <table cellpadding="5" cellspacing="0" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-right-style: solid; border-right-color: #000000; border-right-width: 1px;" width="100%" align="center">
+                    <tr>
+                        <th bgcolor="#a2998b" align="left" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Ordered By</font></th>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid; border-bottom-width: 1px; border-bottom-color: #000000; border-bottom-style: solid;">
+                            {{ billing.Billing.first_name }} {{ billing.Billing.name }}<br />
+                            {{ billing.Billing.address1 }},<br />
+                            {{ billing.Billing.city }}, {{ billing.Billing.state }}, {{ billing.Billing.zip }}<br />
+                            {{ billing.Billing.country }}<br />
+                            Phone: {{ billing.Billing.phone }}<br />
+                            Email: {{ billing.Billing.email }}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="50%">
+                <table cellpadding="5" cellspacing="0" style="border-top-style: solid; border-top-color: #000000; border-top-width: 1px; border-right-style: solid; border-right-color: #000000; border-right-width: 1px;" width="100%" align="center">
+                    <tr>
+                        <th bgcolor="#a2998b" align="left" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid;"><font color="#FFFFFF" size="3">Shipped to</font></th>
+                    </tr>
+                    <tr>
+                        <td valign="top" style="border-left-width: 1px; border-left-color: #000000; border-left-style: solid; border-bottom-width: 1px; border-bottom-color: #000000; border-bottom-style: solid;">
+                            {{ billing.Shipping.first_name }} {{ billing.Shipping.name }}<br />
+                            {{ billing.Shipping.address1 }},<br />
+                            {{ billing.Shipping.city }}, {{ billing.Shipping.state }}, {{ billing.Shipping.zip }}<br />
+                            {{ billing.Billing.country }}<br />
+                            Phone: {{ billing.Shipping.phone }}<br />
+                            Email: {{ billing.Shipping.email }}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</div>

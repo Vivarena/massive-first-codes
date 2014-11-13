@@ -1,0 +1,8 @@
+{{ html.css('blog', 'stylesheet', { 'inline': false }) }}
+{{ view.element('posts/categories', {'categories':categories, 'search_term':search_term, 'show_back':true }) }}
+<div class='blog-outer'>
+  <div class='art'>
+    {{ view.element('posts/blog_post', {'post':post}) }}
+  </div>
+</div>
+

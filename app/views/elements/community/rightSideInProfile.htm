@@ -1,0 +1,115 @@
+<div class="right_sidebar clearfix">
+        {#<div class="right_sidebar__banner">
+            <a href="#"> <img src="/img/demo/nike.jpg" alt=""></a>
+        </div>#}
+        <div class="photo-block">
+            {% if youIsOwnerPage or currentUrl == '/profile/edit' %}
+                {% set prefix = 'My' %}
+            {% else %}
+                {% if otherUserInfo.sex == 'F' %}
+                    {% set prefix = 'Hers' %}
+                {% else %}
+                    {% set prefix = 'His' %}
+                {% endif %}
+            {% endif %}
+            <h3>{#{{ prefix }}#} Photo</h3>
+            {% if currentUrl == '/profile/edit' %}
+                {% set user = view.data.User %}
+            {% endif %}
+            <div class="photo-block__middle clearfix">
+                <div class="photo-block__middle__img clearfix">
+                    {% for photo in lastPhotos %}
+                        <a href="/{{ user.login }}/albums/photos/{{ photo.UserPhoto.photo_album_id }}"><img src="/thumbs/58x58{{ photo.UserPhoto.image }}" alt=""></a>
+                    {% else %}
+                        <span class="emptyBarTxt">No photos...</span>
+                    {% endfor %}
+                </div>
+                <a href="/{{ user.login }}/albums/photos" class="more">See More</a>
+            </div>
+        </div>
+        <div class="photo-block">
+            <h3>{#{{ prefix }}#} Video</h3>
+
+            <div class="photo-block__middle clearfix">
+                <div class="photo-block__middle__img clearfix">
+                    {% for video in lastVideos %}
+                        <a href="/{{ user.login }}/albums/videos/{{ video.UserVideo.video_album_id }}"><img src="/thumbs/58x58{{ video.UserVideo.cover_img }}" alt=""></a>
+                    {% else %}
+                        <span class="emptyBarTxt">No videos...</span>
+                    {% endfor %}
+                </div>
+                <a href="/{{ user.login }}/albums/videos" class="more">See More</a>
+            </div>
+        </div>
+        {#<div class="photo-block">
+            <h3>Activity</h3>
+
+            <div class="photo-block__middle clearfix">
+                <div class="photo-block__middle__img clearfix">
+                    <div class="activity__img">
+                        <img src="/img/demo/man.jpg" alt="">
+                    </div>
+                    <div class="activity__text">
+                        <p>Viktoria became friends with <a href="#">Audrey de Myrhline</a>. </p>
+                        <span>8 minutes ago</span>
+                    </div>
+                </div>
+                <a href="#" class="more">See More</a>
+            </div>
+        </div>#}
+        <div class="photo-block">
+            <h3>Friends <span>({{ friends|length }})</span></h3>
+
+            <div class="photo-block__middle clearfix">
+                <div class="photo-block__middle__img clearfix">
+                    {% if friends|length > 0 %}
+                        {% for friend in friends %}
+                            <a href="/{{ friend.Friend.login }}">
+                                {{ view.element('ava_common', {'data':friend.UserInfo, 'w' : 58, 'h' : 58}) }}
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <span class="emptyBarTxt">No friends...</span>
+                    {% endif %}
+
+
+                </div>
+                <a href="/{{ user.login }}/friends" class="more">See More</a>
+            </div>
+        </div>
+
+        <div class="photo-block">
+            <h3>{#{{ prefix }}#} Sponsors</h3>
+
+            <div class="photo-block__middle clearfix">
+                <div class="photo-block__middle__img clearfix">
+                    {% if allSponsor %}
+                        {% for sponsor in allSponsor %}
+                            <a href="#"><img src="/thumbs/58x58{{ sponsor.UserSponsor.logo }}" alt=""></a>
+                        {% endfor %}
+                    {% else %}
+                        <span class="emptyBarTxt">No sponsors...</span>
+                    {% endif %}
+                </div>
+                <a href="/{{ user.login }}/sponsors" class="more">See More</a>
+            </div>
+        </div>
+
+        <div class="photo-block">
+            <h3>{#{{ prefix }}#} Gears</h3>
+
+            <div class="photo-block__middle clearfix">
+                <div class="photo-block__middle__img clearfix">
+                    {% if allGear %}
+                        {% for sponsor in allGear %}
+                            <a href="/{{ user.login }}/gears/view/{{ sponsor.UserSponsor.id }}"><img src="/thumbs/58x58{{ sponsor.UserSponsor.logo }}" alt=""></a>
+                        {% endfor %}
+                    {% else %}
+                        <span class="emptyBarTxt">No gears...</span>
+                    {% endif %}
+                </div>
+                <a href="/{{ user.login }}/gears" class="more">See More</a>
+            </div>
+        </div>
+
+    </div>

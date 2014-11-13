@@ -1,0 +1,115 @@
+{{ html.script('/admin/js/jquery/plugins/jquery.json-2.3.min', {'inline': false}) }}
+{{ html.script('/admin/js/jquery/plugins/nestedSortable/jquery.ui.nestedSortable', {'inline': false}) }}
+
+{{ view.addScript('') }}
+<script type="text/javascript">
+	$(function() {
+		$(".delete-link").click(function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:140,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$(this).dialog("close");
+						location.href = link;
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
+
+        $('ol.packagesSorting').nestedSortable({
+            disableNesting: 'no-nest',
+            forcePlaceholderSize: true,
+            handle: 'div',
+            helper:	'clone',
+            items: 'li',
+            maxLevels: 1,
+            opacity: .6,
+            placeholder: 'placeholder',
+            revert: 250,
+            tabSize: 25,
+            tolerance: 'pointer',
+            toleranceElement: '> div',
+            update: function(e){
+                $(".contact-info").addClass("hover");
+                $(".loader").show();
+                $.post("/admin/admin_faqs/saveSortedFaqs", {'packages' : $.toJSON($('ol.packagesSorting').nestedSortable('toArray', {startDepthCount: 0}))},
+                        function(data) {
+                            if(!data.error) {
+                                $(".contact-info").removeClass("hover");
+                                $(".loader").hide();
+                            } else {
+                                window.alert(data.err_desc);
+                            }
+                        },
+                        "json"
+                );
+            }
+        });
+
+	});
+</script>
+
+<div id="dialog-confirm" title="Delete this page?" class="hidden">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<h2 class="title-page">{{ groupsFaq[index]|capitalize }} FAQ </h2>
+
+{% if items %}
+<table cellpadding="0" cellspacing="1" class="contact-info">
+	<tr>
+		<th class="first" width="210">Quention</th>
+		<th class="sort">Last Modified</th>
+    	<th class="sort">Active</th>
+		<th>Sort</th>
+		<th>-</th>
+		<th>-</th>
+	</tr>
+	{% for item in items %}
+	{% set row_class = loop.index%2 ? 'odd' : 'even' %}
+	<tr>
+		<td class="first {{ row_class }}">{{ item.quention }}</td>
+		<td class="{{ row_class }}">{{ item.modified }}</td>
+		<td class="{{ row_class }}">
+			{% if item.active %}
+				<a href="/admin/admin_faqs/activate/{{ item.id }}" title="Click to deactivate">
+					<img alt="" src="/admin/img/icons/active.png" />
+				</a>
+			{% else %}
+				<a href="/admin/admin_faqs/activate/{{ item.id }}" title="Click to activate">
+					<img alt="" src="/admin/img/icons/inactive.png" />
+				</a>
+			{% endif %}
+		</td>
+		<td class="{{ row_class }}">
+            <a href="/admin/admin_faqs/moveUp/{{ item.id }}" class="btn up-btn"><img src="/admin/img/icons/desc.png" alt="" /></a>
+            <a href="/admin/admin_faqs/moveDown/{{ item.id }}" class="btn down-btn"><img src="/admin/img/icons/asc.png" alt="" /></a>
+		</td>
+		<td class="{{ row_class }}">
+			<a href="/admin/admin_faqs/edit/{{ item.id }}" title="Click to edit">
+				<img alt="" src="/admin/img/icons/edit.png" />
+			</a>
+		</td>
+		<td class="{{ row_class }}">
+			<a href="/admin/admin_faqs/delete/{{ item.id }}" class="delete-link" title="Click to delete">
+				<img alt="" src="/admin/img/icons/delete.png" />
+			</a>
+		</td>
+
+	</tr>
+	{% endfor %}
+</table>
+{{ view.element('paginator') }}
+{% else %}
+<div class="empty-result">
+	Items not found
+</div>
+{% endif %}

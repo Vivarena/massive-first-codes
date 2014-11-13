@@ -1,0 +1,17 @@
+msgid "TOOLS"
+msgstr "TOOLS"
+
+msgid "You can vote only once."
+msgstr "(por)You can vote only once."
+
+msgid "Welcome to Inversiones.com!"
+msgstr "Bem-vindo ao Inversiones.com!"
+
+msgid "Now you can connect with other members, friends, investors, and professionals in the world of investments. Onward and with much success."
+msgstr "Agora você pode conectarte com outros membros, amigos, investidores e profissionais no mundo dos investimentos. Para a frente e com muito sucesso."
+
+msgid "The Inversiones.com Team"
+msgstr "A equipe de Inversiones.com"
+
+msgid "Questions? Comments? Please write to us at"
+msgstr "Perguntas? Comentários? Por favor escreva-nos para"

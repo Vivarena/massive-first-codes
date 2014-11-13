@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="/css/store-style.css"/>
+<a href="/profile/add-product" class="btn">Add Products/Services</a>
+<section id="content">
+    <ul id="tabsText">
+        <li>
+            <div class="title">
+                {% if data.paging and data.paging.total_page > 1 %}
+                    <div class="paginator-block-store">
+                        {% if data.paging.is_prev %}
+                            <span><a class="prev" href="/shop/{{ url }}/{{ data.paging.prev }}">Previous</a></span>
+                        {% endif %}
+                        {% for i in 1..data.paging.total_page %}
+                            {% if i == data.paging.current %}
+                                <span class="current">{{ i }}</span>
+                            {% else %}
+                                <span><a href="/shop/{{ url }}/{{ i }}">{{ i }}</a></span>
+                            {% endif %}
+                        {% endfor %}
+                        {% if data.paging.is_next %}
+                            <span><a class="next" href="/shop/{{ url }}/{{ data.paging.next }}">Next</a></span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+            <ul class="products" style="overflow: visible;">
+                {% for key, node in data.products %}
+                    <li>
+                        <div class="box" style="position: relative">
+                            <h2>{{ node.title }}</h2>
+                            <a href="/shop{{ 'product'|toUrl(node.id, node.title) }}">
+                                <img src="/thumbs/156x190{{ node.image }}" alt="{{ node.title }}" />
+                            </a>
+                            <div class="bottom">
+                                {% if node.quantity == 0 %}
+                                    <form action="/profile/repost-product" method="post" style="float: left">
+                                        <a href="#" onclick="javascript: $(this).parent().submit();" class="details" style="float: none; display: inline-block">Repost</a>
+                                        <input type="text" name="data[Product][qty]" style="width: 35px; float: left" placeholder="Qty"/>
+                                        <input type="hidden" name="data[Product][id]" value="{{ node.id }}"/>
+                                    </form>
+                                {% endif %}
+                                <a href="/profile/del-product/{{ node.id }}" class="details" style="position: absolute; top: -8px; right: 5px">Delete</a>
+                                <a href="/profile/edit-product/{{ node.id }}" class="details" style="position: absolute; top: 15px; right: 5px">Edit</a>
+                                <span class="price">{{ number.format(node.price, {"places":"2"}) }}</span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</section>

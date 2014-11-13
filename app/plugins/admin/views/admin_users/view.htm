@@ -1,0 +1,159 @@
+{{ html.css('/admin/css/users', null, {'inline': false}) }}
+
+<script type='text/javascript'>
+    $(document).ready(function () {
+        /*showFirstSection();
+       $('.acc_trigger').click(function () {
+            if ($(this).next().is(':hidden')) { //If immediate next container is closed...
+                $('.acc_trigger').removeClass('active').next().slideUp(); //Remove all .acc_trigger classes and slide up the immediate next container
+                $('.acc_trigger .toggle-color').removeClass('alternate-color');
+                $(this).toggleClass('active').next().slideDown(); //Add .acc_trigger class to clicked trigger and slide down the immediate next container
+                $(this).find('.toggle-color').toggleClass('alternate-color');
+            }
+            return false;
+        });*/
+
+        $('#submit').click(function(){
+            $.post(
+                    $('#UserEditForm').attr('action'),
+                    $('#UserEditForm').serialize(),
+                    function(data){
+                        if (data.errors) {
+                            $('#UserEditForm .error-message').remove();
+                            $.each(data.errors, function (key, val) {
+                                var div_err = $('<div></div>').addClass('error-message clearfix').text(val);
+                                $('input[name*="\[' + key + '\]"]:last').after(div_err);
+                                showFirstSection();
+                            });
+                        } else {
+                            window.location.href = '/profile';
+                        }
+                    },
+                    'json'
+            );
+        });
+
+        $('#reset').click(function(){
+            showFirstSection();
+            var time = setTimeout("window.location.href = '/profile';", 300);
+        });
+
+        $('#UserPrivateInfoBirthday').datepicker({
+            minDate: "-80y",
+            dateFormat: 'd M, yy',
+            yearRange: "1930:2000",
+            changeMonth: true,
+            changeYear: true
+        });
+
+    });
+
+    function showFirstSection() {
+        $('.acc_container').hide();
+        $('.acc_trigger:first').addClass('active').next().show();
+        $('.acc_trigger:first .toggle-color').toggleClass('alternate-color');
+    }
+</script>
+
+<h2 class="title-page">View/Edit profile {{ view.data.UserInfo.first_name }} {{ view.data.UserInfo.last_name}}</h2>
+
+<div class="container clearfix">
+{{ form.create('User', {'action': 'edit', 'url': '/admin/admin_users/saveInfo/' ~ view.data.User.id, 'id': 'UserEditForm' }) }}
+<h2 class="acc_trigger"><a href="javascript://" class="toggle-color">Basic info</a></h2>
+
+<div class="acc_container">
+    <div class="steps">
+        <div class="block">
+            <div class="block-inner">
+                <div class="form">
+
+                    <div class="input clearfix">
+                        {{ form.input('User.login', {'div': false, 'class': 'text'}) }}
+                    </div>
+
+                    <div class="input clearfix">
+                        {{ form.input('User.email', {'div': false, 'class': 'text'}) }}
+                    </div>
+
+                    <div class="input clearfix">
+                        <label>User group</label>
+                        <select class="user-group" name="data[User][group_id]">
+                            {% for group in groups %}
+                            <option {% if view.data.User.group_id == group.id %} selected="selected" {% endif %}  value="{{group.id}}"> {{group.name}} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="acc_trigger"><a href="javascript://" class="toggle-color">Main info</a></h2>
+
+<div class="acc_container">
+    <div class="steps">
+        <div class="block">
+            <div class="block-inner">
+                <div class="form">
+                    <div class="input clearfix">
+                        {{ form.input('UserInfo.first_name', {'div': false, 'class': 'text'}) }}
+                    </div>
+
+                    <div class="input clearfix">
+                        {{ form.input('UserInfo.last_name', {'div': false, 'class': 'text'}) }}
+                    </div>
+
+                    <div class="input clearfix">
+                        <label for="UserPrivateInfoBirthday">Birthday</label>
+                        {{ form.text('UserPrivateInfo.birthday', {'class': 'text', 'div': false}) }}
+                    </div>
+
+                    <div class="input clearfix">
+                        {{ form.input('UserInfo.sex', {'options': {'M': 'Male', 'F': 'Female'}, 'empty': 'Please select your gender', 'class': 'selectOpt', 'div': false }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="acc_trigger"><a href="javascript://" class="toggle-color">Change password</a></h2>
+
+<div class="acc_container">
+    <div class="steps">
+        <div class="block">
+            <div class="block-inner">
+                <div class="form">
+                    <div class="input clearfix">
+                        <label>New password</label>
+                        {{ form.password('password', {'div': false, 'class': 'text', 'label' : false}) }}
+                    </div>
+
+                    <div class="input clearfix">
+                        <label>Confirm Password</label>
+                        {{ form.password('cpassword', {'class': 'text'}) }}
+                        {{ form.error('cpassword') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ form.submit('Save', {'class' : 'submit-btn'}) }}
+{{ form.end() }}
+<div class="padd-10"></div>
+<div class="button clearfix">
+
+    {#{{ view.Html.image('btn/btn-save.png', {'id': 'submit', 'link': 'javascript::void(0);'}) }}#}
+
+</div>
+</div>
+
+<style type="text/css">
+    #UserEditForm label {
+        display: inline-block;
+        min-width: 150px;
+    }
+</style>

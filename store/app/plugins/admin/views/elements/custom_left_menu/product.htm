@@ -1,0 +1,67 @@
+
+<h3><a href="#">Products</a></h3>
+<div>
+	<ul class="menu-left">
+		<li><a href="/admin/admin_products" {% if _hovers.products %}class="hover"{% endif %}>Manage Products</a></li>
+		<li><a href="/admin/admin_products/add" {% if _hovers.add %}class="hover"{% endif %}>Add Product</a></li>
+	</ul>
+</div>
+
+<h3><a href="#">Categories</a></h3>
+<div>
+	<ul class="menu-left">
+		<li><a href="/admin/admin_categories" {% if _hovers.category %}class="hover"{% endif %}>Manage Categories</a></li>
+		<li><a href="/admin/admin_categories/add" {% if _hovers.category_add %}class="hover"{% endif %}>Add Category</a></li>
+	</ul>
+</div>
+
+
+<h3><a href="#">Coupons</a></h3>
+<div>
+	<ul class="menu-left">
+		<li><a href="/admin/admin_coupons" {% if _hovers.coupons %}class="hover"{% endif %}>Manage Coupons</a></li>
+		<li><a href="/admin/admin_coupons/add" {% if _hovers.coupon_add %}class="hover"{% endif %}>Add Coupon</a></li>
+	</ul>
+</div>
+
+{#<h3><a href="#">Approved Product</a></h3>
+<div>
+	<ul class="menu-left">
+		<li><a href="/admin/admin_approveds">Manage Approved Products</a></li>
+		<li><a href="/admin/admin_approveds/add">Add Approved Product</a></li>
+	</ul>
+</div>#}
+
+<h3><a href="#">Reports</a></h3>
+<div>
+	<ul class="menu-left">
+        <li><a href="/admin/admin_orders">Manage Orders</a></li>
+{#
+		<li><a href="/admin/admin_reports/low_stock">Low Stock</a></li>
+		<li><a href="/admin/admin_reports/most_viewed">Most Viewed</a></li>
+		<li><a href="/admin/admin_customers/"{% if _hovers.customer %}class="hover"{% endif %}>Customer DB</a></li>
+#}
+	</ul>
+</div>
+
+{#
+<h3><a href="#">States Tax</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_states"{% if _hovers.states %}class="hover"{% endif %}>Manage States</a></li>
+    </ul>
+</div>
+
+<h3><a href="#">Countries Tax</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_countries"{% if _hovers.country %}class="hover"{% endif %}>Manage Countries</a></li>
+    </ul>
+</div>
+
+<h3><a href="#">Custom orders</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_products/order_add"{% if _hovers.country %}class="hover"{% endif %}>Create order</a></li>
+    </ul>
+</div>#}

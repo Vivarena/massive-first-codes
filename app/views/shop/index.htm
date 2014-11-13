@@ -1,0 +1,75 @@
+<section id="content">
+    <ul id="tabs">
+        <li><a href="/shop" {% if not isUsedProducts and not isServices %}class="current"{% endif %}>New</a></li>
+        <li><a href="/shop/used/" {% if isUsedProducts %}class="current"{% endif %}>Used</a></li>
+        <li><a href="/shop/services/" {% if isServices %}class="current"{% endif %}>Services</a></li>
+    </ul>
+    <ul id="tabsText">
+        <li>
+            {#<ul class="logos-store">#}
+                {#{% for key, node in categories %}#}
+                    {#<li>#}
+                        {#<a href="/shop{% if isUsedProducts %}/used{% endif %}{{ 'by-category'|toUrl(node.id, node.title) }}">#}
+                            {#<img src="{{ store_url }}/thumbs/x56{{ node.image }}" alt="category logo"/>#}
+                        {#</a>#}
+                    {#</li>#}
+                {#{% endfor %}#}
+            {#</ul>#}
+            <br>
+            <div class="title">
+                <h1>Featured Products</h1>
+                {% if action == 'index' %}
+                    {% if isUsedProducts %}
+                        {% set url = 'used/page' %}
+                    {% else %}
+                        {% set url = 'page' %}
+                    {% endif %}
+                {% else %}
+                    {% set url = 'by-category/'~category~'/page' %}
+                {% endif %}
+
+                {% if data.paging and data.paging.total_page > 1 %}
+                <div class="paginator-block-store">
+                    {% if data.paging.is_prev %}
+                    <span><a class="prev" href="/shop/{{ url }}/{{ data.paging.prev }}">Previous</a></span>
+                    {% endif %}
+                    {% for i in 1..data.paging.total_page %}
+                        {% if i == data.paging.current %}
+                            <span class="current">{{ i }}</span>
+                        {% else %}
+                            <span><a href="/shop/{{ url }}/{{ i }}">{{ i }}</a></span>
+                        {% endif %}
+                    {% endfor %}
+                    {% if data.paging.is_next %}
+                    <span><a class="next" href="/shop/{{ url }}/{{ data.paging.next }}">Next</a></span>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            <ul class="products">
+                {% for key, node in data.products %}
+                <li>
+                    <div class="box">
+                        <h2>{{ node.title }}</h2>
+                        <a href="/shop{{ 'product'|toUrl(node.id, node.title) }}">
+                            {% if node.user_id == 0 %}
+                                {% set where_img = store_url %}
+                            {% else %}
+                                {% set where_img = host %}
+                            {% endif %}
+                            <img src="{{ where_img }}/thumbs/156x190{{ node.image }}" alt="{{ node.title }}" />
+                        </a>
+                        <div class="bottom">
+                            <a href="/shop{{ 'product'|toUrl(node.id, node.title) }}" class="details">Details</a>
+                            <span class="price">{{ number.format(node.price, {"places":"2"}) }}</span>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {#<div class="all">
+                <a href="#">Browse all Products</a>
+            </div>#}
+        </li>
+    </ul>
+</section>

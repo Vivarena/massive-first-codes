@@ -1,0 +1,17 @@
+<table cellpadding="0" cellspacing="1" class="contact-info">
+    <tr>
+        <th class="first">image</th>
+        <th width="80">-</th>
+    </tr>
+    {% for item in items %}
+    {% set row_class = loop.index%2 ? 'odd' : 'even' %}
+    <tr id="list_{{ item.OwnerProperty.id }}">
+        <td class="first {{ row_class }}"><img src="{{ item.image|thumb(115, 130) }}"></td>
+        <td class="{{ row_class }}">
+            <a href="{{ item.OwnerProperty.id }}" class="delete-link" title="Click to delete">
+                <img alt="" src="/admin/img/icons/delete.png" />
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

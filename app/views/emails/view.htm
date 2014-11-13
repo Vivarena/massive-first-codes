@@ -1,0 +1,63 @@
+{{ view.addScript('
+<script type="text/javascript" src="/js/project/messaging.js"></script>
+') }}
+
+<div class="tabs-box clearfix">
+<span class="shadow-tab">&nbsp;</span>
+    <ul class="tab-list clearfix">
+        <li class="active">Messages</li>
+    </ul>
+    <div class="padd-30"></div>
+    <form action="#">
+        <fieldset>
+            <div class="btn-holder">
+                <a href="/messages/inbox" class="box">In box</a>
+            </div>
+            <div class="messages-holder">
+                <div class="title clearfix">
+                    <a href="#" class="img-holder">
+                        {#{{ view.element('ava_common', { 'data' : view.data.From.UserInfo, 'w' : 63, 'h' : 63, 'thumbAva' : true })}}#}
+                        {#<img src="{{  }}" alt="" width="63" height="63" />#}
+                        {% if view.data.From.login == 'admin' %}
+                            <img src="/img/logo_mini.png" alt="" width="63" height="63"/>
+                        {% else %}
+                            {{ view.element('ava_common', { 'data' : view.data.From.UserInfo, 'w' : 63, 'h' : 63, 'thumbAva' : true })}}
+                        {% endif %}
+                    </a>
+                    <div class="top clearfix">
+                        {% set linkProfile = (view.data.From.login|length > 0) ? view.data.From.login : 'profile-'~view.data.From.id %}
+                        <a href="/{{ linkProfile }}" class="name">{{ view.data.From.UserInfo.username }}</a>
+                        <em class="date">{{ view.data.Message.created|date('M d, H:i, Y') }}</em>
+                        <input type="text" name="" class="message-subject txt" readonly="readonly" value="{{ view.data.Message.subject }}" style="margin: 10px 0;"/>
+                    </div>
+
+                </div>
+                <div class="txtarea-holder clearfix">
+                    <div class="text">
+                    <b>Date:</b> {{ view.data.Message.event_date|date('M d, Y') }}<br/>
+                    <b>Time:</b>
+                        {% if (view.data.Message.event_date|date('H:i:s') != '00:00:00') %}
+                        {{ view.data.Message.event_date|date('g:i a') }}
+                        {% else %}
+                            All day
+                        {% endif %}
+                    </div>
+                    {#<textarea readonly="readonly">{{ view.data.Message.content }}</textarea>#}
+                </div>
+                <br/>
+                <div class="txtarea-holder clearfix">
+                    <div class="text">{{ view.data.Message.content }}</div>
+                    {#<textarea readonly="readonly">{{ view.data.Message.content }}</textarea>#}
+                </div>
+                <div id="replyText" class="txtarea-holder clearfix">
+                    <span class="name">Your reply:</span>
+                    <textarea class="message-reply"></textarea>
+                </div>
+                <div class="bottom clearfix">
+                    <input type="button" class="btn replyBtn" name="" data-to-id="{{ view.data.From.id }}" data-to="{{view.data.From.UserInfo.username}}" value="Reply" />
+                    <input type="submit" class="del" name="" value="Delete" />
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

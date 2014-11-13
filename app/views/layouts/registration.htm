@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {{ view.Html.charset() }}
+    {{ view.Html.meta('icon') }}
+    {{ view.element('meta-data') }}
+    {{ view.Html.script('jquery/jquery-1.7.1.min') }}
+    {{ view.Html.script('//html5shim.googlecode.com/svn/trunk/html5.js') }}
+
+    <!--[if lte IE 6]>
+    {{ view.Html.script('ie6/warning') }}<script>window.onload=function(){e("/js/ie6/")}</script>
+    <![endif]-->
+
+    {{ view.Html.css('fonts/stylesheet') }}
+    {{ view.Html.css('register') }}
+    {{ view.Html.css('dashbord') }}
+    {{ view.Html.css('menu') }}
+    {{ view.Html.css('registration-form') }}
+    {{ view.Html.css('community') }}
+    {{ view.Html.css('sponge') }}
+
+
+    {{ view.Html.script('selectbox') }}
+
+    {{ view.Html.css('ajax.loader') }}
+    {{ view.Html.script(['jquery/plugins/jquery.blockUI', 'jquery/plugins/jquery.scrollTo-1.4.2-min', 'placeholder']) }}
+    {{ view.Html.script('jquery/ajx_cfg') }}
+    {{ view.Html.script('start') }}
+    {{ view.Html.script('share_this') }}
+
+    {{ scripts_for_layout }}
+    {{ view.element('ganalytics') }}
+</head>
+
+<body>
+
+
+<div id="wrapper-outer" class="bg-woman">
+
+    <div id="wrapper">
+
+        {{ view.element('headerCommunity', {'noSearch' : true}) }}
+
+        <div class="wrapper">
+
+            <div class="profile clearfix">
+
+                <div class="profile-i clearfix">
+
+                   <div  class=" clearfix">
+                        <div id="middle" class="middle clearfix">
+                            {{ content_for_layout }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{ view.element("registerFooter")}}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+{{ view.addScript(javascript.link("/admin/js/form-submissions")) }}
+
+<script type="text/javascript">
+<!--//
+(function($) {
+    var submission_id = {{ info.ContactSubmission.id }};
+
+    $(function () {
+        getFormComments();
+
+        $('#fh_sid').val(submission_id);
+
+        $("#add_comment_submit_btn").bind("click", function () { submitComment(); });
+    });
+
+
+    function getFormComments () {
+        $.getJSON('/admin/admin_contact_form_submissions/ajax_get_comments_list/' + submission_id, null, function(json_result) {
+            renderComments(json_result.results);
+        });
+    }
+
+    function renderComments ($data) {
+        $("#comments_list").html("");
+        $("#comments_list").hide();
+        var num_results = $data.length;
+        for (var i=0; i<num_results; i++) {
+            $("#comments_list").append("<table class=\"comment\"><tr><td class=\"date\">" + $data[i].pretty_date + "</td></tr><tr><td colspan=\"2\">\"" + unescape($data[i].comment) + "\"</td></tr></table><div class=\"padd-10\"></div>");
+        }
+        var comments_str = "comments";
+        if (num_results == 1) comments_str = "comment";
+        $("#num_comments").html(num_results + " <a href=\"#comments\">" + comments_str + "</a>");
+        $("#comments_list").fadeIn();
+    }
+
+    function submitComment () {
+        if ($("#comment_to_add").val().length <= 2) {
+            alert("You haven't typed a comment!");
+            return false;
+        }
+        $("#add_comment_submit_btn a").unbind("click");
+        $.post(
+            "/admin/admin_contact_form_submissions/ajax_add_comment/" + submission_id,
+            { 'data[Comment]': $('#comment_to_add').val() },
+            function() {
+                getFormComments();
+                $("#add_comment_submit_btn a").bind("click", function () { submitComment(); });
+                $("#comment_to_add").val("");
+            }
+        );
+    }
+})(jQuery);
+//-->
+</script>
+
+<div class="sub-menu-title">
+    <a href="{{ html.url("/admin/admin_contact_form_submissions") }}">Contacts</a>::<a href="javascript:;" class="hover">View</a>
+</div>
+<div class="indent">
+    <div class="title" id="intro">
+        <h3 class="name" style="color: #424242">Contact Form Submission Details</h3>
+    </div>
+    This form was submitted on {{ info.ContactSubmission.created }}, has been viewed {{ info.ContactSubmission.num_views }} rtimes, and has <span id="num_comments">{{ info.ContactSubmission.contact_submission_comment_count }} <a href="#comments">comments</a></span>.
+    <div class="padd-10"></div>
+    <div class="title2">Submission Details</div>
+    <div id="submission_details">
+        <table class="table">
+            <tr>
+                <td class="model">Name:</td>
+                <td>
+                    {{ info.ContactSubmission.last_name }}, {{ info.ContactSubmission.first_name }}
+                </td>
+            </tr>
+            <tr>
+                <td>E-mail:</td>
+                <td>
+                    {% if info.ContactSubmission.email %}
+                        {{ html.link(info.ContactSubmission.email, "mailto:" ~ info.ContactSubmission.email) }}
+                    {% else %}
+                        Not Specified
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Comment/Question:</td>
+                <td>
+                    {{ info.ContactSubmission.comment|default('Not Specified') }}
+                </td>
+            </tr>
+            <tr>
+                <td>Date/Time Submitted:</td>
+                <td>
+                    {{ info.ContactSubmission.created }}
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="clear"></div>
+    <div class="padd-10"></div>
+    <div class="title2">Comments On This Submission (oldest to newest):</div>
+    <a name="comments"></a>
+    <div class="border" id="comments_wrapper">
+        <div id="comments_list" class="cont-text">
+
+        </div>
+    </div>
+    <div class="padd-10"></div>
+    <div id="add_comment_wrapper">
+        <form action="" id="add_comment_form" class="simple-form">
+        <input id="fh_sid" type="hidden" name="data[ContactSubmissionComment][contact_submission_id]" value="" />
+        <fieldset class="field-form">
+            <legend>Add A Comment:</legend>
+            <textarea style='height:100px; width:897px; margin-top:10px' name="data[ContactSubmissionComment][comment]" id="comment_to_add"></textarea>
+            <div class="clear"></div>
+            <div class="padd-10"></div>
+            <div class="button float-r" style="position:relative; margin:0; padding:0">
+                <input id="add_comment_submit_btn" type="button" value="Add Comment" class="submit-btn" />
+            </div>
+            <div class="clear"></div>
+        </fieldset>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+{{ view.addScript('
+<script type="text/javascript">
+	$(function() {
+		$(".delete-link").click(function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:140,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$(this).dialog("close");
+						location.href = link;
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
+	});
+</script>
+') }}
+<div id="dialog-confirm" title="Delete this page?" class="hidden">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
+{% if items %}
+<table cellpadding="0" cellspacing="1" class="contact-info">
+	<tr>
+		<th class="first" width="210">Page Title</th>
+		<th class="sort" >{{ paginator.sort('Page Key', 'key') }}</th>
+		<th class="sort">{{ paginator.sort('Last Modified', 'modified') }}</th>
+    	{#<th class="sort">{{ paginator.sort('Active', 'active') }}</th>#}
+		<th>-</th>
+		<th>-</th>
+		<th>-</th>
+	</tr>
+	{% for item in items %}
+	{% set row_class = loop.index%2 ? 'odd' : 'even' %}
+	<tr>
+		<td class="first {{ row_class }}">{{ item.title }}</td>
+		<td class="{{ row_class }}">{{ item.key }}</td>
+		<td class="{{ row_class }}">{{ item.modified }}</td>
+		{#<td class="{{ row_class }}">
+			{% if item.active %}
+				<a href="/admin/admin_pages/activate/{{ item.id }}" title="Click to deactivate">
+					<img alt="" src="/admin/img/icons/active.png" />
+				</a>
+			{% else %}
+				<a href="/admin/admin_pages/activate/{{ item.id }}" title="Click to activate">
+					<img alt="" src="/admin/img/icons/inactive.png" />
+				</a>
+			{% endif %}
+		</td>#}
+        <td class="{{ row_class }}">
+            <a href="/admin/admin_pages/edit/{{ item.id }}" title="Click to edit">
+                <img alt="" src="/admin/img/icons/edit.png"/>
+            </a>
+        </td>
+        <td class="{{ row_class }}">
+            <a href="/admin/admin_pages/duplicate/{{ item.id }}" title="Click to duplicate">
+                <img alt="" src="/admin/img/icons/copy.png" />
+            </a>
+        </td>
+        <td class="{{ row_class }}">
+			<a href="/admin/admin_pages/delete/{{ item.id }}" class="delete-link" title="Click to delete">
+				<img alt="" src="/admin/img/icons/delete.png" />
+			</a>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{{ view.element('paginator') }}
+{% else %}
+<div class="empty-result">
+	Items not found
+</div>
+{% endif %}

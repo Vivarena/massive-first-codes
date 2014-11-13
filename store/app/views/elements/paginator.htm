@@ -1,0 +1,14 @@
+<div class="paginator">
+    {% if view.params.paging.Product.pageCount > 1 %}
+
+        <span>Pages</span>
+        {% if paginator.hasPrev() %}
+            {{ paginator.prev('« Previous') }}&nbsp;
+        {% endif %}
+        {{ paginator.numbers() }}&nbsp;
+        {% if paginator.hasNext() %}
+            {{ paginator.next('Next', { 'class' : 'next-btn'}) }}
+        {% endif %}
+
+    {% endif %}
+</div>

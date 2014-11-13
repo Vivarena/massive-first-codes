@@ -1,0 +1,274 @@
+<div class="sub-menu-title">
+    <a href="javascript:;">Home</a>::<a href="{{ html.url('/admin/admin_orders') }}">Orders</a>::<a href="javascript:;" class="hover">View</a>
+</div>
+<div class="indent">
+	
+
+    {{ form.create({'type':"post", 'action':"edit"}) }}
+	<div class="title2">
+        Order Details
+        {% if order.is_test_order == 1 %}
+             &nbsp;-&nbsp;<b style="color: #ff0000">This is a test order</b>
+        {% endif %}
+    </div>
+	<table class="table">
+		<tr>
+			<td class="th align-right">Order ID</td>
+			<td class="th align-right">Provider Order ID</td>
+			<td class="th">Date Added</td>
+			<td class="th">Payment Method</td>
+			<td class="th">Shipping Method&nbsp;</td>
+
+		</tr>
+		<tr>
+			<td class="align-right">#{{ order.id }}</td>
+			<td class="align-right">{{ order.payment_provider_order_number }}</td>
+			<td>{{ order.created|date("m/d/Y") }}</td>
+			<td>{{ order.payment_method }}</td>
+			<td>{{ order.shipping_method }}&nbsp;</td>
+        </tr>
+	</table>
+
+	<div class="padd-10"></div>
+	<div class="title2">Contact Details</div>
+	<table class="table">
+		<tr>
+			<td class="th">Name</td>
+            <td class="th">E-Mail</td>
+			<td class="th">Telephone</td>
+			<td class="th">&nbsp;</td>
+
+		</tr>
+		<tr>
+			<td>
+                {{ view.Form.text("Order.payment_fname") }} {{ view.Form.text("Order.payment_name") }}
+                {{ form.hidden("Order.contact_name") }}
+            </td>
+            <td>
+                {{ view.Form.text("Order.email") }}
+                {{ form.hidden("Order.email") }}
+            </td>
+			<td>{{ view.Form.text("Order.phone") }}</td>
+			<td></td>
+		</tr>
+	</table>
+
+	<div class="padd-10"></div>
+	<div class="title2">Address Details</div>
+	<table class="table">
+		<tr>
+			<td class="th">Billing Address</td>
+			<td class="th">Shipping Address</td>
+		</tr>
+		<tr>
+			<td>
+                <table>
+                    <tr>
+                        <td>
+                            Address:
+                        </td>
+                        <td>
+                            {{ view.Form.text("Order.payment_address_1") }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>City: </td>
+                        <td>{{ view.Form.text("Order.payment_city") }}</td>
+                    </tr>
+                    <tr>
+                        <td>State:</td>
+                        <td>{{ view.Form.text("Order.payment_state") }}</td>
+                    </tr>
+                    <tr>
+                        <td>Postal code:</td>
+                        <td>{{ view.Form.text("Order.payment_postcode") }}</td>
+                    </tr>
+                    <tr>
+                        <td>Country:</td>
+                        <td>{{ view.Form.text("Order.payment_country") }}</td>
+                    </tr>
+                </table>
+            </td>
+			<td>
+                <table>
+                    <tr>
+                        <td>
+                            Address:
+                        </td>
+                        <td>
+                            {{ view.Form.text("Order.shipping_address_1") }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>City: </td>
+                        <td>{{ view.Form.text("Order.shipping_city") }}</td>
+                    </tr>
+                    <tr>
+                        <td>State:</td>
+                        <td>{{ view.Form.text("Order.shipping_state") }}</td>
+                    </tr>
+                    <tr>
+                        <td>Postal code:</td>
+                        <td>{{ view.Form.text("Order.shipping_postcode") }}</td>
+                    </tr>
+                    <tr>
+                        <td>Country:</td>
+                        <td>{{ view.Form.text("Order.shipping_country") }}</td>
+                    </tr>
+                </table>
+            </td>
+		</tr>
+	</table>
+
+
+	<div class="padd-10"></div>
+	<div class="title2">Products</div>
+	<table class="table">
+		<tr>
+			<td class="th">Product</td>
+			<td class="th">Charity</td>
+			<td class="th">Quantity</td>
+			<td class="th">Our Cost</td>
+			<td class="th">Sale Price</td>
+			<td class="th">Net Proffit</td>
+			<td class="th align-right">Total</td>
+		</tr>
+		{% set totalProfit = 0 %}
+		{% for product in products %}
+		{% set profit = ((product.price-product.networth)*product.quantity)-((product.total * product.charity|percent) / 100) %}
+		{% set totalProfit = totalProfit + profit %}
+
+		<tr>
+			<td>
+                {{ product.name }}
+                {% if product.attributes|length > 0 %}
+                    <ul style="list-style: none; padding-left: 5px">
+                        <li style="font-weight: bold; line-height: 11px;">Attributes:</li>
+                        {% for key, item in product.attributes %}
+                        <li style="line-height: 11px;">{{ key }} - {{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </td>
+			<td>
+                {% if product.charity %}
+                    {{ product.charity }}% ({{ number.format((product.total * product.charity|percent) / 100, { "places":2 }) }})
+                {% endif %}
+            </td>
+			<td>{{ product.quantity }}</td>
+			<td>{{ number.format(product.networth, {"places":2}) }}</td>
+			<td>
+                {% if product.price != 0 %}
+                {{ number.format(product.price, {"places":2}) }}
+                {% else %}
+                Gift
+                {% endif %}
+            </td>
+			<td>
+                {% if product.price != 0 %}
+                    {{ number.format(profit, {"places":2}) }}</td>
+                {% endif %}
+			<td class="align-right">
+                {% if product.price != 0 %}
+                    {{ number.format(product.total, {"places":2}) }}
+                {% endif %}
+            </td>
+		</tr>
+		{% endfor %}
+		<tr>
+			<td colspan="6" class="sub-total">Sub-Total:</td>
+			<td class="align-right">{{ number.format(order.subtotal, {"places":2}) }}</td>
+		</tr>
+        <tr>
+			<td colspan="6" class="sub-total">Discount {% if order.coupon %}(Coupon: {{ order.coupon }}){% endif %} :</td>
+			<td class="align-right">{{ number.format(order.discount, {"places":2}) }}</td>
+		</tr>
+		<tr>
+			<td colspan="6" class="sub-total">Shipping:</td>
+			<td class="align-right">{{ number.format(order.shipping, {"places":2}) }}</td>
+		</tr>
+        <tr>
+            <td colspan="6" class="sub-total">Tax:</td>
+            <td class="align-right">{{ number.format(order.tax, {"places":2}) }}</td>
+        </tr>
+		<tr>
+			<td colspan="6" class="sub-total">Total:</td>
+			<td class="align-right">{{ number.format(order.total, {"places":2}) }}</td>
+		</tr>
+		<tr>
+			<td colspan="6" class="sub-total">Total Net Profit:</td>
+			<td class="align-right">{{ number.format(totalProfit, {"places":2}) }}</td>
+		</tr>
+	</table>
+
+	<div class="padd-10"></div>
+	<div class="title2">Order History</div>
+	<table class="table">
+		<tr>
+			<td class="th">Date Added</td>
+			<td class="th">Status</td>
+            <td class="th" colspan="2">&nbsp;</td>
+		</tr>
+		<tr>
+			<td>{{ order.created|date("m/d/Y") }}</td>
+			<td>{{ statuses[order.status] }}</td>
+			<td width="160px"></td>
+            <td width="160px"></td>
+		</tr>
+		<tr>
+			<td colspan="4" class="th">Comments</td>
+		</tr>
+		<tr>
+			<td colspan="4">{{ order.comment|nl2br }}</td>
+		</tr>
+	</table>
+
+	<div class="padd-10"></div>
+	<div class="title2">Update Order</div>
+	<table class="table">
+		<tr>
+			<td class="th">Status</td>
+			<td class="th">Notify Customer</td>
+		</tr>
+		<tr>
+			<td>
+				{{ form.input("Order.status", statuses,null,null) }}
+			</td>
+			<td>
+                {{ form.checkbox("Order.notify") }}
+            </td>
+		</tr>
+		<tr>
+			<td colspan="2" class="th">Add Comment</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="order-comments">
+				{{ form.textarea("Order.comment", {'value':"", "style" : "height:100px; width: 655px"}) }}
+			</td>
+		</tr>
+        <tr>
+            <td colspan="2" class="th">Tracking number</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="order-comments">
+                {% if order.tracking != null %}
+                    <p>{{ order.tracking }}</p>
+                    {{ form.hidden("Order.tracking", {"value" : order.tracking}) }}
+                {% else %}
+                    {{ form.text("Order.tracking", {"label" : false}) }}
+                {% endif %}
+            </td>
+        </tr>
+		<tr>
+			<td colspan="2">
+                <input type="button" style="float: right" class="submit-btn" value="Cancel" onclick="window.location='/admin/admin_orders'">
+				<div class="button float-r">
+					{{ form.submit('Save', {'class' : 'submit-btn'}) }}
+				</div>
+				<input type="button" style="float: right" class="submit-btn" value="Print Order" onclick="window.location='/invoice/{{ order.id }}'">
+			</td>
+		</tr>
+	</table>
+    {{ form.hidden("Order.id", {'value':order.id}) }}
+    {{ form.end() }}
+</div>

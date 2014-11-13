@@ -1,0 +1,48 @@
+{{ html.script('placeholder') }}
+<div class="profile-content clearfix">
+  <div class="profile-content-title clearfix">
+    <h2>{{ 'MESSAGES'|__ }}</h2>
+
+  </div>
+  <div class="message-center clearfix">
+    <span class="message-text message-subject">{{ view.data.Message.subject }}</span>
+    <div class="message-box clearfix">
+      <a href="#" id="back" class="btn-row">{{ 'Back'|__ }}</a>
+      <a href="#" class="delete-message btn-row" data-id="{{view.data.Message.id}}">{{ 'Delete'|__ }}</a>
+
+      <div class="message-search hidden">
+        <input type="text" value="Search Messages" name="Search Messages" class="search-input"/>
+        <span class="search-input-btn">&nbsp;</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="section clearfix">
+  <div class="message-block short">
+    {{ view.element('messaging/message_item', {'message':view.data.Message, 'from':view.data.From}) }}
+    <div class="message-bottom">
+      <div class="message-bottom-i clearfix">
+        <textarea rows="1" placeholder="{{ 'Write a reply'|__ }}" class="big-search message-reply"></textarea>
+        <script type="text/javascript">
+          $(function() {
+            $('.message-reply').TextAreaExpander();
+          });
+        </script>
+        <a href="#" class="btn-send send-message" data-to-id="{{view.data.Message.from_id}}" data-to="{{view.data.From.UserInfo.username}}" data-reply-to="{{view.data.Message.id}}">{{'Send'|__}}</a>
+      </div>
+      <div class="see-all clearfix hidden">
+        <div class="see-all-text clearfix">
+          <p>See: Unread - Archived</p>
+        </div>
+        <div class="see-all-btn clearfix">
+          <div class="select-box">
+            <select class="styled">
+              <option value="More">More</option>
+            </select>
+          </div>
+          <a href="#" class="btn-write">{{ 'Report as Spam/Abuse'|__ }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

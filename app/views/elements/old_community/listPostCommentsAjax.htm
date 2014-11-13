@@ -1,0 +1,24 @@
+{{ jGrowl.flash() }}
+{% if commentItems %}
+<ul class="commentsUl">
+{% for comment in commentItems %}
+    <li class="commentItemLi clearfix">
+        <span class="userLink">
+            <div class="profile-content__newsfeed__img">
+                <a href='/profile/{{ comment.User.id }}'>
+                    {{ view.element('ava_common', { 'data' : comment.User.UserInfo, 'w' : 30, 'h' : 30, 'thumbAva' : true })}}
+                </a>
+            </div>
+
+        </span>
+        <span class="textPost">
+            <a href='/profile/{{ comment.User.id }}'><span class="username">{{ comment.User.UserInfo.first_name }} {{ comment.User.UserInfo.last_name }}</span></a> {{ comment.UserPostComment.text }}
+        </span>
+        <span class="datePost">
+            {{ comment.UserPostComment.created|date('d M Y, H:i') }}
+        </span>
+        <a href="#" class="removeCommentBtn hidden" data-id="{{ comment.UserPostComment.id }}" data-post-id="{{ comment.UserPostComment.user_post_id }} data-user-id="{{ comment.UserPostComment.user_id }}"></a>
+    </li>
+{% endfor %}
+</ul>
+{% endif %}

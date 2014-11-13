@@ -1,0 +1,30 @@
+<script type="text/nano-template" id="popupTemplateFixed">
+
+    <div style="width:{width}px; height: {height}px; position:fixed; top:50%; left:50%; margin:-{halfWidth}px auto auto -{halfHeight}px;">
+        <div class="banner-sponsor">
+            <h3>{popupTitle}{showClose}</h3>
+            <div class="bammer-img" style="height: {height}px;">
+                {popupContent}
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script type="text/nano-template" id="popupTemplateConfirm">
+
+    <div style="width:{width}px; height: {height}px; position:fixed; top:50%; left:50%; margin:-{halfWidth}px auto auto -{halfHeight}px;">
+        <div class="banner-sponsor">
+            <h3>{popupTitle}</h3>
+            <div class="bammer-img innerPopup" style="height: {height}px;">
+                {popupContent}
+                <div class="actionsConfirm">
+                    <a href="#" class="btn no-float yesConfirm">Yes</a>
+                    <a href="#" class="btn no-float noConfirm">No</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+

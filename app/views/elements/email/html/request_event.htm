@@ -1,0 +1,19 @@
+<h3><font face="Verdana, Arial, Helvetica, sans-serif" size="2" color="#3E77BA">{{ subject }}</font></h3>
+<b>Date:</b>
+{{ event_date|date('M d, Y') }}
+<br>
+<b>Time:</b>
+{% if (event_date|date('H:i:s') != '00:00:00') %}
+    {{ event_date|date('g:i a') }}
+{% else %}
+    All day
+{% endif %}
+<br>
+<b>Event description:</b>
+<br>
+{{ subj }}
+<p>{{ event_desc }}</p>
+
+
+<p>You can view it on <a href="{{ server }}/messages">vivarena.com</a></p>
+

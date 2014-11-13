@@ -1,0 +1,153 @@
+{{ html.script('project/requests', { 'inline': false }) }}
+{{ view.addScript('
+<link rel="stylesheet" type="text/css" href="/js/jquery_autocomplate/jquery.autocomplate.css" />
+<script type="text/javascript" src="/js/jquery_autocomplate/jquery.autocomplate.js"></script>
+<script type="text/javascript" src="/js/facebookApi.js"></script>
+<script type="text/javascript" src="/js/linkedInApi.js"></script>
+') }}
+
+
+<div class="tabs-box clearfix">
+    <span class="shadow-tab">&nbsp;</span>
+    <h6 class="text-content">
+        List of friends
+    </h6>
+    <div class="tabs-box-left clearfix">
+
+        <ul class="tab-list clearfix">
+            <li class="active">Friends ({{ countFriends }})</li>
+        </ul>
+        <div class="box-list clearfix friends_container">
+        {% if friends|length %}
+
+            {% set uInfo = user_info.0 %}
+            {% if uInfo.sex == 'M' %}
+                {% set gender = 'His' %}
+            {% elseif uInfo.sex == 'F' %}
+                {% set gender = 'Her' %}
+            {% else %}
+                {% set gender = '' %}
+            {% endif %}
+
+            {% for item in friends %}
+            {% set linkProfile = (item.Friend.login|length > 0) ? item.Friend.login : 'profile-'~item.Friend.id %}
+            <div class="box-list__one clearfix">
+                <div class="box-list__one__img clearfix">
+                    <a href="/{{ linkProfile }}">
+                        {{ view.element('ava_common', { 'data' : item.UserInfo, 'w' : 60, 'h' : 60, 'thumbAva' : true })}}
+                    </a>
+                </div>
+                <div class="comment-list__one__info clearfix">
+
+                    <a href="/{{ linkProfile }}" class="title_name">{{ item.UserInfo.first_name }} {{ item.UserInfo.last_name }}</a>
+
+                    {% set iAmFriend = item.UserFriendship.iAmFriend %}
+                    {% set isMyFriend = item.UserFriendship.isMyFriend %}
+
+                    <span class="subActions">
+                        <a href="/emails/write/{{ item.Friend.id }}" data-id="{{ item.Friend.id }}" class="send-msg">Send Message</a><br/>
+                        {% if youIsOwnerPage %}
+                        <a href="#" data-id="{{ item.Friend.id }}" class="remove delete">Delete</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            {% else %}
+                <p class="no-result">No friends</p>
+            {% endfor %}
+            {% if paginator.hasPrev() %}
+                {{ paginator.prev() }}
+            {% endif %}
+            {{ paginator.numbers() }}
+            {% if paginator.hasNext() %}
+                {{ paginator.next() }}
+            {% endif %}
+        {% endif %}
+        </div>
+    </div>
+
+    <div class="right-form clearfix">
+        <img src="/img/linkedin_invite.gif" alt="invite linkedin friends" class="inviteLinkedinBtn" style="margin: 0 0 15px 35px; cursor: pointer"/>
+        <img src="/img/facebook_invite.jpg" alt="invite facebook friends" class="inviteBtn" width="150px" style="margin: 0 0 20px 40px; cursor: pointer"/>
+        {{ form.create('FilterFriend', {'id': 'CommunitySearchForm', 'url': '/'~loginThisPage~'/friends'}) }}
+               <div class="input clearfix">
+                   <label>First name</label>
+                   {{ form.input('first_name', {'class': 'text', 'div': false, 'label': false, 'placeholder' : 'Enter a First name', 'id':'autocomplate_fname'}) }}
+               </div>
+               <div class="input clearfix">
+                   <label>Last name</label>
+                   {{ form.input('last_name', {'class': 'text', 'div': false, 'label': false, 'placeholder' : 'Enter a Last name', 'id':'autocomplate_lname'}) }}
+               </div>
+               <div class="input clearfix">
+                   <label>Hometown</label>
+                   {{ form.input('hometown', {'class': 'text', 'div': false, 'label': false, 'placeholder' : 'Enter a Hometown'}) }}
+               </div>
+               <div class="input clearfix">
+                   <label>City</label>
+                   {{ form.input('city', {'class': 'text', 'div': false, 'label': false, 'placeholder' : 'Enter a City'}) }}
+               </div>
+
+               <div class="input clearfix">
+                   <label>College or University</label>
+                   {{ form.input('education', {'class': 'text', 'div': false, 'label': false, 'placeholder' : 'Enter a College or University'}) }}
+               </div>
+                <input type="submit" name="filterBtn" class="btn" value="Filter"/>
+               {#<div class="input clearfix">
+                   <label>Teams</label>
+                   <input type="text" placeholder="Enter a Teams" class="text"  />
+               </div>
+               <div class="input clearfix">
+                   <label>Clubs</label>
+                   <input type="text"  placeholder="Enter a Clubs" class="text"  />
+               </div>
+               <div class="input clearfix">
+                   <label>Groups</label>
+                   <input type="text" placeholder="Enter a Groups" class="text"  />
+               </div>
+               <div class="input clearfix">
+                   <label>Coach</label>
+                   <input type="text"  placeholder="Enter a Coach" class="text"  />
+               </div>#}
+
+        {{ form.end() }}
+       </div>
+
+    {#{{ view.element('community/rightSidebar') }}#}
+</div>
+<script type="text/javascript">
+    var friends_fname = [
+        {% for friend in allFriends %}
+            {value:'{{ friend.UserInfo.first_name }}',data:'{{ friend.UserInfo.first_name }}'}{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+    var friends_lname = [
+        {% for friend in allFriends %}
+            {value:'{{ friend.UserInfo.last_name }}',data:'{{ friend.UserInfo.last_name }}'}{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    $('#autocomplate_fname').autocomplete({
+        lookup: friends_fname
+    });
+
+    $('#autocomplate_lname').autocomplete({
+        lookup: friends_lname
+    });
+
+    window.fbAsyncInit = function() {
+        facebookApi.init();
+    };
+
+    linkedInApi.init();
+
+    // Load the SDK asynchronously
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+
+</script>

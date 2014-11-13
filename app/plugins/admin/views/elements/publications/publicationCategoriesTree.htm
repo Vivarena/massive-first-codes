@@ -1,0 +1,132 @@
+
+<div id="pubCategoriesTree">
+
+    {{ view.element('publications/catTree') }}
+
+</div>
+
+
+<script type="text/html" id="templateAddCategory">
+    <div id="{action}_catDialog" title="{title}">
+
+        {{ form.create('PublicationCategory', {'url': '/admin/admin_publications/{action}', 'class': 'menu-form', "enctype":"multipart/form-data"}) }}
+        {{ form.hidden("PublicationCategory.id", { "value" : '{idCat}' }) }}
+        <fieldset>
+
+
+            {% for key, value in languages %}
+            <label>Category name ({{ value }}) </label>
+            {{ form.input('PublicationCategory.name.' ~ key, {'class': 'text ui-widget-content ui-corner-all', 'label':false, 'value': '{category.name.' ~key ~ '}'}) }}
+            <br/>
+            {% endfor %}
+
+
+        </fieldset>
+        {{ form.end() }}
+    </div>
+</script>
+
+<script type="text/javascript">
+
+    $(function() {
+
+
+        $('#pubCategoriesTree').on('click', '.cancelEditCategories', function(e){
+            ajaxLoader('', 'pubCategoriesTree');
+            $('#pubCategoriesTree').load('/admin/admin_publications/index');
+            e.preventDefault();
+        });
+
+        $('#pubCategoriesTree').on('click', '.editCategories', function(e){
+            ajaxLoader('', 'pubCategoriesTree');
+            $('#pubCategoriesTree').load('/admin/admin_publications/editCategories', function(){
+                $("ol.categorySortingEdit").nestedSortable({
+                    disableNesting: "no-nest",
+                    forcePlaceholderSize: true,
+                    handle: "div",
+                    helper:	"clone",
+                    items: "li",
+                    maxLevels: 2,
+                    opacity: .6,
+                    placeholder: "placeholder",
+                    revert: 250,
+                    tabSize: 15,
+                    tolerance: "pointer",
+                    toleranceElement: "> div",
+                    update: function(e){
+                        ajaxLoader('', 'pubCategoriesTree');
+                        $('#pubCategoriesTree').load('/admin/admin_publications/saveSortingCat', {"items" : $.toJSON($("ol.categorySortingEdit").nestedSortable("toArray", {startDepthCount: 0}))});
+                    }
+                });
+            });
+            e.preventDefault();
+        });
+
+        $('#pubCategoriesTree').on('click', '.addCat', function(e){
+
+            var data = {
+                'title' : 'Add category',
+                'action': 'saveCategory',
+                'idCat' : '',
+                'category': {
+                    'name': ''
+                }
+            };
+            var content = $.nano($('#templateAddCategory').html(), data);
+            showDialog(content, 'pubCategoriesTree', 280);
+            e.preventDefault();
+
+        });
+
+        $('#pubCategoriesTree').on('click', '.editCat', function(e){
+
+            var id = $(this).data("id");
+            ajaxLoader();
+
+            $.getJSON('/admin/admin_publications/readCategory/' + id, function(data) {
+                if(!data.error) {
+                    var dataTemplate = {
+                        'title' : 'Edit category',
+                        'action': 'saveCategory/' + id,
+                        'idCat' : data.category.id,
+                        'category': {
+                            'name': {
+                                {% for key, value in languages %}
+                                    '{{ key }}': data.category.name.{{ key }}{% if loop.index != loop.last %},{% endif %}
+                                {% endfor %}
+                                }
+                        }
+                    };
+                    var content = $.nano($('#templateAddCategory').html(), dataTemplate);
+                    showDialog(content, 'pubCategoriesTree', 280);
+                }
+            });
+
+            e.preventDefault();
+
+        });
+
+        $('#pubCategoriesTree').on('click', '.clickCategory', function(e){
+            var idCat = $(this).data('id');
+            $('#pubCategoriesTree').find('.selectedCat').removeClass('selectedCat');
+            $(this).addClass('selectedCat');
+            ajaxLoader('Load publications...');
+            $('#pubsList').load('/admin/admin_publications/readPubsInCategory/' + idCat);
+            e.preventDefault();
+        });
+
+        $('#pubCategoriesTree').on('click', '.delCategoryPub', function(e){
+            if (confirm('Delete this. Are you sure?')) {
+                var id = $(this).data("id");
+                ajaxLoader('', 'pubCategoriesTree');
+                $('#pubCategoriesTree').load('/admin/admin_publications/deleteCategoryPub/' + id);
+            }
+            e.preventDefault();
+        });
+
+
+
+
+    });
+
+</script>

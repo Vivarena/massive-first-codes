@@ -1,0 +1,42 @@
+<div class="item">
+    {{ form.create('', {'url': '/community/editSuggest/'}) }}
+    {{ form.hidden('UserSuggestion.id', { 'value': item.UserSuggestion.id }) }}
+    {{ form.hidden('UserSuggestion.user_id', { 'value': session.read('Auth.User.id') }) }}
+    <span class="actionBtns">
+        <span class="textField">
+            <a href="#" title="Edit" class="editSuggest" data-id="{{ item.UserSuggestion.id }}">
+                <img src="/img/bg-pages/edit-icon.png" alt="edit">
+            </a>
+            <a href="/community/deleteSuggest/{{ item.UserSuggestion.id }}" title="Delete" class="deleteSuggest">
+                <img src="/img/bg-pages/btn-delete.png" alt="delete">
+            </a>
+        </span>
+        <span class="inputField">
+            <img class="closeEdit" src="/img/bg-pages/close-icon.png" title="{{'Click me to close'|__}}">
+        </span>
+    </span>
+    <div class="section clearfix">
+    <div class="suggestion-box__all clearfix">
+        <div class="suggestion-box-one clearfix">
+           <p class="textField">{{ item.UserSuggestion.title }}</p>
+                <span class="inputField">
+                {{ form.input('UserSuggestion.title', {'div': false, 'class':'text-input', 'value' : item.UserSuggestion.title}) }}
+                </span>
+            {% for href in item.SuggestionUrl %}
+               {{ view.Html.link(href.url|truncate(50), href.url, {'target': '_blank','class' : 'textField'}) }}
+                <span class="inputField">
+                <br/>
+                {{ form.input('SuggestionUrl.'~loop.index0~'.url', {'div': false, 'class': 'text', 'width': '450', 'value' : href.url }) }}
+                {{ form.hidden('SuggestionUrl.'~loop.index0~'.id', {'value' : href.id }) }}
+                </span>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+    <span class="inputField">
+        <div class="submit">
+            <input class="saveEdit" type="submit" value="{{'Submit'|__}}">
+        </div>
+    </span>
+    {{ form.end() }}
+</div>

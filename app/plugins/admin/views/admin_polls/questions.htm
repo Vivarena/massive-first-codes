@@ -1,0 +1,211 @@
+<script type="text/javascript" src="/admin/js/jquery/plugins/nano/jquery.nano.js"></script>
+<script type="text/javascript" src="/admin/js/emptytable.js"></script>
+<script type="text/javascript">
+	$(function() {
+        var $content = $('body');
+
+        printEmpty($content);
+
+        function showDialog(content) {
+            $(content).dialog({
+                'modal': true,
+                'resizable': false,
+                'draggable': false,
+                'width': 500,
+                'buttons': {
+                    'Cancel': function()
+                    {
+                        $(this).dialog("close");
+                    },
+                    'Save': function()
+                    {
+                        $(this).find('form').submit();
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+
+        $content.on('click', ".delete-link", function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+            var content = $.nano($('#tplDialogConfirm').html(), {
+                'action' : 'delete',
+                'link' : link,
+                'id' : $(this).data('id'),
+                'title' : 'Confirm',
+                'message': 'Are you sure to delete this answer?'
+            });
+
+            showDialog(content);
+        });
+
+        $content.on('click', '.add-link', function(e){
+            e.preventDefault();
+            var content = $.nano($('#tplDialogEdit').html(), {
+                'action' : 'add',
+                'title' : 'Add new answer',
+                'id' : '',
+                'answer': {
+                {% for key, lang in languages %}
+                {% set comma = not loop.last ? ',': '' %}
+                    '{{ key }}' : ''{{ comma }}
+                {% endfor %}
+                }
+            });
+
+            showDialog(content);
+        });
+
+        $content.on('click', '.edit-link', function(e){
+            e.preventDefault();
+            var sender = $(this),
+                    answer;
+
+            $.getJSON(sender.attr('href'),
+                    function (data) {
+                        answer = data;
+                        var content = $.nano($('#tplDialogEdit').html(), {
+                            'action' : 'edit',
+                            'title' : 'Edit poll answer',
+                            'id' : sender.data('id'),
+                            'answer': answer
+                        });
+
+                        showDialog(content);
+                    }
+            );
+
+        });
+
+        $content.on('submit', 'form', function(e){
+            e.preventDefault();
+            var form = $(this),
+                action = form.parent().attr('id');
+            $.post( form.attr('action'),
+                    form.find('input').serialize(),
+                    function(data) {
+                        if (data.status) {
+                            var id, value;
+                            switch(action) {
+                                case 'delete':
+                                    $('#ans-'+form.find('#id').val()).remove();
+                                    printEmpty($content);
+                                    break;
+                                case 'add':
+                                    id = data.id;
+                                    value = form.find('input[name*="[eng]"]').val();
+                                    var table = $content.find('table.contact-info'),
+                                        rclass = table.find('tr[id*="ans"]').length % 2 ? 'odd' : 'even';
+                                    table.find('tbody').append( $.nano($content.find('#tplTableRow').html(), {
+                                        'id': id,
+                                        'text': value,
+                                        'class': rclass
+                                    }) );
+                                    deleteEmpty(table);
+                                    break;
+                                case 'edit':
+                                    id = form.find('input[name*="[id]"]').val();
+                                    value = form.find('input[name*="[eng]"]').val();
+                                    var row = $content.find('tr#ans-'+id);
+                                    row.find('td.first > a').text(value);
+                                    break;
+                                default:
+                                    console.log(action);
+                                    break;
+                            }
+                        } else {
+                            data = data.toJSON();
+                            console.log(data);
+                        }
+                    },'json'
+                  );
+        });
+
+	});
+</script>
+
+<div id="tplDialogConfirm" class="hidden">
+    <div id="{action}" title="{title}">
+        <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>{message}</p>
+        <form action="{link}">
+            <input type="hidden" id="id" value="{id}" disabled="disabled">
+        </form>
+    </div>
+</div>
+
+<div id="tplDialogEdit" class="hidden">
+    <div id="{action}" title="{title}">
+
+        {{ form.create('PollAnswer', {'url': '/admin/admin_polls/{action}_answer'}) }}
+            <input type="hidden" name="data[PollAnswer][id]" value="{id}" >
+            <input type="hidden" name="data[PollAnswer][poll_question_id]" value="{{ pollAnswers.PollQuestion.id }}" >
+            <table width="100%">
+                <tr>
+                    <td colspan="2"><span style="color: red"> All fields are required </span></td>
+                </tr>
+                {% for key, lang in languages %}
+                <tr style="width: 50%">
+                    <td>Answer ({{ lang }}) </td>
+                    <td>
+                        {{ form.text('PollAnswer.a_text.'~key, {'value': '{answer.'~key~'}'}) }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {{ form.end() }}
+
+    </div>
+</div>
+
+<script type="text/html" id="tplTableRow">
+    <tr id="ans-{id}">
+        <td class="first {class}">
+            {text}
+        </td>
+        <td class="{class}">
+            <a href="/admin/admin_polls/edit_answer/{id}"
+               class="edit-link"
+               data-id="{id}" data-qid="{{ pollAnswers.PollQuestion.id }}">
+                <img alt="" src="/admin/img/icons/edit.png"/></a>
+        </td>
+        <td class="{class}">
+            <a href="/admin/admin_polls/ajaxDelete/PollAnswer/{id}"
+               data-id="{id}" class="delete-link"><img alt="" src="/admin/img/icons/delete.png"/></a>
+        </td>
+    </tr>
+</script>
+
+<div style="float: right; padding: 5px">
+    <a href="#" class="add-link" data-qid="{{ item.poll_question_id }}">
+        <img src="/admin/img/icons/add.png" alt="">&nbsp;Add new answer
+    </a>
+</div>
+
+<h3>Answers for: &quot;{{ pollAnswers.PollQuestion.q_text }}&quot;</h3>
+
+<table cellpadding="0" cellspacing="1" class="contact-info">
+    <tr id="head">
+        <th width="75%">Poll answer</th>
+        <th>-</th>
+        <th>-</th>
+    </tr>
+    {% if pollAnswers.PollAnswer %}
+    {% for item in pollAnswers.PollAnswer %}
+    {% set class = loop.index % 2 ? 'even': 'odd' %}
+    <tr id="ans-{{ item.id }}">
+        <td class="first {{ class }}">{{ item.a_text }}</td>
+        <td class="{{ class }}"><a href="/admin/admin_polls/edit_answer/{{ item.id }}"
+                                   class="edit-link"
+                                   data-id="{{ item.id }}" data-qid="{{ item.poll_question_id }}">
+            <img alt="" src="/admin/img/icons/edit.png"/>
+        </a></td>
+        <td class="{{ class }}"><a href="/admin/admin_polls/ajaxDelete/PollAnswer/{{ item.id }}"
+                                   data-id="{{ item.id }}" class="delete-link">
+            <img alt="" src="/admin/img/icons/delete.png"/>
+        </a></td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+</table>

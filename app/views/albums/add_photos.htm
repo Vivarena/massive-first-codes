@@ -1,0 +1,133 @@
+{{ view.Html.script('jquery/plugins/plu_uploader/plupload.full', { 'inline': false }) }}
+{{ view.Html.script('jquery/plugins/plu_uploader/jquery.plupload.queue/jquery.plupload.queue', { 'inline': false }) }}
+
+
+<br class="clear"/>
+<div id="imagesContainer">
+    {{ form.create('PhotoAlbum', {'enctype' : 'multipart/form-data'}) }}
+        <div id="filelist"></div>
+        <a class="btn no-float addImages" href="#" id="uploadfiles" style="display: none">Start upload</a>
+        <input type="hidden" value="{{ album.PhotoAlbum.id }}" id="albumId"/>
+    {{ form.end() }}
+</div>
+
+<script type="text/nano-template" id="popupOnePhoto">
+    <div class="img-block__one clearfix">
+        <a href="#"><img src="/thumbs/103x80{photo}"></a>
+        <div class="actionsPhoto">
+            <a href="#" class="deletePhoto" data-photo-id="{photoId}">Delete</a>
+            <a href="{photo}" class="coverPhoto" data-album-id="{albumId}">Cover</a>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var uploadedPhotos = [],
+            albumID = $('#albumId').val();
+        var uploader = new plupload.Uploader({
+                runtimes : 'gears,html5,flash,silverlight,browserplus',
+                browse_button : 'addFiles',
+                chunk_size: '1mb',
+                container : 'imagesContainer',
+                max_file_size : '2mb',
+                url : '/albums/upload_photos',
+                flash_swf_url : '/js/jquery/plugins/plu_uploader/plupload.flash.swf',
+                filters : [
+                    {title : "Image files", extensions : "jpg,gif,png,jpeg"}
+                ],
+                multipart_params : {
+                    "data[PhotoAlbum][id]" : albumID
+                }
+        });
+
+        $('#uploadfiles').click(function(e) {
+            uploader.start();
+            $(this).hide();
+            e.preventDefault();
+        });
+
+        uploader.init();
+
+        uploader.bind('FilesAdded', function(up, files) {
+            $('#uploadfiles').show();
+            $.each(files, function(i, file) {
+                $('#filelist').append(
+                    '<div id="' + file.id + '" class="rowFile"><span class="fileName">' +
+                    file.name + '</span> - <b>0</b>' +
+                '<div class="p_bar"><div></div></div></div>');
+            });
+
+            up.refresh(); // Reposition Flash/Silverlight
+        });
+
+        uploader.bind('UploadProgress', function(up, file) {
+            $('#' + file.id + " b").html(file.percent + "%");
+            $('#' + file.id + " .p_bar div").css({
+                width: file.percent + '%'
+           });
+        });
+
+        uploader.bind('Error', function(up, err) {
+            $('#filelist').append("<div>Error: " + err.code +
+                ", Message: " + err.message +
+                (err.file ? ", File: " + err.file.name : "") +
+                "</div>"
+            );
+
+            up.refresh(); // Reposition Flash/Silverlight
+        });
+
+        uploader.bind('UploadComplete', function(up, file, info) {
+            $.post("/albums/completeUpload", {'data[UserPhoto][photos]' : uploadedPhotos, 'data[UserPhoto][photo_album_id]' : albumID },
+                function(data) {
+                    if(!data.error) {
+                        uploadedPhotos = [];
+                        showTopMsg('Photos successfully added');
+                    } else {
+                        showTopMsg(result.err_desc, 'error');
+                    }
+
+                },
+                "json"
+            );
+        });
+
+
+        uploader.bind('FileUploaded', function(up, file, info) {
+            var rowFile = $('#' + file.id),
+                txtForFile = rowFile.find('b'),
+                listPhotos = $('.img-block-all'),
+                result = $.parseJSON(info.response);
+
+            txtForFile.html("100%");
+            if (!result.error) {
+                var setTemplate = {
+                        'photo'   : result.name,
+                        'photoId' : result.id,
+                        'albumId' : albumID
+                    },
+                   photoTemplate = $.nano($('#popupOnePhoto').html(), setTemplate);
+                listPhotos.append(photoTemplate);
+                uploadedPhotos.push(result.name);
+            } else {
+                showTopMsg(result.err_desc, 'error');
+            }
+            rowFile.fadeOut('normal').remove();
+
+        });
+
+
+
+
+    });
+
+
+
+
+</script>
+
+

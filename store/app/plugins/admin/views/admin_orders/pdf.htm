@@ -1,0 +1,56 @@
+<div style="width: 100%">
+<table style="width: 800px; margin: 0 auto;">
+    <tr >
+        <td align="right">Period From: 11.11.2222 To: 11.22.3333</td>
+    </tr>
+</table>
+<table border="1" style="width: 800px; margin: 0 auto;" cellpadding="5" cellspacing="0">
+{% for item in result %}
+    <tr>
+        <td colspan="5" style="height: 1px"></td>
+    </tr>
+    <tr bgcolor="#e5e5ff">
+        <td><strong>Date</strong></td>
+        <td colspan="3"><strong>Name</strong></td>
+        <td><strong>Phone</strong></td>
+    </tr>
+    <tr bgcolor="#ffffe5">
+        <td>{{ item.Order.created|date("m/d/Y") }}</td>
+        <td colspan="3">{{ item.Order.shipping_name }}</td>
+        <td>{{ item.Order.phone }}</td>
+    </tr>
+    <tr bgcolor="#ffffe5">
+        <td colspan="5" align="center"><strong>Products</strong></td>
+    </tr>
+    <tr bgcolor="#ffffe5">
+        <td><strong>Product name</strong></td>
+        <td><strong>Quantity</strong></td>
+        <td><strong>Price</strong></td>
+        <td><strong>Total</strong></td>
+        <td><strong>Donation</strong></td>
+    </tr>
+        {% for product in item.OrderProduct %}
+        <tr bgcolor="#ffffe5">
+            <td>{{ product.name }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.price * product.quantity }}</td>
+            <td>{{ product.charity }}</td>
+        </tr>
+        {% endfor %}
+{% endfor %}
+    <tr>
+        <td colspan="5" style="height: 1px"></td>
+    </tr>
+    <tr bgcolor="#ccff99">
+        <td colspan="3"></td>
+        <td>Total</td>
+        <td>Donation total</td>
+    </tr>
+    <tr bgcolor="#ccff99">
+        <td colspan="3"></td>
+        <td>{{ result.0.total }}</td>
+        <td>{{ result.0.donationSumm }}</td>
+    </tr>
+</table>
+</div>

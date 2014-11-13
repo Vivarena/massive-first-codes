@@ -1,0 +1,215 @@
+<div style="font-family: Arial, Tahoma, Verdana, sans-serif; font-size: 12px">
+    <table cellpadding="0" cellspacing="0" border="0" width="820" align="center">
+        <tr>
+            <td width="120">
+                <img src="/img/logo.gif" alt="" vspace="0" hspace="0" border="0" width="120" height="105" />
+            </td>
+            <td valign="bottom" width="140">
+                <h4><font face="arial"><a href="http://Officialsituation.com">Officialsituation.com</a></font></h4>
+            </td>
+            <td width="290">
+                <table cellpadding="5" cellspacing="0" border="0" width="280" align="center" bgcolor="#a2998b">
+                    <tr>
+                        <td align="right"><font size="2" color="#ffffff">Purchased by</font></td>
+                        <td><font color="#ffffff"><b>{{ data.Order.payment_name }}, {{ data.Order.payment_fname }}</b></font></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><font size="2" color="#ffffff">Order Number</font></td>
+                        <td><font color="#ffffff"><b>{{ data.Order.id }}</b></font></td>
+                    </tr>
+                    <tr>
+                        <td align="right"><font size="2" color="#ffffff">{#Order ID#}</font></td>
+                        <td><font color="#ffffff"><b>{##1320688924#}</b></font></td>
+                    </tr>
+                </table>
+            </td>
+            <td width="250">
+                <table cellpadding="5" cellspacing="0" border="0" width="250" align="center">
+                    <tr>
+                        <td><font size="2" color="#a4a4a9">Shipping Method</font></td>
+                        <td><font size="3">{{ data.Order.shipping_method }}</font></td>
+                    </tr>
+                    <tr>
+                        <td><font size="2" color="#a4a4a9">Order Date</font></td>
+                        <td>{{ data.Order.created|date("m/d/Y") }}</td>
+                    </tr>
+                    <tr>
+                        <td><font size="2" color="#a4a4a9">Payment method</font></td>
+                        <td><b>{{ data.Order.payment_method }}</b></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table cellpadding="5" cellspacing="0" style="border-top: 1px solid #000000; border-right: 1px solid #000000" width="810" align="center">
+        <tr>
+            <th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Product</font></th>
+            <th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Attributes</font></th>
+            <th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Quantity</font></th>
+            {#<th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Ship Date</font></th>#}
+            {#<th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Discount</font></th>#}
+            <th bgcolor="#a2998b" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Total</font></th>
+        </tr>
+        {% for item in data.OrderProduct %}
+        <tr>
+            <td align="center" style="border-left: 1px solid #000000"><font size="2">{{ item.name }}</font></td>
+            <td align="center" style="border-left: 1px solid #000000">
+                {% if item.attributes|length > 0 %}
+                <ul style="list-style: none; padding-left: 5px">
+                    <li style="font-weight: bold; line-height: 15px;">Attributes:</li>
+                    {% for key, val in item.attributes %}
+                    <li style="line-height: 13px;">{{ key }} - {{ val }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </td>
+            <td align="center" style="border-left: 1px solid #000000"><font size="2">{{ item.quantity }}</font></td>
+            {#<td align="center" style="border-left: 1px solid #000000"><font size="2">Jan/11/2011</font></td>#}
+            {#<td align="center" style="border-left: 1px solid #000000"><font size="2">$00.00</font></td>#}
+            <td align="center" style="border-left: 1px solid #000000"><font size="2">
+                {% if item.price != 0 %}
+                    {{ number.format(item.price, {"places":"2"}) }}
+                {% else %}
+                    Gift
+                {% endif %}</font>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="2" style="border-top: 1px solid #000000; ">&nbsp;</td>
+            <td align="right" style="border-top: 1px solid #000000;border-left: 1px solid #000000 "><font size="2"><b>Subtotal</b></font></td>
+            <td align="center" style="border-top: 1px solid #000000; border-left: 1px solid #000000"><font size="2">{{ number.format(data.Order.subtotal, {"places":"2"}) }}</font></td>
+        </tr>
+        {% if data.Order.tax %}
+        <tr>
+            <td colspan="2" >&nbsp;</td>
+            <td align="right" style="border-top: 1px solid #000000;border-left: 1px solid #000000 "><font size="2"><b>Sales Tax</b></font></td>
+
+            <td align="center" style="border-top: 1px solid #000000; border-left: 1px solid #000000"><font size="2">
+                {{ number.format(data.Order.tax, {"places":"2"}) }}
+            </font>
+            </td>
+
+        </tr>
+        {% endif %}
+        {% if data.Order.shipping %}
+        <tr>
+            <td colspan="2" >&nbsp;</td>
+            <td align="right" style="border-top: 1px solid #000000;border-left: 1px solid #000000 "><font size="2"><b>Shipping</b></font></td>
+            <td align="center" style="border-top: 1px solid #000000; border-left: 1px solid #000000"><font size="2">
+                {{ number.format(data.Order.shipping, {"places":"2"}) }}<br />
+            </font>
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td colspan="2" >&nbsp;</td>
+            <td align="right" style="border-top: 1px solid #000000;border-left: 1px solid #000000; border-bottom: 1px solid #000000 "><font size="2"><b>Grand Total</b></font></td>
+            <td align="center" style="border-top: 1px solid #000000; border-left: 1px solid #000000;  border-bottom: 1px solid #000000 "><font size="2">{{ number.format(data.Order.total, {"places":"2"}) }}</font></td>
+        </tr>
+    </table>
+
+
+    <table cellpadding="5" cellspacing="0" border="0" width="820" align="center">
+        <tr>
+            <td width="50%">
+                <table cellpadding="5" cellspacing="0" style="border-top: 1px solid #000000; border-right: 1px solid #000000" width="100%" align="center">
+                    <tr>
+                        <th bgcolor="#a2998b" align="left" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Ordered By</font></th>
+                    </tr>
+                    <td valign="top" style="border-left: 1px solid #000000;
+                    border-bottom: 1px solid #000000">
+                        {{ data.Order.payment_name }}, {{ data.Order.payment_fname }}<br />
+                        {{ data.Order.payment_address_1 }},<br />
+                        {{ data.Order.payment_city }}, {{ data.Order.payment_state }}, {{ data.Order.payment_postcode }}<br />
+                        {{ data.Order.payment_country }}<br />
+                        Phone: {{ data.Order.phone }}<br />
+                        Email: {{ data.Order.email }}
+                    </td>
+                </table>
+            </td>
+            <td width="50%">
+                <table cellpadding="5" cellspacing="0" style="border-top: 1px solid #000000; border-right: 1px solid #000000" width="100%" align="center">
+                    <tr>
+                        <th bgcolor="#a2998b" align="left" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Shipped to</font></th>
+                    </tr>
+                    <td valign="top" style="border-left: 1px solid #000000;
+                    border-bottom: 1px solid #000000">
+                        {{ data.Order.shipping_name }}, {{ data.Order.shipping_fname }}<br />
+                        {{ data.Order.shipping_address_1 }},<br />
+                        {{ data.Order.shipping_city }}, {{ data.Order.shipping_state }}, {{ data.Order.shipping_postcode }}<br />
+                        {{ data.Order.shipping_country }}<br />
+                        Phone: {{ data.Order.phone }}<br />
+                        Email: {{ data.Order.email }}
+                    </td>
+                </table>
+            </td>
+            {#<td width="30%">
+                &#123;&#35;<table cellpadding="5" cellspacing="0" style="border-top: 1px solid #000000; border-right: 1px solid #000000" width="100%" align="center">
+                    <tr>
+                        <th bgcolor="#a2998b" align="left" style="border-left: 1px solid #000000"><font color="#FFFFFF" size="3">Tracking #</font></th>
+                    </tr>
+                    <td valign="top" style="border-left: 1px solid #000000;
+                    border-bottom: 1px solid #000000">
+                        <P>Pellentesque posuere, dui eu congue sodales, urna lorem tincidunt arcu, id accumsan massa diam et mauris. Nulla sollicitudin feugiat felis, et facilisis nunc egestas eget. Integer eu nisl odio, pharetra feugiat nisl. Sed dapibus ante in libero dignissim quis</P>
+                    </td>
+                </table>&#35;&#125;
+            </td>#}
+        </tr>
+    </table>
+
+
+    <table cellpadding="0" cellspacing="0" border="0" width="820" align="center">
+        <tr>
+            <td width="400" valign="top">
+                <h3>Return Policy</h3>
+                <font size="2">
+                    <p>If you are not completely satisfied with your purchase, please
+                        return it to us and we will gladly issue a refund or process an
+                        exchange within 30 days of the purchase date.</p>
+                    <p>Final Sale products are not eligible for return and cannot be
+                        refunded.</p>
+                    <p>We provide you with complimentary free shipping for all online
+                        returns and exchanges.</p>
+                    <p>To return your item(s) to the online store:<br />
+                        Complete the return/exchange form that was included with your
+                        order and enclose it with your return package.</p>
+                    <p>If you are returning item(s) only, complete the “Returns” section.
+                        If you are exchanging item(s), complete the “Returns” section an
+                        complete the “Exchanges” section. Please Note: we will not be
+                        able to process your refund and we will send your package back
+                        to you if you do not include this form with your return.</p>
+                    <p>Complete the “Your Information” section if the exchange order
+                        requires information that is different from your original order.</p>
+                </font>
+            </td>
+            <td width="20">&nbsp;</td>
+            <td width="400" valign="top">
+                <h3>&nbsp;</h3>
+                <font size="2">
+                    <p>Pack and seal the return form with the merchandise you wish to
+                        return securely in the original box. All returned merchandise must
+                        be unworn and in new condition with the original tags attached.</p>
+                    <p>Fill in the “From” section on the return (included with your order)
+                        and affix the label to the outside of your return package.
+                        Drop off you return package at any USPS Location
+                        Please retain the portion of the return/exchange form with your
+                        tracking number. This number is required to track your return/
+                        exchange package.</p>
+                </font>
+                <h3>Refunds</h3>
+                <font size="2">
+                    <p>Once we receive your return package, your refund will be
+                        processed within 5 business days. Please allow another 2 to 4
+                        business days for the credit to post to your credit card account,
+                        and an additional 1 to 2 billing cycles for the credit to appear on
+                        your billing statement as each bank’s processing time varies.</p>
+                    <p>Credit will be issued for the original amount that was paid for the
+                        merchandise, excluding shipping fees. Refunds will be issued in
+                        the original form of payment only.</p>
+                </font>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -1,0 +1,11 @@
+{{ html.css('blog', 'stylesheet', { 'inline': false }) }}
+{{ view.element('posts/categories', {'categories':categories, 'search_term':search_term}) }}
+
+<div class='blog-outer'>
+  <div class='art'>
+    {% for post in posts %}
+      {{ view.element('posts/blog_post', {'post':post}) }}
+    {% endfor %}
+  </div>
+</div>
+

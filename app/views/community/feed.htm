@@ -1,0 +1,109 @@
+<div class="profile-custom-page clearfix" id="newsfeedList">
+  <div class="updateFeedItems">
+    {{ view.element('community/feedItems')}}
+  </div>
+  {{ html.script('rec.js', {'inline':false}) }}
+  <div id="rec_friends">
+  </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var loadContent = $(".updateFeedItems");
+
+
+        loadContent.on('click', 'a.deleteFeed', function(e){
+
+            var $this = $(this),
+                item = $this.closest('.aWallItem');
+                item.addClass('toDelete');
+            if (confirm('Are you sure want to remove it?')) {
+                loadContent.load($this.attr('href'));
+            } else {
+                item.removeClass('toDelete');
+            }
+
+            // console.log('delete!');
+
+            e.preventDefault();
+        });
+
+        /*DELETE ALL CHECKED FEEDS*/
+        loadContent.on('change', 'input.feed_del', function(e){
+            var countSelected = $("input.feed_del:checked").length;
+            if(countSelected != 0){
+                $("span#deleteAll").css("display","block");
+            } else {
+                $("span#deleteAll").css("display","none");
+            }
+
+            //e.preventDefault();
+        });
+
+        loadContent.on('click', 'span#deleteAll', function(e){
+            if (confirm('Are you sure to remove all checked elements?')) {
+                var allchecked = $(".feed_del:checked").serialize();
+
+                $.post('/community/deletingMultipleFeed/', allchecked,
+                        function(data) {
+                            if(!data.error) {
+                                $(".feed_del:checked").each(function(){
+                                    $(this).parent().parent().remove();
+                                });
+                                $("span#deleteAll").css("display","none");
+                                //alert(data.result);
+                            } else {
+                                alert(data.error);
+                            }
+                        },
+                        "json"
+                );
+            } else {
+
+            }
+
+            e.preventDefault();
+        });
+        /*END*/
+
+        loadContent.on('click', '#toggle', function() {
+            $(this).parent().fadeOut(0);
+            $("#add-post").fadeIn(500);
+            initEditor('postTextInput');
+        });
+
+        loadContent.on('click', '#reset', function() {
+            $("#add-post").fadeOut(0);
+            $("#state-box").fadeIn(500);
+        });
+
+        loadContent.on('click', '#submit', function() {
+            var
+                formPost=$("#UserAddPostForm"),
+                nicE = new nicEditors.findEditor('postTextInput'),
+                contentPost = nicE.getContent(),
+                loadContent = $('.updateFeedItems');
+
+             $('.updateFeedItems').load(formPost.attr('action'), { 'data[UserPost][text]' : contentPost }, function(){
+                nicE.setContent('');
+            });
+        });
+
+        function initEditor(idElement) {
+            return new nicEditor({
+                iconsPath : '/js/jquery/plugins/nicEdit/nicEditorIcons.gif',
+                buttonList : ['bold','italic','underline','strikeThrough'],
+                maxHeight : 200
+            }).panelInstance(idElement);
+        }
+
+
+
+    });
+
+
+
+</script>
+

@@ -1,0 +1,146 @@
+{{ html.script("cart", { "inline" : false }) }}
+<section id="content">
+    <h1>Shopping Cart</h1>
+    {% if data.empty is not defined %}
+    <form action="/shopping-cart" method="post" id="ProductCartForm" class="form">
+        <fieldset>
+            <table class="shopping-cart">
+                <tbody>
+                <tr>
+                    <th></th>
+                    <th colspan="2" class="ttl">Product Name & Options</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+
+                {% if data.items.item.0 %}
+                    {% for key, node in data.items.item %}
+                        {% if node.user_id == 0 %}
+                            {% set where_img = store_url %}
+                        {% else %}
+                            {% set where_img = host %}
+                        {% endif %}
+                        <tr class="cart_item_{{ node.key }}">
+                            <td>
+                                <a href="{{ node.key }}" class="remove">Delete</a>
+                            </td>
+                            <td class="picture">
+                                <img src="{{ where_img }}/thumbs/63x63{{ node.image }}" alt="image" width="63" height="63" />
+                            </td>
+                            <td>
+                                <span>{{ node.title }}</span>
+                                {% if node.attributes %}
+                                    <ul class="attributes">
+                                        {% if node.attributes.attribute.0 %}
+                                            {% for attr in node.attributes.attribute %}
+                                                <li>{{ attr.name }} - <span>{{ attr.value }}</span></li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li>{{ node.attributes.attribute.name }} - <span>{{ node.attributes.attribute.value }}</span></li>
+                                        {% endif %}
+                                    </ul>
+                                {% endif %}
+                            </td>
+                            <td class="qty">
+                                <img src="/img/store/minus.png" alt=""class="qtyDecrement" rel="product-{{ node.key }}" />
+                                <input type="text" id="product-qty-{{ node.key }}" disabled="disabled" class="txt qty" value="{{ node.qty }}" name="" />
+                                <img src="/img/store/plus.png" alt="" class="qtyIncrement" rel="product-{{ node.key }}" data-available="{{ node.available }}" />
+                            </td>
+                            <td class="total" id="product-total-{{ node.key }}">
+                                {{ number.format(node.price*node.qty, {"places":"2"}) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    {% if data.items.item.user_id == 0 %}
+                        {% set where_img = store_url %}
+                    {% else %}
+                        {% set where_img = host %}
+                    {% endif %}
+                    <tr class="cart_item_{{ node.key }}">
+                        <td>
+                            <a href="{{ data.items.item.key }}" class="remove">Delete</a>
+                        </td>
+                        <td class="picture">
+                            <img src="{{ where_img }}/thumbs/63x63{{ data.items.item.image }}" alt="image" width="63" height="63" />
+                        </td>
+                        <td>
+                            <span>{{ data.items.item.title }}</span>
+                            {% if data.items.item.attributes %}
+                                <ul class="attributes">
+                                    {% if data.items.item.attributes.attribute.0 %}
+                                        {% for attr in data.items.item.attributes.attribute %}
+                                            <li>{{ attr.name }} - <span>{{ attr.value }}</span></li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li>{{ data.items.item.attributes.attribute.name }} - <span>{{ data.items.item.attributes.attribute.value }}</span></li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                        </td>
+                        <td class="qty">
+                            <img src="/img/store/minus.png" alt=""class="qtyDecrement" rel="product-{{ data.items.item.key }}" />
+                            <input type="text" id="product-qty-{{ data.items.item.key }}" disabled="disabled" class="txt qty" value="{{ data.items.item.qty }}" name="" />
+                            <img src="/img/store/plus.png" alt="" class="qtyIncrement" rel="product-{{ data.items.item.key }}" data-available="{{ data.items.item.available }}" />
+                        </td>
+                        <td class="total" id="product-total-{{ data.items.item.key }}">
+                            {{ number.format(data.items.item.price*data.items.item.qty, {"places":"2"}) }}
+                        </td>
+                    </tr>
+                {% endif %}
+
+
+                <tr>
+                    <td colspan="4" style="text-align: right">
+                        Sub Total:
+                    </td>
+                    <td class="total" colspan="1">
+                        <strong id="cartSubTotal">{{ number.format(data.subtotal, {"places":"2"}) }}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <div class="discounts">
+                            <span>Discount </span>
+                            <input type="text" id="discount" class="txt" />
+                            <input type="button" id="dis-sub" class="btn" value="Submit" />
+                            <br/>
+                            <span id="responce">&nbsp;</span>
+                        </div>
+                    </td>
+                </tr>
+                {% if data.discount %}
+                <tr>
+                    <td colspan="4" style="text-align: right">
+                        Discount:
+                    </td>
+                    <td class="discount-total" colspan="1">
+                        <strong id="discount-value">{{ number.format(data.discount, {"places":"2"}) }}</strong>
+                    </td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td colspan="4" style="text-align: right">
+                        Total:
+                    </td>
+                    <td class="total" colspan="1">
+                        <strong id="tot" style="color: #2974B3">{{ number.format(data.total, {"places":"2"}) }}</strong>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="btn-holder">
+                <!--input type="button" onclick="window.location.href='/'" class="btn-continue-shopping" value="Continue Shopping">
+                <input type="button" class="btn-checkout" id="checkout" value="Check Out"-->
+                <a href="/shop" class="btn-continue-shopping">Continue Shopping</a>
+                <a href="/shop/checkout" class="btn-checkout">Check Out</a>
+                <div class="title1" id="forCartJS"></div>
+            </div>
+        </fieldset>
+    </form>
+    {% else %}
+        {{ data.empty }}
+    {% endif %}
+</section>
+
+{#<pre style="clear: both;">{{ data|pr }}</pre>#}

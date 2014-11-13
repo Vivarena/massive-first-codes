@@ -1,0 +1,28 @@
+<h2>Countries</h2>
+{% if countries %}
+
+{{ form.create() }}
+<span style="float: right;">{{ form.submit('Save', {'class' : 'submit-btn'}) }}</span>
+<table cellpadding="0" cellspacing="1" class="contact-info">
+    <tr>
+        <th width="30">Name</th>
+        <th width="30">Tax</th>
+    </tr>
+    {% for item in countries %}
+    {% set row_class = loop.index is even ? 'odd' : 'even' %}
+    <tr class="row-{{ item.id }} first">
+        <td class="{{ row_class }}">{{ item.Country.name }}</td>
+        <td class="{{ row_class }}">
+            {{ form.input('Country.'~ loop.index ~'.vat', { "label" : false, "div" : false, 'value' : item.Country.vat }) }} %
+            {{ form.hidden('Country.'~ loop.index ~'.id', { 'value' : item.Country.id }) }}
+            {{ form.hidden('Country.'~ loop.index ~'.name', { 'value' : item.Country.name }) }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{{ form.end }}
+{% else %}
+<div class="empty-result">
+    Items not found
+</div>
+{% endif %}

@@ -1,0 +1,30 @@
+{#<div class="photo-album clearfix" id="albumContainer">#}
+    <div class="photo-album_i_4col clearfix">
+        {% if type == 'photos' %}
+            {% set items = album.UserPhoto %}
+        {% elseif type == 'videos' %}
+            {% set items = album.UserVideo %}
+        {% endif %}
+        {% if error is not defined %}
+            <div class="img-block-all clearfix" style="width: 490px; height: 288px; overflow-y: scroll; margin-top: 10px">
+            {% if items|length > 0 %}
+                {% if type == 'photos' %}
+                    {% for item in items %}
+                        <div class="img-block__one clearfix">
+                            <a href="#" data-url="{{ item.image }}" data-type="{{ type }}" class="viewPhotoAlbum choose_img" style="margin-top: 0"><img src="/thumbs/103x80{{ item.image }}" alt="{{ item.title }}"></a>
+                        </div>
+                    {% endfor %}
+                {% elseif type == 'videos' %}
+                    {% for item in items %}
+                        <div class="img-block__one clearfix">
+                            <a href="#" data-url="{{ item.url_video }}" data-type="{{ type }}" class="videoPlay choose_video"  style="margin-top: 0"><img src="/thumbs/103x80{{ item.cover_img }}" alt="{{ item.title }}"></a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+            </div>
+        {% else %}
+            <h3>{{ error }}</h3>
+        {% endif %}
+    </div>
+{#</div>#}

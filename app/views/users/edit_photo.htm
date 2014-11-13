@@ -1,0 +1,206 @@
+<link href="/css/jquery.fileupload-ui.css?edjh" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/js/jquery/plugins/uploader/jquery.fileupload.js"></script>
+<script type="text/javascript" src="/js/jquery/plugins/uploader/jquery.fileupload-ui.js"></script>
+<link href="/js/jquery/plugins/cropper/css/imgareaselect-default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/js/jquery/plugins/cropper/scripts/jquery.imgareaselect.pack.js"></script>
+
+<div class="tabs-box clearfix">
+    <span class="shadow-tab">&nbsp;</span>
+
+    <div class="tabs-box-left clearfix">
+
+        <ul class="tab-list clearfix">
+            <li class="active">Edit Profile</li>
+
+        </ul>
+        <div class="profile-box clearfix">
+            <div class="profile-box-user clearfix">
+                <form id="uploadPhotoForm" action="/users/uploadPhotoAjax" method="POST" enctype="multipart/form-data" style="width: 450px">
+                    <input type="file" name="file" multiple> -OR- <input type="button" class="btn btn-post" value="Albums" id="imageForAva">
+                    <button>Upload</button>
+                </form>
+                <div id="photoPlace"></div>
+                <span class="infoMsg">
+                    Click on the photo and drag to start cut for the avatar.
+                </span>
+
+                <div class="profile-photo" id="editPhotoContainer">
+                    <ul id="file"></ul>
+
+                    <div id="photoProfile">
+                    {% if photo.photo %}
+                        <img src="{{ photo.photo|thumb(390) }}" id="mainPhoto" alt="Photo"/>
+                    {% else %}
+                        <p style="text-align: center;">
+                            No photo
+                        </p>
+                    {% endif %}
+                    </div>
+                    <form action="/users/cropPhoto" method="post">
+                        <input type="hidden" name="data[crop][x1]" id="x1">
+                        <input type="hidden" name="data[crop][x2]" id="x2">
+                        <input type="hidden" name="data[crop][y1]" id="y1">
+                        <input type="hidden" name="data[crop][y2]" id="y2">
+                        <input type="hidden" name="data[crop][flag]" id="flag" value="uploaded">
+                        <input type="hidden" name="data[crop][src]" id="cropSrc"{% if photo.photo %} value="{{ photo.photo }}"{% endif%}>
+
+                        <div class="buttons hidden">
+                            <input type="button" class="btn saveCrop" value="Save">
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="padd-15"></div>
+
+    {#{{ view.element('community/rightSideInProfile') }}#}
+    {#{{ view.element('community/rightSidebarFriends') }}#}
+
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        {% if photo.photo %}
+        var wOrig = $('img#mainPhoto').width();
+        var hOrig = $('img#mainPhoto').height();
+        $('img#mainPhoto').imgAreaSelect({
+            maxWidth: (wOrig > 385) ? 385 : wOrig,
+            maxHeight: (hOrig > 385) ? 385 : wOrig,
+            aspectRatio: '3:3',
+            onSelectEnd: updateCrop
+        });
+        {% endif %}
+
+        var avatarBoxImg = $('#avatarImage'),
+            updateContent = $('.profile-box-user'),
+            flag_type = $('#flag');
+
+        $('#uploadPhotoForm').fileUploadUI({
+
+            uploadTable: $('#file'),
+            imageTypes: "/jpg/",
+            downloadTable: $('#photoProfile'),
+            buildUploadRow: function (files, index) {
+                return $('<li>' + files[index].name + '<br/>' +
+                        '<span class="file_upload_progress"><div><\/div><\/span>' +
+                        '<span class="file_upload_cancel">' +
+                        '<button class="ui-state-default ui-corner-all" title="Cancel">' +
+                        '<span class="ui-icon ui-icon-cancel">Cancel<\/span>' +
+                        '<\/button><\/span><\/li>');
+            },
+            buildDownloadRow: function (file) {
+                if (!file.error) {
+                    this.downloadTable.empty();
+                    var Img = new Image();
+                    var $this = this;
+                    Img.src = '/thumbs/390x' + file.photo;
+                    Img.onload = function() {
+                        $this.downloadTable.append('<img src="' + this.src + '" alt="" id="mainPhoto"/>');
+/*                        if ($('img#mainPhoto').width() > 390 ) {
+                            $('img#mainPhoto').attr('width', 390);
+                        }*/
+                        flag_type.val('uploaded');
+                        avatarBoxImg.attr('src', this.src);
+
+                        $('#cropSrc').val(file.photo);
+                        $('img#mainPhoto').imgAreaSelect({
+                            maxWidth: 385,
+                            maxHeight: 385,
+                            aspectRatio: '3:3',
+                            onSelectEnd: updateCrop
+                        });
+                    };
+                    //return $('<img src="' + file.photo + '" width="390" alt="" />');
+                } else {
+                    return $('<p>' + file.err_desc + '<\/p>');
+                }
+
+            }
+         });
+
+        updateContent.on('click', '.saveCrop', function(e){
+            var form = $(this).closest('form');
+
+            $.post(form.attr('action'), form.serialize(),
+                function(data) {
+                    if(!data.error) {
+                        for(var i=0;i<4;i++) {
+                            avatarBoxImg.fadeTo('fast', 0.5).fadeTo('fast', 1.0);
+                          }
+                    } else {
+                        window.alert(data.err_desc);
+                    }
+
+                },
+                "json"
+            );
+
+            e.preventDefault();
+        });
+
+        function updateCrop(img, selection){
+            $('.buttons').removeClass('hidden');
+            avatarBoxImg.attr('src', $('img#mainPhoto').attr('src'));
+
+            $('input#x1').val(selection.x1);
+            $('input#y1').val(selection.y1);
+            $('input#x2').val(selection.x2);
+            $('input#y2').val(selection.y2);
+
+            var scaleX = 60 / (selection.width || 1),
+                scaleY = 60 / (selection.height || 1),
+                hAva = $('#photoProfile #mainPhoto').height(),
+                wAva = $('#photoProfile #mainPhoto').width();
+
+            avatarBoxImg.css({
+                width: Math.round(scaleX * wAva) + 'px',
+                height: Math.round(scaleY * hAva) + 'px',
+                marginLeft: '-' + Math.round(scaleX * selection.x1) + 'px',
+                marginTop: '-' + Math.round(scaleY * selection.y1) + 'px'
+            });
+        }
+
+        var imgPlace = $('#photoPlace');
+
+        $('#imageForAva').click(function(e) {
+            e.preventDefault();
+            $.get('/albums/index/photos/ajax', function(response) {
+                if(response.error == false) {
+                    imgPlace.html(response.content);
+                }
+                imgPlace.slideDown();
+            }, 'json');
+        });
+
+        imgPlace.on('click', '.view_album', function (e) {
+            e.preventDefault();
+            var album_id = $(this).attr('data-id');
+            imgPlace.slideUp();
+            $.get('/albums/view/photos/'+album_id+'/ajax', function(response) {
+                if(response.error == false) {
+                    imgPlace.html(response.content);
+                }
+                imgPlace.slideDown();
+            }, 'json');
+        });
+
+        imgPlace.on('click', '.choose_img', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('data-url');
+            $('#mainPhoto').attr('src', '/thumbs/390x'+url);
+            $('#cropSrc').val(url);
+//            updateCrop(url, 0);
+            flag_type.val('album');
+            imgPlace.slideUp().html('');
+        });
+
+    });
+
+</script>

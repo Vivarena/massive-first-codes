@@ -1,0 +1,107 @@
+{{ html.css("/rating/css/rating") }}
+{{ html.script("/rating/js/rating_jquery", { "inline" : false }) }}
+<h1>{{ Sponsor.UserSponsor.name }}</h1><br/>
+<div class="item-holder">
+    <section class="item-pictures">
+
+        <div class="picture" style="float:left">
+            <a href="#"><img  src="/thumbs/300x300{{ Sponsor.UserSponsor.logo  }}" alt="{{ Sponsor.UserSponsor.name }}"   /></a>
+        </div>
+        {#<div class="descSponsorView">Description: {{ Sponsor.UserSponsor.description }}</div>
+        <br/>#}
+        <div id="gearsReview">
+            <div id="ratingStars">
+                        {{ view.element('rating',{
+                                        'plugin' : 'rating',
+                                        'model' : 'UserSponsor',
+                                        'id' : Sponsor.UserSponsor.id
+                        }) }}
+            </div>
+            <div class="text row">
+                {{ form.create('UserSponsorReview', {'url' : '/save-review/'~Sponsor.UserSponsor.id}) }}
+                    <textarea name="data[UserSponsorReview][text]" cols="30" rows="10"></textarea>
+                    <input type="submit" value="Submit" class="btn"/>
+                {{ form.end() }}
+            </div>
+            <ul id="listReviews">
+
+                <li id="reviewItem_0">
+                    <div class="box-list__one clearfix">
+                        <div class="box-list__one__img clearfix">
+                            <a href="/{{ owner.User.login }}">
+                                {% set ava = (owner.UserInfo.avatar) ? owner.UserInfo.avatar : owner.UserInfo.photo %}
+                                <img width="60" height="60" alt="" src="/thumbs/60x60{{ ava|default('/no_ava.jpg') }}">
+                            </a>
+                        </div>
+                        <div class="comment-list__one__info clearfix">
+                            <a class="title_name" href="/{{ owner.User.login }}">{{ owner.User.login }}</a>
+                            <div class="textReview">{{ Sponsor.UserSponsor.description|truncate(400) }}</div>
+
+                                <span class="subActions">
+                                    <span class="date">{{ Sponsor.UserSponsor.created|date('M j, Y H:i') }}</span>
+                                </span>
+                                <span class="userRating">
+                                 {{ rating.stars( 'UserSponsor', owner.User.id, { '%RATING%' : owner.Rating.0.rating, '%AVG%' : owner.Rating.0.rating, '%AVGNAME%': owner.Rating.0.rating, '%MAX%': maxRating },{ 'name': owner.Rating.0.name }, false ) }}
+                                </span>
+                        </div>
+                    </div>
+                </li>
+
+                {% for item in Sponsor.UserSponsorReview %}
+                    <li id="reviewItem_{{ item.id }}">
+                        <div class="box-list__one clearfix">
+                            <div class="box-list__one__img clearfix">
+                                <a href="/{{ item.User.login }}">
+                                    {% set ava = (item.User.UserInfo.avatar) ? item.User.UserInfo.avatar : item.User.UserInfo.photo %}
+                                    <img width="60" height="60" alt="" src="/thumbs/60x60{{ ava|default('/no_ava.jpg') }}">
+                                </a>
+                            </div>
+                            <div class="comment-list__one__info clearfix">
+                                <a class="title_name" href="/{{ item.User.login }}">{{ item.User.login }}</a>
+                                <div class="textReview">{{ item.text|truncate(400) }}</div>
+
+                                <span class="subActions">
+                                    <span class="date">{{ item.created|date('M j, Y H:i') }}</span>
+
+                                    {% if isOwner %}
+                                    <a class="delete deleteReview" data-review-id="{{ item.id }}" href="#">Delete</a>
+                                    {% endif %}
+                                </span>
+                                <span class="userRating">
+                                 {{ rating.stars( 'UserSponsor', item.user_id, { '%RATING%' : item.User.Rating.0.rating, '%AVG%' : item.User.Rating.0.rating, '%AVGNAME%': item.User.Rating.0.rating, '%MAX%': maxRating },{ 'name': item.User.Rating.0.name }, false ) }}
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {#{{ rating.stars( 'InfoUser', item_user.InfoUser.id, { '%RATING%' : item_user.InfoUser.rating, '%AVG%' : item_user.InfoUser.rating, '%AVGNAME%': item_user.InfoUser.rating, '%MAX%': maxRating },{ 'name': 'MAIN', 'config' : 'plugin_rating' }, false ) }}#}
+    </section>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+
+        $('.deleteReview').click(function (e) {
+            e.preventDefault();
+            var reviewId = $(this).data('reviewId');
+            $.post("/delete-review/"+reviewId, '',
+                function(data) {
+                    if(!data.error) {
+                        $('#reviewItem_' + reviewId).fadeOut('fast', function(){
+                            $(this).remove();
+                            showTopMsg('Review successfully deleted');
+                        });
+                    } else {
+                        showTopMsg(data.errDesc, 'error');
+                    }
+
+                },
+                "json"
+            );
+        });
+
+
+    });
+</script>

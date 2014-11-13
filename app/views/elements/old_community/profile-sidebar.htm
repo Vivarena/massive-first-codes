@@ -1,0 +1,35 @@
+<div class="profile-left">
+    <div class="profile-left__name">
+        <p>{{ view.data.first_name|title }}&nbsp;{{ view.data.last_name }}</p>
+
+        {#{% if view.data.photo|length > 0 %}#}
+        <div id="avatarBox">
+            {{ view.element('ava_common', { 'data' : view.data, 'w' : 120, 'h' : 120, 'zoomIt' : true })}}
+
+            {% if isMyProfile %}
+
+            {% else %}
+                {% if view.data.user_id == session.read('Auth.User.id') %}
+                    <span class="actionsAvatar">
+                        <a href="#Edit">
+                            <img src="/img/btn/edit_icon.png" alt="Edit" class="editAva">
+                        </a>
+                    </span>
+                {% endif %}
+            {% endif %}
+
+            {#{{ view.Html.image('demo/man-big.jpg') }}#}
+
+        </div>
+
+        {#<ul id="afterAvaBox">
+
+        </ul>#}
+    </div>
+
+    {% if not is_friend|length or isMyProfile%}
+    {{ view.element('community/profile_menu') }}
+    {% else %}
+    {{ view.element('community/user_menu') }}
+    {% endif %}
+</div>

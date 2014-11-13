@@ -1,0 +1,55 @@
+<link rel="stylesheet" type="text/css" href="/admin/js/jquery/plugins/superfish/css/superfish.css" media="screen">
+
+<script type="text/javascript" src="/admin/js/jquery/plugins/superfish/hoverIntent.js"></script>
+<script type="text/javascript" src="/admin/js/jquery/plugins/superfish/superfish.js"></script>
+<script type="text/javascript">
+
+// initialise plugins
+jQuery(function(){
+    jQuery('ul#sf-menu').superfish();
+});
+
+</script>
+
+<ul id="nav">
+	<li {% if _hovers.content %}class="currently"{% endif %}>
+		<a href="/admin/admin_pages" {% if _hovers.content %}class="currently"{% endif %}> Content<span class="currently">&nbsp;</span></a>
+	</li>
+	<li {% if _hovers.community %}class="currently"{% endif %}>
+		<a href="/admin/admin_users" {% if _hovers.community %}class="currently"{% endif %}> Community<span class="currently">&nbsp;</span></a>
+	</li>
+	{#<li {% if _hovers.publications %}class="currently"{% endif %}>
+	    <a href="/admin/admin_publications" {% if _hovers.publications %}class="currently"{% endif %}>Publications<span class="currently">&nbsp;</span></a>
+	</li>#}
+{#
+    <li {% if _hovers.banner %}class="currently"{% endif %}>
+		<a href="/admin/admin_banners" {% if _hovers.banner %}class="currently"{% endif %}> Banners<span class="currently">&nbsp;</span></a>
+	</li>
+#}
+	{#<li {% if _hovers.menu %}class="currently"{% endif %}>
+		<a href="/admin/admin_menus" {% if _hovers.menu %}class="currently"{% endif %}> Menu<span class="currently">&nbsp;</span></a>
+	</li>#}
+    <li {% if _hovers.events %}class="currently"{% endif %}>
+		<a href="/admin/admin_events" {% if _hovers.events %}class="currently"{% endif %}> Conferences & Events<span class="currently">&nbsp;</span></a>
+	</li>
+    {#<li {% if _hovers.tv_investment %}class="currently"{% endif %}>
+		<a href="/admin/admin_tv_investments" {% if _hovers.tv_investment %}class="currently"{% endif %}> TV<span class="currently">&nbsp;</span></a>
+	</li>#}
+    {#<li>
+        <a href="/admin/admin_packages" {% if _hovers.package %}class="currently"{% endif %}> Packages<span class="currently">&nbsp;</span></a>
+    </li>#}
+    <li>
+        <a href="/admin/admin_contact_form_submissions">Contact Us</a>
+    </li>
+     <li {% if _hovers.config %}class="currently"{% endif %}>
+        <a href="/admin/admin_configs" {% if _hovers.config %}class="currently"{% endif %}> Config<span class="currently">&nbsp;</span></a>
+    </li>
+     {#<li {% if _hovers.analytics %}class="currently"{% endif %}>
+        <a href="/admin/admin_analytics" {% if _hovers.analytics %}class="currently"{% endif %}> Analytics<span class="currently">&nbsp;</span></a>
+    </li>#}
+{#    {% if access == 'admin' %}
+    <li>
+        <a href="/admin/admin_users" {% if _hovers.users %}class="hover"{% endif %}>Users</a>
+    </li>
+    {% endif %}#}
+</ul>

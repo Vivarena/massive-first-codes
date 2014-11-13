@@ -1,0 +1,86 @@
+td.userName{
+    text-align: left;
+    padding-left: 4px;
+}
+
+.acc_trigger{
+    border-top: 1px solid #d3d3d3;
+    border-left: 1px solid #d3d3d3;
+    border-right: 1px solid #d3d3d3;
+}
+h2.acc_trigger {
+    background-color: #F8F8F8;
+    font-size: 14px !important;
+    height: 28px;
+    padding: 0 6px !important;
+}
+h2.acc_trigger a{
+    color: #808080;
+    text-decoration: none;
+}
+h2.acc_trigger a:hover{
+    color: #000;
+}
+.steps{
+    border-bottom: 1px solid #d3d3d3;
+    border-left: 1px solid #d3d3d3;
+    border-right: 1px solid #d3d3d3;
+}
+.lastBlock{
+    border-bottom: 1px solid #d3d3d3;
+}
+.steps .block {
+    padding: 0 10px 10px;
+}
+.steps .block input{
+    width: 200px;
+}
+.steps .block input[type="radio"]{
+    width: auto;
+}
+.steps .block textarea{
+    width: 300px;
+    height: 55px;
+    margin: 5px 10px;
+}
+.form .input{
+    padding: 5px 0;
+}
+.form input{
+    display: inline;
+    margin: 0 5px;
+}
+.form label{
+    display: inline;
+}
+.form .selectOpt{
+    width: 200px;
+    height: 20px;
+    margin: 0 5px
+}
+
+#hisPolls{
+    width: 695px;
+    border: 1px solid #d3d3d3;
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+    color: #808080;
+    font-style: italic;
+}
+#hisPolls ul{
+    list-style: circle;
+}
+#hisPolls ul li{
+    margin: 5px 0;
+    font-size: 14px;
+}
+#hisPolls ul li span.question{
+    font-weight: bold;
+    color: #808080;
+}
+#hisPolls ul li span.answer{
+    font-weight: normal;
+    font-style: italic;
+    color: #989898;
+}

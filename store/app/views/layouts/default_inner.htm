@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>roofing</title>
+    <link rel="stylesheet" type="text/css" href="/css/fonts/stylesheet.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/mob.css"/>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/flexcroll.js"></script>
+    <script type="text/javascript" src="/js/jquery.blueberry.js"></script>
+    <script type="text/javascript" src="js/jquery.accordion.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script  type="text/javascript">
+        $(function() {
+//            $(".opener-t").click(function () {
+//                $(".nav-t ul").slideToggle('slow');
+//            });
+//            $(".opener-b").click(function () {
+//                $(".nav-b ul").slideToggle('slow');
+//            });
+//            $('.opener').click(function(){
+//                $(this).toggleClass('current');
+//            });
+            $('ul.services').accordion({
+                active: ".selected",
+                autoHeight: 0,
+                header: ".opener",
+                collapsible: true,
+                event: "click"
+            });
+        });
+
+    </script>
+</head>
+<body>
+
+    {{ view.element('header') }}
+
+<div id="main">
+    <div class="main-shadow">
+        {{ view.element('top-menu') }}
+
+        {{ content_for_layout }}
+
+        {#{{ view.element('bottom-menu') }}#}
+    </div>
+</div>
+
+    {{ view.element('footer') }}
+
+</body>
+</html>

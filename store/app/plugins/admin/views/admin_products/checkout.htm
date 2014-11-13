@@ -1,0 +1,543 @@
+<script type="text/javascript">
+    <!--
+    (function($) {
+        $(function() {
+
+            _getState("User");
+            _getState("Order");
+
+            $("#OrderSame").click(function() {
+                if(this.checked) {
+                    $("#billingData").fadeTo("fast", 0.4);
+                    $("#billingData").find("input[type!=checkbox]").attr("disabled", true);
+                    $("#billingData").find("select").attr("disabled", true);
+                } else {
+                    $("#billingData").fadeTo("fast", 1);
+                    $("#billingData").find("input[type!=checkbox]").removeAttr("disabled");
+                    $("#billingData").find("select").removeAttr("disabled");
+                }
+            });
+
+            $("#UserCountry").change(function(){  _getState("User"); });
+
+            $("#UserState").change(function(){ _getCity("User"); });
+
+            $("#OrderCountry").change(function(){ _getState("Order"); });
+
+            $("#OrderState").change(function(){ _getCity("Order"); });
+
+
+            function _getState(model) {
+                var countryId = $("#" + model + "Country :selected").val();
+
+                if (countryId != "") {
+                    $("#" + model + "State").empty();
+                    $("#" + model + "State").append( $("<option>Loading...</option>"))
+                    $.getJSON("/pages/ajaxGetStates/" + countryId,
+                            function(data){
+                                $("#" + model + "State").empty();
+                                $("#" + model + "State").append( $("<option value=''>Select region</option>"))
+                                $.each(data, function(key, value) {
+                                    $("#" + model + "State").append( $("<option value=\"" + key + "\">" + value + "</option>"))
+                                });
+
+                                if (model == "User") {
+                                    $("#" + model + "State option[value={{ session.read("BillingShipping.Billing.state") }}]").attr("selected", "selected");
+                                } else {
+                                    $("#" + model + "State option[value={{ session.read("BillingShipping.Shipping.state") }}]").attr("selected", "selected");
+                                }
+                            }
+                    )
+                } else {
+                    $("#" + model + "State").empty();
+                    $("#" + model + "State").append( $("<option value=''>Select country first</option>"))
+                }
+            }
+
+            function _getCity(model) {
+                var stateId = $("#" + model + "State :selected").val();
+                if (stateId != "") {
+                    $("#" + model + "City").empty();
+                    $("#" + model + "City").append( $("<option>Loading...</option>"))
+                    $.getJSON("/pages/ajaxGetCities/" + stateId,
+                            function(data){
+                                $("#" + model + "City").empty();
+                                $("#" + model + "City").append( $("<option value=''>Select city</option>"));
+                                $.each(data, function(key, value) {
+                                    $("#" + model + "City").append( $("<option value=\"" + key + "\">" + value + "</option>"))
+                                })
+                            }
+                    )
+                } else {
+                    $("#" + model + "City").empty();
+                    $("#" + model + "City").append( $("<option value=''>Select region first</option>"))
+                }
+            }
+
+        });
+    })(jQuery);
+    //-->
+</script>
+
+
+<div id="wp-content">
+
+<div class="wp-content-inner">
+
+{{ form.create({ 'action' : "saveOrder" }) }}
+<div class="clearfix">
+    <div class="billing-title float-l">
+        <h1 class="title-page-right">billing information</h1>
+    </div>
+    <div class="billing-title float-r">
+        <h1 class="title-page-right">shipping information</h1>
+    </div>
+</div>
+<div class="billing-shipping-block clearfix">
+<div class="billing-shipping float-l">
+<div class="radio">&nbsp;</div>
+<div class="input clearfix">
+    <label>First Name</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("User.first_name", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.first_name") }}
+</div>
+<div class="input clearfix">
+    <label>Last Name</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("User.name", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.name") }}
+</div>
+<div class="input clearfix">
+    <label>Addres line1</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("User.address1", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.address1") }}
+</div>
+<div class="input clearfix">
+    <label>Addres line2</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("User.address2", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.address2") }}
+</div>
+<div class="input clearfix">
+    <label>Country</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.select("User.country", countries, null, {'label':false, "empty":"Please select", "style" : "width: 190px"}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.country") }}
+</div>
+
+<div class="select clearfix">
+    <label>State</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.select("User.state", null, null, {'label':false, "empty":"Please select", "style" : "width: 190px"}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.state") }}
+</div>
+{#<div class="input clearfix">
+                    <label>City</label>
+                    <div class="block-black">
+                        <div class="block-left">
+                            <div class="block-right">
+                                <div class="block-top">
+                                    <div class="block-bottom">
+                                        <div class="block-inner">
+                                            <div class="clearfix">
+                                                {{ form.select("User.city", null, null, {'label':false, "empty":"Please select", "style" : "width: 190px"}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form.error("User.city") }}
+                </div>#}
+
+                <div class="input clearfix">
+    <label>City</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("User.city", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.city") }}
+</div>
+
+<div class="input clearfix">
+    <label>Zip</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("User.zip", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.zip") }}
+</div>
+<div class="input clearfix">
+    <label>Telephone</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("User.phone", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.phone") }}
+</div>
+<div class="input clearfix">
+    <label>Email</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("User.email", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("User.email") }}
+</div>
+</div>
+
+<div class="billing-shipping float-r">
+
+<div class="radio">{{ form.checkbox("Order.same") }}<label>Billing and shipping information are the same.</label></div>
+<div id="billingData">
+<div class="input clearfix">
+    <label>First Name</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("Order.first_name", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.first_name") }}
+</div>
+<div class="input clearfix">
+    <label>Last Name</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("Order.name", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.name") }}
+</div>
+<div class="input clearfix">
+    <label>Addres line1</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("Order.address1", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.address1") }}
+</div>
+<div class="input clearfix">
+    <label>Addres line2</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("Order.address2", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.address2") }}
+</div>
+<div class="input clearfix">
+    <label>Country</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.select("Order.country", countries, null, {'label':false, "empty":"Please select", "style" : "width: 190px"}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.country") }}
+</div>
+
+<div class="select clearfix">
+    <label>State</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.select("Order.state", null, null, {'label':false, "empty":"Please select", "style" : "width: 190px"}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.state") }}
+</div>
+{#<div class="input clearfix">
+                    <label>City</label>
+                    <div class="block-black">
+                        <div class="block-left">
+                            <div class="block-right">
+                                <div class="block-top">
+                                    <div class="block-bottom">
+                                        <div class="block-inner">
+                                            <div class="clearfix">
+                                                {{ form.select("Order.city", null, null, {'label':false, "empty":"Please select", "style" : "width: 190px"}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{ form.error("Order.city") }}
+                </div>#}
+                <div class="input clearfix">
+    <label>City</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("Order.city", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.city") }}
+</div>
+<div class="input clearfix">
+    <label>Zip</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("Order.zip", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.zip") }}
+</div>
+<div class="input clearfix">
+    <label>Telephone</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("Order.phone", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.phone") }}
+</div>
+<div class="input clearfix">
+    <label>Email</label>
+    <div class="block-black">
+        <div class="block-left">
+            <div class="block-right">
+                <div class="block-top">
+                    <div class="block-bottom">
+                        <div class="block-inner">
+                            <div class="clearfix">
+                                {{ form.text("Order.email", {"class":"text", "div":false, "label":false}) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ form.error("Order.email") }}
+</div>
+</div>
+</div>
+</div>
+<div class="button button-checkout">
+    <div class="float-l">
+        <input type="button" value="Shopping Cart" class="btn-update"  onclick="window.location.href='/admin/admin_products/order_add'" />
+    </div>
+    <div class="float-r"><input type="submit" value="Continue" class="btn-continue" /></div>
+    <div class="clear"></div>
+</div>
+
+{{ form.end() }}
+
+</div>
+
+
+</div>

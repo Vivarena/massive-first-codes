@@ -1,0 +1,22 @@
+<div class="profile-content clearfix">
+    {% if page_name|length %}
+    <h3>{{ page_name|__ }}</h3>
+    {% endif %}
+
+    <div class="links">
+        {{ view.Html.link('All'|__, '/community/network') }}
+        &nbsp;|&nbsp;
+        <a href="/community/listRequests">
+            {{ 'Pending Requests'|__ }}
+            <span class="counter">{{ view.data.requests }}</span>
+        </a>
+    </div>
+
+    {{ view.element('community/network') }}
+
+    {#{% if paginator.numbers() %}
+    <div id="NetworkPager">
+        {{ paginator.prev('<< Prev'|__, null, null, { 'class':'disabled'}) }} {{ paginator.next('Next >>'|__, null, null, { 'class':'disabled'}) }}
+    </div>
+    {% endif %}#}
+</div>

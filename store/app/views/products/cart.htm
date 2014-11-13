@@ -1,0 +1,118 @@
+{{ html.script("cart", { "inline" : false }) }}
+{{ html.css('/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4', null, { 'inline' : false }) }}
+{{ html.script("jquery/plugins/fancybox/jquery.fancybox-1.3.4.pack", { 'inline' : false }) }}
+{{ view.addScript('
+<script type="text/javascript">
+$(function(){
+    $(".fancy-image").fancybox();
+})
+</script>
+') }}
+<img style="z-index: 9999" src="/img/ajax-loader.gif" alt="" id="cartAjaxProcessIcon"/>
+
+<div class="check-out-title">
+    <h3>shopping cart</h3>
+</div>
+<div class="check-form clearfix">
+    {{ form.create("Product", {"action":"cart", "class":"form"}) }}
+    <div class="check-table">
+        <table>
+            <tr class="first">
+                <td class="grey">Product name &amp; options</td>
+                <td class="grey">Quantity</td>
+                <td class="grey">total</td>
+            </tr>
+            {% for key, item in Cart.Products %}
+            <tr class="padd cart_item_{{ key }}">
+                <td>
+                    <div class="image-product clearfix">
+                        <div class="image-product-img">
+                            <a class="fancy-image" href="{{ item.image }}"><img alt="" src="{{ item.image|thumb(72, 63) }}" /></a>
+                        </div>
+
+                        <div class="image-product-text">
+                            <p>
+                                <a href="{{ 'product'|toUrl(item.id, item.title) }}">{{ item.title }}</a><br/>
+                                {% if item.attributes %}
+                                    <ul class="attributes">
+                                        {% for name, value in item.attributes %}
+                                            <li>{{ name }} - <span>{{ value }}</span></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+
+                </td>
+
+                <td class="qty" id="product-qty-{{ key }}">
+                    <div class="field clearfix">
+                        {% if item.price != 0 %}
+                        <span class="minus qtyDecrement" rel="product-{{ key }}">&nbsp;</span>
+                        {% endif %}
+                        {{ form.input("Product.quantity."~key, {'value':item.qty, 'class':"null-inp text", "label":false,
+                        'div':false, "readonly":'readonly', 'id' : 'product-qty-'~key}) }}
+                        {% if item.price != 0 %}
+                        <span class="plus qtyIncrement" rel="product-{{ key }}">&nbsp;</span>
+                        {% endif %}
+                    </div>
+                </td>
+                <td class="total">
+                    {% if item.price != 0 %}
+                        <span id="product-total-{{ key }}">{{ number.format(item.price*item.qty, {"places":"2"}) }}</span>
+                    {% else %}
+                        Gift
+                    {% endif %}
+                    <a href="{{ key }}" class="remove"><img src="pictures/close.jpg" alt=""/></a>
+                </td>
+            </tr>
+            {% endfor %}
+
+            <tr class="padd opacity-bg">
+                <td></td>
+                <td>subtotal:</td>
+                <td>
+                    <span id="cartSubTotal">{{ number.format(Cart.Subtotal, {"places":"2"}) }}</span>
+                </td>
+            </tr>
+            <tr class="padd">
+                <td></td>
+                <td>
+                    <div class="input-code clearfix">
+                        <label> Coupon Code</label>
+                        <input type="text" class="null-inp text" id="discount"/>
+                    </div>
+                </td>
+                <td>
+                    <input type="button" value="Submit" class="btn-sub btn-submit" id="dis-sub" />
+                    {#<input type="submit" value="Submit" class="btn-sub"/>#}
+                </td>
+            </tr>
+            <tr class="padd right">
+                <td></td>
+                <td>Discount:</td>
+                <td><b><span id='discount-value'>{{ number.format(Cart.Discount, {"places":"2"}) }}</span></b></td>
+            </tr>
+            <tr class="first right">
+                <td></td>
+                <td>total:</td>
+                <td><b><span id='tot'>{{ number.format(Cart.Total, {"places":"2"}) }}</span></b></td>
+            </tr>
+        </table>
+        {% if Cart.Products|length == 0 %}<h1>Your cart is empty</h1>{% endif %}
+        <div class="btn-input clearfix">
+            {#<input type="submit" value="continue shopping" class="shop-card"/>#}
+            {% if Cart.Products|length != 0 %}
+            <div class="float-r">
+                {#<input type="button" value="Check Out" class="continue btn-continue" id="checkout"/>#}
+            </div>
+            {% endif %}
+            {#<input type="submit" value="check out" class="continue"/>#}
+        </div>
+    </div>
+
+
+</div>
+

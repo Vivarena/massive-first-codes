@@ -1,0 +1,187 @@
+<font size="2" face="aria">
+
+    <table cellpadding="0" cellspacing="0" border="0" width="90%" style="font-family:Arial;" align="center">
+        <tr>
+            <td><img alt="The Situation" src="/img/logo.png" /></td>
+            <td align="right">
+                <h1>FINANCIAL REPORT</h1>
+                <a href="/admin/admin_orders/printPdf"><img src="/img/icons/pdf.png" alt="" height="40"></a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                {% if dates.from != null and dates.to != null %}
+                <p align="center">
+                    <font size="+1">
+                        <strong>
+                            PERIOD: FROM {{ dates.from|date("m/d/Y") }}
+                            TO {{ dates.to|date("m/d/Y") }}
+                        </strong>
+                    </font>
+                </p>
+                {% else %}
+                {% if  dates.from != null and dates.to == null %}
+                <p align="center">
+                    <font size="+1">
+                        <strong>
+                            PERIOD: FROM {{ dates.from|date("m/d/Y") }}
+                        </strong>
+                    </font>
+                </p>
+                {% else %}
+                {% if dates.from == null and dates.to != null %}
+                <p align="center">
+                    <font size="+1">
+                        <strong>
+                            PERIOD: TO {{ dates.to|date("m/d/Y") }}
+                        </strong>
+                    </font>
+                </p>
+                {% endif %}
+                {% endif %}
+                <p align="center">
+                    <font size="+1">
+                        <strong>
+                            &nbsp;
+                        </strong>
+                    </font>
+                </p>
+                {% endif %}
+
+                {% for item in result %}
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td width="150" bgcolor="#000000" style="color:#FFFFFF; padding:5px">
+                            <font size="3"><strong>DATE</strong></font>
+                        </td>
+                        <td bgcolor="#000000" style="color:#FFFFFF; padding:5px">
+                            <font size="3"><strong>NAME</strong></font>
+                        </td>
+                        <td width="150" bgcolor="#000000" style="color:#FFFFFF; padding:5px">
+                            <font size="3"><strong>PHONE</strong></font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding:5px; border-bottom:1px dashed #000000">{{ item.Order.created|date("m/d/Y") }}</td>
+                        <td style="padding:5px; border-bottom:1px dashed #000000">{{ item.Order.shipping_fname }} {{ item.Order.shipping_name }}</td>
+                        <td style="padding:5px; border-bottom:1px dashed #000000">{{ item.Order.phone }}</td>
+                    </tr>
+                </table>
+                <h3>PRODUCTS</h3>
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td width="180" bgcolor="#D26F23" style="color:#FFFFFF;">
+                            <font size="+1">PRODUCT NAME</font>
+                        </td>
+                        <td bgcolor="#D26F23" width="50" style="color:#FFFFFF;">
+                            <font size="+1">QTY</font>
+                        </td>
+                        <td bgcolor="#D26F23" width="100" style="color:#FFFFFF;">
+                            <font size="+1">OUR COST</font>
+                        </td>
+                        <td bgcolor="#D26F23" width="110" style="color:#FFFFFF;">
+                            <font size="+1">SALE PRICE</font>
+                        </td>
+                        <td bgcolor="#D26F23" width="110" style="color:#FFFFFF;">
+                            <font size="+1">NET PROFIT</font>
+                        </td>
+                        <td bgcolor="#D26F23" width="100" style="color:#FFFFFF;">
+                            <font size="+1">TOTAL</font>
+                        </td>
+                        <td bgcolor="#D26F23" width="140" style="color:#FFFFFF; ">
+                            <font size="+1">DONATION</font>
+                        </td>
+                    </tr>
+                    {% for product in item.OrderProduct %}
+                    <tr>
+                        <td width="180" style="border-bottom:1px dashed #000000">
+                            {{ product.name|capitalize }}
+                            {% if product.attributes|length > 0 %}
+                            <ul style="list-style: none; padding-left: 5px">
+                                <li style="font-weight: bold; line-height: 11px;">Attributes:</li>
+                                {% for key, item in product.attributes %}
+                                <li style="line-height: 11px;">{{ key }} - {{ item }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </td>
+                        <td  style="border-bottom:1px dashed #000000">
+                            {{ product.quantity }}
+                        </td>
+                        <td  width="100" style="border-bottom:1px dashed #000000">
+                            {{ product.networth }}
+                        </td>
+                        <td  width="110" style="border-bottom:1px dashed #000000">
+                            {% if product.price != "$0.00" %}
+                                {{ product.price }}
+                            {% else %}
+                                Gift
+                            {% endif %}
+                        </td>
+                        <td width="110" style="border-bottom:1px dashed #000000">
+                            {% if product.price != "$0.00" %}
+                                {{ product.net_profit }}
+                            {% endif %}
+                        </td>
+                        <td width="100" style="border-bottom:1px dashed #000000">
+                            {% if product.price != "$0.00" %}
+                                {{ product.itemPrice }}
+                            {% endif %}
+                        </td>
+                        <td width="140" style="border-bottom:1px dashed #000000">
+                            {% if product.charity != "0" %}
+                                {{ product.charity }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <p style="margin:0; padding:15px 0 5px 0; font-size:25px; text-align:center;">*********</p>
+{% endfor %}
+
+
+
+
+
+
+
+                <br /><br />
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td align="right" bgcolor="#000000" style="color:#FFFFFF; padding:5px"">
+                        <font size="3"><strong>TOTAL:</strong></font>
+                        </td>
+                        <td width="100" bgcolor="#000000" style="color:#FFFFFF; padding:5px"">
+                        <font size="3"><strong>{{ result.0.total }}</strong></font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="4"></td>
+                    </tr>
+                    <tr>
+                        <td align="right" bgcolor="#000000" style="color:#FFFFFF; padding:5px"">
+                        <font size="3"><strong>NET PROFIT TOTAL:</strong></font>
+                        </td>
+                        <td width="100" bgcolor="#000000" style="color:#FFFFFF; padding:5px"">
+                        <font size="3"><strong>{{ result.0.total_profit }}</strong></font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" height="4"></td>
+                    </tr>
+                    <tr>
+                        <td align="right" bgcolor="#000000" style="color:#FFFFFF; padding:5px"">
+                        <font size="3"><strong>DONATION TOTAL:</strong></font>
+                        </td>
+                        <td width="100" bgcolor="#000000" style="color:#FFFFFF; padding:5px"">
+                        <font size="3"><strong>{{ result.0.donationSumm }}</strong></font>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</font>

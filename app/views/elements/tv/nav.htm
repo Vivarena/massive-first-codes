@@ -1,0 +1,11 @@
+<tr>
+    {% for id, title in tv_cats %}
+        {% if tv_cats|length == 1 %}
+            {% set class = 'th-first th-last' %}
+        {% else %}
+            {% set class = loop.first ? 'th-first' : loop.last ? 'th-last' : '' %}
+        {% endif %}
+        {% set current = id == tv.tv_investment_category_id ? 'currently' : '' %}
+        <td class="th {{ class }}"><div class="inner {{ current }}">{{ title|upper }}</div></td>
+    {% endfor %}
+</tr>

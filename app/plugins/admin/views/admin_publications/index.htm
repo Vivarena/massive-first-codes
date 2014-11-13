@@ -1,0 +1,46 @@
+{{ html.css('/admin/css/publication', null, {'inline': false}) }}
+{{ html.script('/admin/js/jquery/plugins/nano/jquery.nano', {'inline': false}) }}
+{{ html.script('/admin/js/jquery/plugins/jquery.json-2.3.min', {'inline': false}) }}
+{{ html.script('/admin/js/jquery/plugins/nestedSortable/jquery.ui.nestedSortable', {'inline': false}) }}
+
+<script type="text/javascript">
+    function showDialog(content, el, w, tabs) {
+        if (w == undefined || w == '') w = 450;
+        var eventDialog = null;
+        $(content).dialog({
+            'modal': true,
+            'resizable': false,
+            'draggable': false,
+            'width': w,
+            open: function(e, u) {
+                if (tabs) {
+                    eventDialog = $(e.target);
+                    eventDialog.tabs();
+                }
+            },
+            close: function(e, u){
+                if (tabs) eventDialog.remove();
+            },
+            'buttons': {
+                'Cancel': function()
+                {
+                    $(this).dialog("close");
+                },
+                'Save': function()
+                {
+                    $(this).dialog("close");
+                    if (el != undefined && el != '') {
+                        var $thisForm = $(this).find('form');
+                        ajaxLoader('', el);
+                        $('#' + el).load($thisForm.attr('action'), $thisForm.serialize());
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+{{ view.element('publications/publicationCategoriesTree') }}
+
+{{ view.element('publications/publicationsByCategory') }}
+

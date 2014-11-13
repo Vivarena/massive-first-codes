@@ -1,0 +1,222 @@
+{{ html.script('/admin/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4', {'inline': false}) }}
+{{ html.css('/admin/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4.css', null, {'inline': false}) }}
+{{ html.script('/admin/js/jquery/plugins/nano/jquery.nano', {'inline': false}) }}
+
+
+<script type="text/javascript">
+(function($){
+    	$(function() {
+		$(".delete-link").click(function(event) {
+			event.preventDefault();
+			var link = $(this).attr("href");
+
+			$("#dialog-confirm").dialog({
+				resizable: false,
+				position: "center",
+				height:140,
+				modal: true,
+				buttons: {
+					"Delete": function() {
+						$(this).dialog("close");
+						$.get('/admin/admin_banners/ajaxDelete/' + link,
+						    function(data){
+                                console.log(data)
+						        if (data.status) {
+						            $(".image-" + link).remove()
+						        }
+						    },
+                            'json'
+						);
+					},
+					"Cancel": function() {
+						$(this).dialog("close");
+					}
+				}
+			});
+		});
+
+		$(".fancy-image").fancybox();
+        $('.add_menu').click(function(event) {
+            var data = {
+                'action': 'add',
+                'banner': {
+                    'title': '',
+                    'url': '',
+                    'link': ''
+                }
+            };
+            var content = $.nano($("#template-edit").html(), data);
+            showDialog(content);
+            event.preventDefault();
+        });
+
+        function showDialog(content) {
+            $(content).dialog({
+                'modal': true,
+                'resizable': false,
+                'draggable': false,
+                'width': 350,
+                'buttons': {
+                    'Cancel': function()
+                    {
+                        $(this).dialog("close");
+                    },
+                    'Save': function()
+                    {
+                        $(this).find('form').submit();
+                    }
+                }
+            });
+        }
+
+
+        $('.activate-btn').live('click', function(e){
+            var ahref = $(this);
+            $.post(ahref.attr('href'), '',
+                function(data) {
+                    ahref.find('img').attr('src', '/admin/img/icons/' + data.mode + '.png');
+                    $.jGrowl('Banner is ' + data.mode, { header: data.mode.toUpperCase(), theme: 'jGrowl-type-success' });
+                },
+                "json"
+            );
+            e.preventDefault();
+
+        });
+
+        $('#saveDelay').click(function(e){
+            ajaxLoader('Saving delay...');
+            $.post("/admin/admin_banners/updateDelay", $(this).closest('form').serialize(),
+                function(data) {
+                    if(!data.error) {
+                        $.jGrowl('New delay is saved!', { theme: 'jGrowl-type-success'});
+                    } else {
+                        $.jGrowl(data.err_desc, { theme: 'jGrowl-type-error'});
+                    }
+
+                },
+                "json"
+            );
+            e.preventDefault();
+        });
+
+	});
+})(jQuery)
+</script>
+
+<div id="dialog-confirm" title="Delete this page?" class="hidden">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+<h2>Banners</h2>
+<div style="float: right; padding: 5px">
+    <a href="#" class="add_menu"><img src="/admin/img/icons/add.png" alt=""></a>
+</div>
+<div id="delaySlides">
+    <form action="#" method="POST">
+        <label>Delay: </label>
+        <input type="text" name="data[delay]" value="{{ delaySlides }}">
+        <input type="button" name="submitDelay" id="saveDelay" value="Save delay">
+    </form>
+</div>        
+{% if items %}
+
+
+<table cellpadding="0" cellspacing="1" class="contact-info">
+	<tr>
+		<th class="sort">Image</th>
+		<th>-</th>
+		<th>-</th>
+		<th>-</th>
+		<th>-</th>
+	</tr>
+	{% for item in items %}
+	{% set row_class = loop.index is even ? 'odd' : 'even' %}
+	<tr class="image-{{ item.id }}">
+		<td class="first {{ row_class }}">
+		    <a class="fancy-image"  href="{{ item.url }}"><img src="{{ item.url|thumb(null, 50) }}" alt="{{ item.title }}" height="50"></a>
+		</td>
+		<td class="{{ row_class }}">
+		    <a href="/admin/admin_banners/moveUp/{{ item.id }}" class="btn up-btn"><img src="/admin/img/icons/desc.png" alt="" /></a>
+            <a href="/admin/admin_banners/moveDown/{{ item.id }}" class="btn down-btn"><img src="/admin/img/icons/asc.png" alt="" /></a>
+		</td>
+		<td class="{{ row_class }}">
+            {% set status = (item.active == 1) ? 'active' : 'inactive' %}
+            <a href="/admin/admin_banners/ajaxActivate/Banner/{{item.id}}" class="btn activate-btn">
+                <img src="/admin/img/icons/{{ status }}.png" alt="Active/inactive" />
+            </a>
+		</td>
+		<td class="{{ row_class }}">
+		    <a href="/admin/admin_banners/editBanner/{{item.id}}" data-id="{{item.id}}" class="btn edit-btn">
+		        <img src="/admin/img/icons/edit.png" alt="" />
+		    </a>
+		</td>
+		<td class="{{ row_class }}">
+			<a href="{{ item.id }}" class="delete-link" title="Click to delete">
+				<img alt="" src="/admin/img/icons/delete.png" />
+			</a>
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{{ view.element('paginator') }}
+{% else %}
+<div class="empty-result">
+	Items not found
+</div>
+{% endif %}
+
+<div id='template-edit' style="display: none">
+    <div id="{action}_menu_dialog" title="Edit Banner">
+        {{ form.create({'url': '/admin/admin_banners/{action}', 'class': 'menu-form', 'enctype':"multipart/form-data"}) }}
+            <input type="hidden" name="data[Banner][id]" value="{id}" >
+            <table width="100%">
+                <tr>
+                    <td colspan="2"><span style="color: red"> All fields are required </span></td>
+                </tr>
+                {% for key, value in languages %}
+                <tr style="width: 50%">
+                    <td>Banner title ({{ value }}) </td>
+                    <td>
+                        {{ form.text('title.' ~ key, {'class': 'text ui-widget-content ui-corner-all', 'value': '{banner.title.' ~key ~ '}'}) }}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr style="width: 50%">
+                    <td>Link banner:</td>
+                    <td>{{ form.text('link', {'value':'{banner.link}','class': 'text ui-widget-content ui-corner-all', 'style':'width:237px'}) }}</td>
+                </tr>
+                <tr>
+                    <td>Image (988x365)</td>
+                    <td>
+                        {{ form.file('url') }}
+                        {{ form.hidden('url_old', { 'value':'{banner.url}' }) }}
+                    </td>
+                </tr>
+            </table>
+        {{ form.end() }}
+    </div>
+
+</div>
+
+{#<div id='template' style="display: none">
+    <div id="form_template">
+        <div id="menu_dialog" title="Add PDF to Consent">
+            <p class="validate-error"></p>
+            {{ form.create({'class': 'menu-form', 'enctype':"multipart/form-data"}) }}
+                <table width="100%">
+                    <tr>
+                        <td colspan="2"><span style="color: red"> All fields is requared </span></td>
+                    </tr>
+                    <tr style="width: 50%">
+                        <td>Title</td>
+                        <td>{{ form.text('title', {'class': 'text ui-widget-content ui-corner-all', 'style':'width:237px'}) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Image (1000x360)</td>
+                        <td>{{ form.file('url') }}</td>
+                    </tr>
+                </table>
+            {{ form.end() }}
+        </div>
+    </div>
+
+</div>#}

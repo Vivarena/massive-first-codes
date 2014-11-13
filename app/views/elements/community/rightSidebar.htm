@@ -1,0 +1,204 @@
+<div class="right_sidebar clearfix">
+    {#<div class="right_sidebar__banner">
+        <a href="#"> <img src="/img/demo/nike.jpg" alt=""></a>
+    </div>#}
+    <div class="photo-block">
+        <div class="product-block clearfix">
+            <h3 class="featured-icon"><a href="#" id="block" class="selectedBlock">Store: Products/Services</a></h3>
+
+            <div class="product-block__one clearfix">
+                {% if products %}
+                    {% for key, node in products %}
+                        {% if node.user_id == 0 %}
+                            {% set where_img = store_url %}
+                        {% else %}
+                            {% set where_img = host %}
+                        {% endif %}
+                    {{ (loop.index == 4) ? '<div class="block-collpse">' : null }}
+                        <div class="product-block__one_i clearfix" data-id="{{ node.id }}">
+                            <div class="product-block__one__img clearfix">
+                                <a href="/shop{{ 'product'|toUrl(node.id, node.title) }}">
+                                    <img src="{{ where_img }}/thumbs/60x60{{ node.image }}" alt="">
+                                </a>
+                            </div>
+                            <div class="product-block__one__text clearfix">
+                                <h4><a href="/shop{{ 'product'|toUrl(node.id, node.title) }}" style="color: #666666">{{ node.title }}</a></h4>
+                                <span class="price">{{ number.format(node.price, {"places":"2"}) }}</span>
+                                <input onclick="javascript:window.location = '/shop{{ "product"|toUrl(node.id, node.title) }}';" type="submit" value="Buy" class="btn" data-id="{{ node.id }}" style="padding: 6px"/>
+                            </div>
+                        </div>
+                    {{ ((products|length > 3) and loop.last)? '</div>':null }}
+                    {% endfor %}
+                {% else %}
+                    No products yet
+                {% endif %}
+
+                {#<div class="block-collpse" id="block-type">#}
+
+                    {#<div class="product-block__one_i clearfix">#}
+                        {#<div class="product-block__one__img clearfix">#}
+                            {#<img src="/img/demo/prod1.jpg" alt="">#}
+                        {#</div>#}
+                        {#<div class="product-block__one__text clearfix">#}
+                            {#<h4>Football Cleats</h4>#}
+                            {#<span class="price">$49.99</span>#}
+                            {#<input type="submit" value="Buy" class="btn"/>#}
+                        {#</div>#}
+                    {#</div>#}
+
+                    {#<div class="product-block__one_i clearfix">#}
+                        {#<div class="product-block__one__img clearfix">#}
+                            {#<img src="/img/demo/prod1.jpg" alt="">#}
+                        {#</div>#}
+                        {#<div class="product-block__one__text clearfix">#}
+                            {#<h4>Football Cleats</h4>#}
+                            {#<span class="price">$49.99</span>#}
+                            {#<input type="submit" value="Buy" class="btn"/>#}
+                        {#</div>#}
+                    {#</div>#}
+
+                {#</div>#}
+                <a href="/shop" class="more">See More</a>
+
+
+            </div>
+        </div>
+    </div>
+    {#<div class="photo-block">#}
+        {#<div class="product-block clearfix">#}
+            {#<h3 class="featured-icon"><a href="#" class="selectedBlock">Used Products</a></h3>#}
+
+            {#<div class="product-block__one clearfix">#}
+                {#<div class="product-block__one_i clearfix">#}
+                    {#<div class="product-block__one__img clearfix">#}
+                        {#<img src="/img/demo/prod1.jpg" alt="">#}
+                    {#</div>#}
+                    {#<div class="product-block__one__text no_top clearfix">#}
+                        {#<h4>Compression#}
+                            {#Clothing</h4>#}
+                        {#<span class="price">$49.99</span>#}
+                        {#<input type="submit" value="Buy" class="btn"/>#}
+                    {#</div>#}
+
+                {#</div>#}
+                {#<div class="block-collpse">#}
+                    {#<div class="product-block__one_i clearfix">#}
+                        {#<div class="product-block__one__img clearfix">#}
+                            {#<img src="/img/demo/prod1.jpg" alt="">#}
+                        {#</div>#}
+                        {#<div class="product-block__one__text no_top clearfix">#}
+                            {#<h4>Compression#}
+                                {#Clothing</h4>#}
+                            {#<span class="price">$49.99</span>#}
+                            {#<input type="submit" value="Buy" class="btn"/>#}
+                        {#</div>#}
+
+                    {#</div>#}
+                    {#<div class="product-block__one_i clearfix">#}
+                        {#<div class="product-block__one__img clearfix">#}
+                            {#<img src="/img/demo/prod1.jpg" alt="">#}
+                        {#</div>#}
+                        {#<div class="product-block__one__text no_top clearfix">#}
+                            {#<h4>Compression#}
+                                {#Clothing</h4>#}
+                            {#<span class="price">$49.99</span>#}
+                            {#<input type="submit" value="Buy" class="btn"/>#}
+                        {#</div>#}
+
+                    {#</div>#}
+
+                {#</div>#}
+                {#<a href="#" class="more">See More</a>#}
+
+
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+
+    {#<div class="photo-block">
+        <div class="product-block clearfix">
+            <h3 class="featured-icon"><a href="#" class="selectedBlock">News from Google</a></h3>
+
+            <div class="product-block__one clearfix">
+                <div class="product-block__one_i clearfix">
+                   <div class="news-text">
+                       <h5>FOOTBALL</h5>
+                       <a href="#">Clubs reject Rangers newco in SPL</a>
+                    </div>
+                </div>
+                <div class="block-collpse">
+                    <div class="product-block__one_i clearfix">
+                        <div class="news-text">
+                            <h5>FOOTBALL</h5>
+                            <a href="#">Clubs reject Rangers newco in SPL</a>
+                        </div>
+                    </div>
+                    <div class="product-block__one_i clearfix">
+                        <div class="news-text">
+                            <h5>FOOTBALL</h5>
+                            <a href="#">Clubs reject Rangers newco in SPL</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="more">See More</a>
+
+
+            </div>
+        </div>
+    </div>#}
+    {#<div class="photo-block">
+        <div class="product-block clearfix">
+            <h3 class="featured-icon"><a href="#" class="selectedBlock">News from Friends</a></h3>
+
+            <div class="product-block__one clearfix">
+                <div class="product-block__one_i clearfix">
+                    <div class="news-text">
+                        <h5>FOOTBALL</h5>
+                        <a href="#">Clubs reject Rangers newco in SPL</a>
+                    </div>
+                </div>
+                <div class="block-collpse">
+                    <div class="product-block__one_i clearfix">
+                        <div class="news-text">
+                            <h5>FOOTBALL</h5>
+                            <a href="#">Clubs reject Rangers newco in SPL</a>
+                        </div>
+                    </div>
+                    <div class="product-block__one_i clearfix">
+                        <div class="news-text">
+                            <h5>FOOTBALL</h5>
+                            <a href="#">Clubs reject Rangers newco in SPL</a>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="more">See More</a>
+
+
+            </div>
+        </div>
+    </div>#}
+
+   {# <div class="photo-block">
+        <div class="product-block clearfix">
+            <h3 class="featured-icon">Calendar Reminder</h3>
+
+            <div class="product-block__one select-bg clearfix">
+                     <div class="select-bg_i clearfix">
+
+                        <select>
+                            <option value="Training">Training</option>
+                        </select>
+                        <select>
+                            <option value="Training">Races/Games</option>
+                        </select>
+                        <select>
+                            <option value="Training">Event</option>
+                        </select>
+                     </div>
+
+
+        </div>
+        </div>
+    </div>#}
+
+</div>

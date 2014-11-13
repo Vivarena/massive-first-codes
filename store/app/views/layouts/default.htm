@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    {{ view.Html.charset() }}
+
+    <title>{{ title_for_layout }}</title>
+
+    {{ view.Html.meta('icon') }}
+
+    <!--[if lte IE 6]>
+    {{ view.Html.script('ie6/warning') }}
+    <script>window.onload=function(){e("/js/ie6/")}</script>
+    <![endif]-->
+
+    <!--[if IE 7]>
+    {{ view.Html.css('ie7') }}
+    <![endif]-->
+
+    <!--[if IE 8]>
+    {{ view.Html.css('ie8') }}
+    <![endif]-->
+
+    {{ view.Html.css([
+        'safari', 'fonts/stylesheet', 'layout', 'menu', 'form', 'style', 'style 2', 'shop-style'
+    ]) }}
+
+    {{ view.Html.script('http://code.jquery.com/jquery-1.7.1.min.js') }}
+
+    {{ scripts_for_layout }}
+
+</head>
+
+<body class="body-videos">
+<div id="wrapper">
+    {{ jGrowl.flash() }}
+    <div id="middle" class="clearfix">
+        <div id="container">
+
+            {{ view.element('header') }}
+
+            <div id="content">
+
+                <div class="check-out">
+                    <div class="check-out-i clearfix content_for_layout">
+
+                         {{ content_for_layout }}
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {{ view.element('sidebar') }}<!-- .sidebar#sideLeft -->
+
+    </div>
+</div><!-- #wrapper -->
+<div id="footer">
+    <div class="copyright">
+        All rights reserved - Todos los derechos reservados Andres Cuervo
+    </div>
+</div>
+<div style="display:none">
+    <div id="video">
+        <img alt="" src="img/thumbs/video.jpg" />
+    </div>
+</div>
+
+</body>
+</html>

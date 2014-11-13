@@ -1,0 +1,27 @@
+<div class='blog-post'>
+  <h1 class='entry-title'>
+    {% set id = post.id ? post.id : post['ID'] %}
+    {% set url = html.url({ 'controller':'posts', 'action':'view', 0:id} ) %}
+    {{ html.link(post.post_title, url) }}
+  </h1>
+  <div class='by-author'>{{'By'|__}} {{ post.author }}</div>
+  <div class='sep-link'>
+    {{ html.link(post.post_date|nicetime, url) }}
+  </div>
+  <div class='entry-content'>
+    <p>{{ post.post_content }}</p>
+
+    {% if post['categories'] is not empty or post['tags'] is not empty %}
+      <p>
+        {% if post['categories'] is not empty %}
+            {{ 'Categories'|__}}: {{ post['categories'] }}<br>
+        {% endif %}
+
+        {% if post['tags'] is not empty %}
+          {{ 'Tags'|__}}: {{ post['tags'] }}
+        {% endif %}
+      </p>
+    {%endif %} 
+
+  </div>
+</div>

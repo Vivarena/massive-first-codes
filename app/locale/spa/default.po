@@ -1,0 +1,603 @@
+msgid "You can vote only once."
+msgstr "Solo puede votar una vez."
+
+msgid "added a new friend in his network"
+msgstr "añadio un nuevo amigo en su red"
+
+msgid "added the new suggestion"
+msgstr "añadio la nueva sugerencia"
+
+msgid "voted for"
+msgstr "ha votado por"
+
+msgid "has voted in the poll"
+msgstr "ha votado en la encuesta"
+
+msgid "in the poll"
+msgstr "en la encuesta"
+
+msgid "Before we can reset your password, please enter your email below to help identify your account:"
+msgstr "Antes de que podamos restablecer su contraseña, por favor ingrese su correo electrónico para ayudar a identificar a su cuenta:"
+
+msgid "Reset password"
+msgstr "Restablecer contraseña"
+
+msgid "Password"
+msgstr "Contraseña"
+
+msgid "Profile"
+msgstr "Perfil"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Feed"
+msgstr "Noticias de Red"
+
+msgid "Network"
+msgstr "Red"
+
+msgid "Messaging"
+msgstr "Mensajes"
+
+msgid "Requests"
+msgstr "Solicitudes"
+
+msgid "Suggestions"
+msgstr "Sugerencias"
+
+msgid "Polls"
+msgstr "Encuestas"
+
+msgid "Log Out"
+msgstr "Cerrar la Sesion"
+
+msgid "Delete Profile"
+msgstr "Borrar Perfil"
+
+msgid "Remove"
+msgstr "Remover"
+
+msgid "Unfriend it!"
+msgstr "Remover"
+
+msgid "Accept Request"
+msgstr "Aceptar Pedido"
+
+msgid "Approved request"
+msgstr "Pedido aprovado"
+
+msgid "Add to Network"
+msgstr "Agregar a Red"
+
+msgid "Send Message"
+msgstr "Enviar Mensaje"
+
+msgid "Request Pending"
+msgstr "Solicitud Pendiente"
+
+msgid "Pending Requests"
+msgstr "Pendientes"
+
+msgid "Your network is empty now"
+msgstr "No tiene contactos en esta categoria ahora"
+
+msgid "Search has returned empty result"
+msgstr "Busqueda ha regresado sin resultado"
+
+msgid "<< Prev"
+msgstr "<< Prev"
+
+msgid "Next >>"
+msgstr "Prox >>"
+
+msgid "Before we can reset your password, please enter your email below to help identify your account:"
+msgstr "Antes de poder reinicializar su clave, por favor ingrese su email para identificar su cuenta:"
+
+msgid "Submit"
+msgstr "Enviar"
+
+msgid "GET HELP"
+msgstr "RECIBIR AYUDA"
+
+msgid "TOOLS"
+msgstr "HERRAMIENTAS"
+
+msgid "CENTER"
+msgstr "CENTRO"
+
+msgid "COMMUNITY"
+msgstr "COMMUNIDAD"
+
+msgid "INVESTMENT"
+msgstr "INVERSION"
+
+msgid "ASK INVERSIONES"
+msgstr "PREGUNTANOS"
+
+msgid "Received on"
+msgstr "Recibido"
+
+msgid "Sent on"
+msgstr "Enviado"
+
+msgid "at"
+msgstr "a"
+
+msgid "Subject"
+msgstr "Subjeto"
+
+msgid "Previous"
+msgstr "Previo"
+
+msgid "Next"
+msgstr "Proximo"
+
+msgid "Send to"
+msgstr "Enviar a"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Send"
+msgstr "Enviar"
+
+msgid "Forward to"
+msgstr "Forward a"
+
+msgid "Sent"
+msgstr "Enviado"
+
+msgid "Sender"
+msgstr "Enviado Por"
+
+msgid "Receiver"
+msgstr "Recibido Por"
+
+msgid "Received"
+msgstr "Recibido"
+
+msgid "Trash"
+msgstr "Basura"
+
+msgid "Empty"
+msgstr "Vacio"
+
+msgid "Inbox"
+msgstr "Casilla"
+
+msgid "Unread"
+msgstr "No Leido"
+
+msgid "Write a new message..."
+msgstr "Escriba un mensaje nuevo..."
+
+msgid "All Messages"
+msgstr "Mensajes"
+
+msgid "You have no messages yet"
+msgstr "No tiene mensajes aun"
+
+msgid "Newer"
+msgstr "Mas Nuevo"
+
+msgid "Older"
+msgstr "Mas Viejo"
+
+msgid "of"
+msgstr "de"
+
+msgid "Messages"
+msgstr "Mensajes"
+
+msgid "Delete"
+msgstr "Borrar"
+
+msgid "All"
+msgstr "Todos"
+
+msgid "Accounts Held"
+msgstr "Cuentas que Posee"
+
+msgid "Avg. ROI"
+msgstr "Retorno Promedio"
+
+msgid "Goals"
+msgstr "Metas"
+
+msgid "Risk Profile"
+msgstr "Perfil de Riesgo"
+
+msgid "Risk profile"
+msgstr "Perfil de Riesgo"
+
+msgid "Net Worth"
+msgstr "Valor Personal Neto"
+
+msgid "Financial Info"
+msgstr "Info Financiero"
+
+msgid "Hobbies"
+msgstr "Extracurriculares"
+
+msgid "Industry"
+msgstr "Industria"
+
+msgid "Marital Status"
+msgstr "Estado Civil"
+
+msgid "Birthday"
+msgstr "Cumpleaños"
+
+msgid "Personal Info"
+msgstr "Info Personal"
+
+msgid "My network newsfeed"
+msgstr "Mis Noticias de Red "
+
+msgid "My Interests"
+msgstr "Mis Intereses"
+
+msgid "Interests"
+msgstr "Intereses"
+
+msgid "Remember me?"
+msgstr "Recuerdame?"
+
+msgid "Forgot Password?"
+msgstr "Olvidastes Contraseña?"
+
+msgid "Welcome,"
+msgstr "Bienvenido,"
+
+msgid "New password"
+msgstr "Nueva Contraseña"
+
+msgid "Confirm Password"
+msgstr "Confirma Contraseña"
+
+msgid "Basic info (Required)"
+msgstr "Info Basico (Requerido)"
+
+msgid "Location info (Required)"
+msgstr "Info Local (Requerido)"
+
+msgid "Do you have Resident status in the United States?"
+msgstr "Tiene Usted Estatus de Residente en los Estados Unidos?"
+
+msgid "What Country do you Live in?"
+msgstr "En Que Pais Vive?"
+
+msgid "What is your Preferred Language?"
+msgstr "Cual es su Lenguaje Preferido?"
+
+msgid "Have you Invested online before?"
+msgstr "Has Invertido Por Internet Antes?"
+
+msgid "Interested in (select all that apply):"
+msgstr "Interesado en (selecciona todos que appliquen):"
+
+msgid "Finance info (Optional)"
+msgstr "Info Financiero (Opcional)"
+
+msgid "Avg. ROI for past 1, 3, 5, 10 years"
+msgstr "Retorno Promedio de 1, 3, 5, 10 años"
+
+msgid "Private info (Optional)"
+msgstr "Info Privado (Opcional)"
+
+msgid "Annual Salary"
+msgstr "Salario Anual"
+
+msgid "Community"
+msgstr "Comunidad"
+
+msgid "Search Profiles"
+msgstr "Buscar Perfiles"
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Location"
+msgstr "Pais"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Lives in:"
+msgstr "Vive en:"
+
+msgid "Message"
+msgstr "Mensaje"
+
+msgid "General"
+msgstr "General"
+
+msgid "FAQs"
+msgstr "Preguntas Frecuentes"
+
+msgid "Content Partnerships"
+msgstr "Acuerdos de Contenido"
+
+msgid "Service Partnerships"
+msgstr "Acuerdos de Servicios"
+
+msgid "Careers at Inversiones"
+msgstr "Carreras en Inversiones"
+
+msgid "Phone"
+msgstr "Telefono"
+
+msgid "Comments"
+msgstr "Comentarios"
+
+msgid "Step 1 (Required) of 5"
+msgstr "Paso 1 (Requerido) de 5"
+
+msgid "Register"
+msgstr "Registrese"
+
+msgid "Next"
+msgstr "Proximo"
+
+msgid "Step 2 (Required) of 5"
+msgstr "Paso 2 (Requerido) de 5"
+
+msgid "Step 3 (Optional) of 5"
+msgstr "Paso 3 (Opcional) de 5"
+
+msgid "Step 4 (Optional) of 5"
+msgstr "Paso 4 (Opcional) de 5"
+
+msgid "Step 5 (Optional)"
+msgstr "Paso 5 (Opcional)"
+
+msgid "Back"
+msgstr "Atras"
+
+msgid "Done"
+msgstr "Completado"
+
+msgid "Sorry, but you must be logged"
+msgstr "Lo sentimos, pero usted debe estar registrado"
+
+msgid "his"
+msgstr "su"
+
+msgid "her"
+msgstr "su"
+
+msgid "wants to add you to his network!"
+msgstr "Quiere agregarte a su red!"
+
+msgid "wants to add you to her network!"
+msgstr "Quiere agregarte a su red!"
+
+msgid "Someone wants to add you to his network!"
+msgstr "Alguien quiere agregarte a su red!"
+
+msgid "Someone wants to add you to her network!"
+msgstr "Alguien quiere agregarte a su red!"
+
+msgid "Someone has registered with this email before."
+msgstr "Alguien se ha registrado con este email antes."
+
+msgid "Someone wrote you a message!"
+msgstr "¡Alguien te escribió un mensaje!"
+
+msgid "wrote you a message!"
+msgstr "te escribió un mensaje!"
+
+msgid "You can view and respond on"
+msgstr "Puede leer y responder en"
+
+msgid "No one found. Would you like to invite someone?"
+msgstr "No se encontró. ¿Quiere invitar a alguien?"
+
+msgid "Yes"
+msgstr "Sí"
+
+msgid "No"
+msgstr "No"
+
+msgid "No one found. Do you want to invite this person to Inversiones.com?"
+msgstr "No se encontró. ¿Queire invitar esta persona a Inversiones.com?"
+
+msgid "Questions? Comments? Please write to us at"
+msgstr "Preguntas? Comentarios? Por favor escríbenos a"
+
+msgid "Your friend has invited you to join Inversiones.com!"
+msgstr "¡Su amigo le ha invitado a Inversiones.com!"
+
+msgid "Register at"
+msgstr "Registrarse en"
+
+msgid "invites you to join"
+msgstr "te invita a ingresar"
+
+msgid "Welcome to Inversiones.com!"
+msgstr "¡Bienvenido a Inversiones.com!"
+
+msgid "Now you can connect with other members, friends, investors, and professionals in the world of investments. Onward and with much success."
+msgstr "Ahora puedes conectarte con otros miembros, amigos, inversores y profesionales en el mundo de las inversiones. Adelante y con mucho éxito."
+
+msgid "The Inversiones.com Team"
+msgstr "El Equipo de Inversiones.com"
+
+msgid "Please supply a valid email address."
+msgstr "Favor de poner un email valido"
+
+msgid "Email address cannot be empty."
+msgstr "Email no puede estar vacio"
+
+msgid "Married"
+msgstr "Casado(a)"
+
+msgid "Conservative"
+msgstr "Conservativo"
+
+msgid "Stable"
+msgstr "Estable"
+
+msgid "Balanced"
+msgstr "Balanceado"
+
+msgid "Moderate"
+msgstr "Moderado"
+
+msgid "Aggressive"
+msgstr "Agresivo"
+
+msgid "Save Money"
+msgstr "Ahorrar Dinero"
+
+msgid "Pay Bills"
+msgstr "Pagar Cuentas"
+
+msgid "Buy Home"
+msgstr "Comprar Hogar"
+
+msgid "Retirement"
+msgstr "Retiro"
+
+msgid "Checking"
+msgstr "Chequeo"
+
+msgid "Savings"
+msgstr "Ahorro"
+
+msgid "CD/Money Market"
+msgstr "Cert. De Depositos"
+
+msgid "Retirement"
+msgstr "Retiro"
+
+msgid "Investment"
+msgstr "Inversion"
+
+msgid "Other"
+msgstr "Otro"
+
+msgid "Single"
+msgstr "Soltero(a)"
+
+msgid "Separated"
+msgstr "Separado(a)"
+
+msgid "Divorced"
+msgstr "Divorciado(a)"
+
+msgid "Widowed/Widowered"
+msgstr "Viudo(a)"
+
+msgid "See more..."
+msgstr "Ver mas..."
+
+msgid "friends"
+msgstr "Contactos"
+
+msgid "Post"
+msgstr "Comentario"
+
+msgid "Add Post"
+msgstr "Aggrega"
+
+msgid "Edit photo"
+msgstr "Editar Foto"
+
+msgid "Upload photo"
+msgstr "Subir Foto"
+
+msgid "Click on the photo and drag to start cut for the avatar."
+msgstr "Haz click y marca con el boton apretado para recortar la foto."
+
+msgid "Suggested Sites"
+msgstr "Sitios Sugeridos"
+
+msgid "Websites"
+msgstr "Sitios Web"
+
+msgid "User has not suggest something yet."
+msgstr "Usuario no ha hecho sugerencias todavía."
+
+msgid "See more.."
+msgstr "Ver mas..."
+
+msgid "My Profile"
+msgstr "Mi Perfil"
+
+msgid "My Network Newsfeed"
+msgstr "Mis Noticias de Red"
+
+msgid "My"
+msgstr "Mi"
+
+msgid "Contact Us"
+msgstr "Contáctanos"
+
+msgid "Email Address"
+msgstr "Email"
+
+msgid "Follow us on:"
+msgstr "Siguenos en:"
+
+msgid "View profile"
+msgstr "Ver Perfil"
+
+msgid "Conferences"
+msgstr "Conferencias"
+
+msgid "Events"
+msgstr "Eventos"
+
+msgid "Category:"
+msgstr "Categoría"
+
+msgid "Key Speakers:"
+msgstr "Oradores:"
+
+msgid "My Network"
+msgstr "Mi Red"
+
+msgid "Please select"
+msgstr "Por favor seleccione"
+
+msgid "Select language"
+msgstr "Selecciona un idioma"
+
+msgid "Please select your gender"
+msgstr "Por favor seleccione su sexo"
+
+msgid "First Name"
+msgstr "Nombre"
+
+msgid "Last Name"
+msgstr "Apellido"
+
+msgid "added a new post"
+msgstr "agregó una nota"
+
+msgid "posted a comment"
+msgstr "hizo un comentrario"
+
+msgid "Enter a symbol or company name..."
+msgstr "Inserta el symbolo o nombre de companía..."
+
+msgid "About Me"
+msgstr "Sobre Mi"
+
+msgid "English"
+msgstr "Inglés"
+
+msgid "Spanish"
+msgstr "Español"
+
+msgid "Click me to reload!"
+msgstr "Haga clic en mí para recargar!"
+
+msgid "Send copy to myself"
+msgstr "Enviar copia a mi mismo"
+
+msgid "Increase my Network"
+msgstr "Expandir mis Contáctos"
+

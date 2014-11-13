@@ -1,0 +1,18 @@
+<div class="sub_album_i_2col clearfix">
+    {% for album in albums %}
+        <div class="sub_album_one clearfix">
+            <div class="sub_album_one_inner">
+                <div class="sub_album_one_i clearfix">
+                    <a href="#" class="view_album" data-type="{{ type }}" data-id="{{ album[modelAlbum].id }}" style="margin-top: 0">
+                        <img src="/thumbs/167x111{{ album[modelAlbum].cover }}" alt="" width="167" height="111">
+                    </a>
+                </div>
+                <div class="border"></div>
+            </div>
+            <div class="sub_album_one__text">
+                <a href="#" class="name-link view_album" data-type="{{ type }}" data-id="{{ album[modelAlbum].id }}" style="margin-top: 0">{{ album[modelAlbum].name }}</a>
+                <span class="count">{{ album.0.Count }} {{ type }} </span>
+            </div>
+        </div>
+    {% endfor %}
+</div>

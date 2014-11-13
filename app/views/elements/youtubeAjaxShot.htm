@@ -1,0 +1,3 @@
+{% set imgUrl = youtube.getImage(videoURL, 'large', {'raw' : true}) %}
+<a href="{{videoURL}}" class="videoPlay" id="youtubeCoverHref"><img src="{{ imgUrl }}" width="123" alt=""/></a>
+<input type="hidden" id="imgYoutubeUrl" name="data[Youtube][cover_img]" value="{{ imgUrl }}"/>

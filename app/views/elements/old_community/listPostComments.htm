@@ -1,0 +1,45 @@
+{{ jGrowl.flash() }}
+{% if fullPostText %}
+<div class="fullPostText hidden">{{fullPostText.UserPost.text}}</div>
+{% endif %}
+
+{% if commentItems %}
+{% for comment in commentItems %}
+<div class="comment">
+    <div>
+        <div class="author"><a href="/profile-{{comment.User.id}}">{{ comment.User.UserInfo.first_name }} {{ comment.User.UserInfo.last_name }}</a></div>
+        <div class="date">{{ comment.created|date('d M Y, H:i') }}</div>
+    </div>
+    <div class="text">{{ comment.UserPostComment.text }}</div>
+</div>
+{% endfor %}
+{% endif %}
+<textarea class="msg-reply"></textarea>
+<a class="btn-send send-message" href="#" data-post-id="{{post_id}}">Send</a>
+
+{#
+{% if commentItems %}
+<ul class="commentsUl">
+{% for comment in commentItems %}
+    <li class="commentItemLi clearfix">
+        <span class="userLink">
+            <div class="profile-content__newsfeed__img">
+                <a href='/profile/{{ comment.User.id }}'>
+                    {{ view.element('ava_common', { 'data' : comment.User.UserInfo, 'w' : 30, 'h' : 30, 'thumbAva' : true })}}
+                </a>
+            </div>
+        </span>
+        <span class="textPost">
+            <a href='/profile/{{ comment.User.id }}'><span class="username">{{ comment.User.UserInfo.first_name }} {{ comment.User.UserInfo.last_name }}</span></a> {{ comment.text }}
+        </span>
+        <span class="datePost">
+            {{ comment.created|date('d M Y, H:i') }}
+        </span>
+        {% if isMyProfile or myID == comment.user_id %}
+        <a href="#" class="removeCommentBtn hidden" data-id="{{ comment.id }}" data-post-id="{{ comment.user_post_id }}" data-user-id="{{ comment.user_id }}"></a>
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
+{% endif %}
+#}

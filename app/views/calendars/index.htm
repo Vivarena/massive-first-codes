@@ -1,0 +1,267 @@
+{{ html.css("/js/calendar/fullcalendar.css") }}
+{{ html.css("/js/select2/select2") }}
+{{ html.script("/js/calendar/jquery-ui.custom.min", { "inline" : false }) }}
+{{ html.script("/js/calendar/fullcalendar.min", { "inline" : false }) }}
+{{ html.script("/js/select2/select2", { "inline" : false }) }}
+{{ html.script("/js/moment.min", { "inline" : false }) }}
+{{ html.script("/js/project/googleCalendar", { "inline" : false }) }}
+{{ html.script("http://apis.google.com/js/client.js?onload=handleClientLoad", { "inline" : false }) }}
+
+
+<div id="calendarPage">
+    <div class="calendarActions">
+        <a href='#' id='authorize-button'><img src="/img/g_ex.png" alt="Google Calendar" title="Google Calendar"/></a>
+    </div>
+    <div id="events"></div>
+    <div id="calendar"></div>
+</div>
+
+<script type="text/nano-tpl" id="notePopup">
+    <div id="noteBox">
+        <form action="#" method="POST">
+            <fieldset>
+                <div class="messages-holder">
+                    <div class="title clearfix">
+                        <div class="top clearfix">
+                            <p class="invFriends">Invite friends</p>
+                            <select multiple id="friendsTag" name="data[Calendar][users][]" style="width:497px">
+                                {% for id, name in friendsList %}
+                                    <option value="{{ id }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                         <span style="margin-top:5px;"><input type="checkbox" name="data[CalendarEvent][all]" value="1" id="CalendarEventAll"> Invite All</span>
+                    </div>
+                    <div class="txtarea-holder clearfix">
+                        <input type="text" name="data[CalendarEvent][subject]" value="{subject}" placeholder="Subject" class="cal-subject"  style="width:497px">
+                    </div>
+                      <div class="txtarea-holder clearfix">
+                        <textarea name="data[CalendarEvent][description]" placeholder="Description of event">{desc}</textarea>
+                    </div>
+                    <div class="bottom clearfix">
+                        <input type="hidden" name="data[Calendar][all_day]" value="" id="allDay"/>
+                        <input type="hidden" name="data[Calendar][start]" value="" id="calStart"/>
+                        <input type="hidden" name="data[Calendar][end]" value="" id="calEnd"/>
+                        <input type="button" class="btn saveEvent" name="" value="Save" />
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</script>
+
+<script type="text/nano-tpl" id="listCalendars">
+    <div id="gCalBox">
+        <fieldset>
+            <div class="messages-holder">
+                <div class="title clearfix">
+                    <div class="top clearfix">
+                        <p class="titleCal">Please select calendar:</p>
+                    </div>
+                </div>
+                <ul id="listGooCal">
+                    {itemsCal}
+                </ul>
+                <div class="bottom clearfix">
+                    <input type="button" class="btn saveEvent" name="" value="Open" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</script>
+
+<script type="text/javascript">
+
+
+    function handleClientLoad() {
+        gapi.client.setApiKey('{{ googleSettings.apiKey }}');
+        window.setTimeout(GoogleCalendar.checkAuth, 1);
+        GoogleCalendar.checkAuth();
+    }
+
+
+    $(function() {
+
+        GoogleCalendar.init({
+            clientId: '{{ googleSettings.clientId }}',
+            apiKey: '{{ googleSettings.apiKey }}',
+            scopes: '{{ googleSettings.scopes }}'
+        });
+        GoogleCalendar.bindEvents();
+
+        var Calendar = {
+            date: [],
+            cal: null,
+            selectedDates: [],
+            calEvent: null,
+            setting: {
+                events: []
+            },
+            init: function(opt) {
+                var that = this;
+                that.settings = $.extend(this.settings, opt);
+                that.date['full'] = new Date();
+                that.date['d'] = that.date['full'].getDate();
+                that.date['m'] = that.date['full'].getMonth();
+                that.date['y'] = that.date['full'].getFullYear();
+                that.date['now'] = new Date(that.date['y'], that.date['m'], that.date['d'], 0, 0, 0);
+
+                this.cal = $('#calendar').fullCalendar({
+                    header: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'month,agendaWeek,agendaDay'
+                    },
+                    editable: true,
+                    selectable: true,
+                    selectHelper: true,
+                    select: function(start, end, allDay, jsEvent) {
+                        if(that.date['now'] <= start && that.date['now'] <= end) {
+                            that.selectedDates['start'] = start;
+                            that.selectedDates['end'] = end;
+                            that.selectedDates['allDay'] = allDay;
+                            that.showPopupNote();
+                        } else {
+                            that.cal.fullCalendar('unselect');
+                        }
+                    },
+                    events: that.settings.events,
+                    eventClick: function(calEvent, jsEvent, view) {
+                        if(that.date['now'] <= calEvent.start) {
+                            that.calEvent = calEvent;
+                            that.editAppointment(calEvent);
+                        }
+                    },
+                    eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc,jsEvent,ui,view) {
+                        if(that.date['now'] <= event.start && that.date['now'] <= event.end) {
+                            that.moveEvent(event.id, event.start, event.end, revertFunc);
+                        } else {
+                            revertFunc();
+                        }
+                    }
+                });
+            },
+
+            showPopupNote: function() {
+                var that = this,
+                    templateNote = $.nano($('#notePopup').html(), {'desc' : ''}),
+                    modalTemplate = modalPopup.settings('fixed', 'Event', templateNote, 550, 350);
+                modalPopup.showPopup(modalTemplate, function(popup){
+                    $('#friendsTag').select2({
+                        placeholder: "Select a Friend"
+                    });
+                    that.bindEventsPopup(popup);
+                });
+            },
+
+            editAppointment: function(calEvent) {
+                var that = this;
+                $.getJSON("/calendars/readEvent/"+calEvent.id, '', function(data) {
+                    var event = data.event.CalendarEvent,
+                        templateNote = data.content,//$.nano($('#notePopup').html(), {'desc' : event.description, 'subject':event.subject}),
+                        modalTemplate = modalPopup.settings('fixed', 'View Event', templateNote, 700, 365);
+                    modalPopup.showPopup(modalTemplate, function(popup){
+                        $('#friendsTag').select2({
+                            placeholder: "Select a Friend"
+                        });
+                        that.bindEventsPopup(popup);
+                    });
+                });
+            },
+
+            bindEventsPopup: function(popup) {
+                var that = this;
+                popup.on('click', '.saveEvent', function(e){
+                    e.preventDefault();
+                    that.saveEvent($(this).closest('form'));
+                });
+
+                popup.on('click', '.saveEditEvent', function(e){
+                    e.preventDefault();
+                    that.saveEditEvent($(this).closest('form'));
+                });
+
+                popup.on('click', '.deleteEvent', function(e){
+                    e.preventDefault();
+                    if (confirm('Are you sure?')) that.deleteEvent($(this).data('calId'));
+                });
+            },
+
+            deleteEvent: function(calId) {
+                var that = this;
+                $.post("/calendars/deleteEvent/" + calId, '',
+                    function(data) {
+                        if(!data.error) {
+                            that.cal.fullCalendar('removeEvents', calId);
+                            modalPopup.closePopup();
+                            showTopMsg('Event successfully deleted');
+                        } else {
+                            showTopMsg(data.errDesc, 'error');
+                        }
+                }, "json");
+            },
+
+            saveEditEvent: function(form) {
+                var that = this;
+                $.post("/calendars/editEvent", form.serialize(),
+                    function(data) {
+                        modalPopup.closePopup();
+                        if(!data.error) {
+                            that.calEvent.title = data.shortDesc;
+                            that.cal.fullCalendar('updateEvent', that.calEvent);
+                        } else {
+                            showTopMsg(data.errDesc, 'error');
+                        }
+                }, "json");
+            },
+
+            saveEvent: function(form) {
+                var that = this;
+                $('#calStart').val(that.selectedDates['start']);
+                $('#calEnd').val(that.selectedDates['end']);
+                $('#allDay').val(that.selectedDates['allDay']);
+                $.post("/calendars/addEvent", form.serialize(),
+                    function(data) {
+                        modalPopup.closePopup();
+                        if(!data.error) {
+                            that.cal.fullCalendar('renderEvent', {
+                                    id: data.id,
+                                    title: data.shortDesc,
+                                    start: that.selectedDates['start'],
+                                    end: that.selectedDates['end'],
+                                    allDay: that.selectedDates['allDay']
+                                }, true
+                            );
+                            that.cal.fullCalendar('rerenderEvents');
+                        } else {
+                            showTopMsg(data.errDesc, 'error');
+                        }
+                }, "json");
+            },
+
+            moveEvent: function(calId, start, end, revertFunc) {
+                var that = this,
+                    dataPost = {
+                        'data[newDates][start]': moment(start).format(),
+                        'data[newDates][end]': moment(end).format()
+                    };
+                $.post("/calendars/updateEventDate/" + calId, dataPost,
+                    function(data) {
+                        if(!data.error) {
+                            showTopMsg('Event rescheduled successfully');
+                        } else {
+                            showTopMsg(data.errDesc, 'error');
+                            revertFunc();
+                        }
+                }, "json");
+            }
+        };
+
+        window.Calendar = Calendar;
+
+        Calendar.init({
+            events: {{ events }}
+        });
+
+    });
+</script>

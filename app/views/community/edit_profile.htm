@@ -1,0 +1,370 @@
+{{ view.Html.css([
+    '/js/jquery/plugins/new-ui/css/humanity/jquery-ui-1.8.19.custom'
+    ]) }}
+{{ view.Html.script([
+    'jquery/plugins/new-ui/js/jquery-ui-1.8.19.custom.min',
+    'jquery/plugins/jquery.maskedinput-1.3.min'
+    ]) }}
+
+
+<style type="text/css">
+
+    #step4 .register fieldset input{
+        margin: 3px;
+    }
+    #step4 .register fieldset label{
+        width: auto;
+        padding: 0;
+        float: none;
+        display: inline;
+    }
+
+</style>
+
+<script type='text/javascript'>
+    $(document).ready(function () {
+
+//Set default open/close settings
+        showFirstSection();
+
+//On Click
+        $('.acc_trigger').click(function () {
+            if ($(this).next().is(':hidden')) { //If immediate next container is closed...
+                $('.acc_trigger').removeClass('active').next().slideUp(); //Remove all .acc_trigger classes and slide up the immediate next container
+                $('.acc_trigger .toggle-color').removeClass('alternate-color');
+                $(this).toggleClass('active').next().slideDown(); //Add .acc_trigger class to clicked trigger and slide down the immediate next container
+                $(this).find('.toggle-color').toggleClass('alternate-color');
+            }
+            return false;
+        });
+
+        $('#submit').click(function(){
+            $.post(
+                    $('#UserEditForm').attr('action'),
+                    $('#UserEditForm').serialize(),
+                    function(data){
+                        if (data.errors) {
+                            $('#UserEditForm .error-message').remove();
+                            $.each(data.errors, function (key, val) {
+                                var div_err = $('<div></div>').addClass('error-message clearfix').text(val);
+                                $('input[name*="\[' + key + '\]"]:last').after(div_err);
+                                $('select[name*="\[' + key + '\]"]:last').after(div_err);
+                                showFirstSection();
+                            });
+                        } else {
+                            window.location.href = '/profile';
+                        }
+                    },
+                    'json'
+            );
+        });
+
+        $('#reset').click(function(){
+            showFirstSection();
+            var time = setTimeout("window.location.href = '/profile';", 300);
+        });
+
+        $('#UserPrivateInfoBirthday').datepicker({
+            minDate: "-80y",
+            dateFormat: 'd M, yy',
+            yearRange: "1930:2000",
+            changeMonth: true,
+            changeYear: true
+        });
+
+        $("#UserPrivateInfoPhone").mask("9999-9999-9999999999");
+
+    });
+
+    function showFirstSection() {
+        $('.acc_container').hide();
+        $('.acc_trigger:first').addClass('active').next().show();
+        $('.acc_trigger:first .toggle-color').toggleClass('alternate-color');
+    }
+</script>
+{#") }}#}
+
+<h2 class="title-page">{{'Community'|__}}</h2>
+
+<div class="container clearfix">
+{{ form.create('User', {'action': 'edit', 'url': '/users/edit/' ~ view.data.User.id, 'id': 'UserEditForm' }) }}
+<h2 class="acc_trigger"><a href="javascript://" class="toggle-color">{{'Basic info (Required)'|__}}</a></h2>
+
+<div class="acc_container">
+    <div class="steps">
+
+        <div id="step1">
+            <div class="register">
+                <div class="block">
+                    <div class="block-inner">
+
+{#                        <div class="login-with">
+                            {{ view.Html.image('btn/login-facebook.png', {'link': '#'}) }}
+                            or
+                            {{ view.Html.image('btn/login-linkedin.png', {'link': '#'}) }}
+                            or
+                        </div>#}
+                        <div class="form">
+                        <div class="input clearfix">
+                          {{ form.input('UserInfo.first_name', {'div': false, 'class': 'text'}) }}
+                        </div>
+                        <div class="input clearfix">
+                          {{ form.input('UserInfo.last_name', {'div': false, 'class': 'text'}) }}
+                        </div>
+                        <div class="input clearfix">
+                          {{ form.input('email', {'div': false, 'class': 'text'}) }}
+                          {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.email', 'privacy_level':privacy['email'] }) }}
+                        </div>
+                        <div class="input clearfix">
+                          {{ form.input('User.login', {'div': false, 'class': 'text', 'label': 'Custom URL'}) }}
+                        </div>
+                        <div class="input clearfix">
+                            <label>{{'New password'|__}}</label>
+                            {{ form.password('password'|__, {'div': false, 'class': 'text', 'label' : false}) }}
+                        </div>
+                        <div class="input clearfix">
+                            <label>{{'Confirm password'|__}}</label>
+                            {{ form.password('cpassword', {'class': 'text'}) }}
+                            {{ form.error('cpassword') }}
+                        </div>
+                        <div class="input clearfix">
+                          <label>{{'Friends'|__}}</label>
+                          {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.UserFriend', 'privacy_level':privacy['UserFriend'] }) }}
+                        </div>
+                        <div class="input clearfix">
+                          <label>{{'Feed'|__}}</label>
+                          {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.ActivityWall', 'privacy_level':privacy['ActivityWall'] }) }}
+                        </div>
+                        <div class="input clearfix">
+                          <label>{{'Suggestions'|__}}</label>
+                          {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.UserSuggestion', 'privacy_level':privacy['UserSuggestion'] }) }}
+                        </div>
+                            {#<div class="button clearfix">
+                                {{ view.Html.image('btn/btn-save.png', {'link': '#'}) }}
+                                {{ view.Html.image('btn/btn-skip.png', {'link': '#'}) }}
+                                {{ view.Html.image('btn/btn-go.png', {'link': '#'})}}
+
+                            </div>#}
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h2 class="acc_trigger"><a href="javascript://" class="toggle-color">{{'Location info (Required)'|__}}</a></h2>
+
+<div class="acc_container">
+    <div class="steps">
+
+        <div id="step2">
+            <div class="register">
+                <div class="block">
+                    <div class="block-inner">
+
+                        <div class="form">
+                            <div class="radio">
+                                {{'Do you have Resident status in the United States?'|__}}
+                                {% set residence_opts = {'1': 'YES', '0': 'NO'} %}
+                                {{ form.radio('UserInfo.usa_residence', residence_opts, {'legend': false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.usa_residence', 'privacy_level':privacy['usa_residence'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                <label>{{'What Country do you Live in?'|__}}</label>
+                                {{ form.select("UserInfo.country_id", countries, null, {'label': false, "empty":"Please select"}) }}
+                                {# view.element('community/edit_privacy', { 'field':'UserPrivacy.country_id', 'privacy_level':privacy['country_id'] }) #}
+                            </div>
+                            <div class="input clearfix">
+                                <label>{{'What is your Preferred Language?'|__}}</label>
+                                {{ form.select("User.lang", prefLang, null, {'label': false, "empty":"Select language"}) }}
+                                {# view.element('community/edit_privacy', { 'field':'UserPrivacy.lang', 'privacy_level':privacy['lang'] }) #}
+                            </div>
+                            <div class="radio clearfix">
+                                <span style=" display: inline-block; width: 293px;">{{'Have you Invested online before?'|__}}</span>
+                                {% set inv_before = {'1': 'YES', '0': 'NO'} %}
+                                {{ form.radio('UserInfo.inv_before', inv_before, {'legend': false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.inv_before', 'privacy_level':privacy['inv_before'] }) }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h2 class="acc_trigger"><a href="javascript://" class="toggle-color">{{ 'My Interests'|__ }}</a></h2>
+
+<div class="acc_container">
+    <div class="steps">
+        <div id="step3">
+            <div class="register">
+                <div class="block">
+                    <div class="block-inner">
+
+                        <div class="form">
+                            <h4>{{'Interested in (select all that apply):'|__}}</h4>
+
+                            <div class="clearfix">
+                                {% for rows in interests|array_split_into(3) %}
+                                <div class="column{% if loop.last %}1{% endif %}">
+                                    {% for key, item in rows %}
+                                    <div class="checkbox">
+                                        {% if item.active == 1 %}
+                                            {{ form.checkbox('UserInterest.'~key~'.interest_id', { 'value': item.id, 'hiddenField': false,  'checked': 'checked'}) }}
+                                        {% else %}
+                                            {{ form.checkbox('UserInterest.'~key~'.interest_id', { 'value': item.id, 'hiddenField': false }) }}
+                                        {% endif %}
+                                    <label>{{ item.name }}</label>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                          {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.UserInterest', 'privacy_level':privacy['UserInterest'] }) }}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<h2 class="acc_trigger"><a href="javascript://" class="toggle-color">{{'Finance info (Optional)'|__}}</a></h2>
+
+<div class="acc_container">
+    <div class="steps">
+        <div id="step4">
+            <div class="register">
+                <div class="block">
+                    <div class="block-inner">
+
+                        <div class="form">
+                            {#<div class="input clearfix">
+                                {{ form.input('login', {'label': 'User Name', 'class': 'text', 'div': false, 'autocomplete': 'off'}) }}
+                            </div>#}
+                            {#<div class="input clearfix">
+                            <label>Photo </label>
+                            <input type="text" value="" class="text"/>
+                            <span class="btn-browse"><input type="file"/></span>
+
+                            <div class="error-message"></div>
+                        </div>#}
+                            <div class="input clearfix">
+                                {{ form.input('UserPrivateInfo.industry', {'class': 'text', 'div': false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.industry', 'privacy_level':privacy['industry'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                {{ form.input('UserPrivateInfo.company', {'div': false, 'class': 'text'}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.company', 'privacy_level':privacy['company'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                {{ form.input('UserPrivateInfo.position', {'div': false, 'class': 'text'}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.position', 'privacy_level':privacy['position'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                <label>{{'Net Worth'|__}}</label>
+                                {{ form.select("UserFinanceInfo.net_worth", newWorth, null, {'label': false, "empty":false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.net_worth', 'privacy_level':privacy['net_worth'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                <label>{{'Risk profile'|__}}</label>
+                                {{ form.select("UserFinanceInfo.risk_profile", riskProfile, null, {'label': false, "empty":"Select risk profile"}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.risk_profile', 'privacy_level':privacy['risk_profile'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                <label>{{'Goals'|__}}</label>
+                                {{ form.select("UserFinanceInfo.goals", goals, null, {'label': false, "empty":false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.goals', 'privacy_level':privacy['goals'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                {{ form.input('UserFinanceInfo.accounts', {'label': 'Accounts Held','class': 'text', 'div': false, 'multiple' : 'checkbox', 'options' : accountsHeld, 'selected' : selectedAccounts}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.accounts', 'privacy_level':privacy['accounts'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                <label>{{'Avg. ROI for past 1, 3, 5, 10 years'|__}}</label>
+                                {{ form.select("UserFinanceInfo.roi", roi, null, {'label': false, "empty":false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.roi', 'privacy_level':privacy['roi'] }) }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<h2 class="acc_trigger"><a href="javascript://" class="toggle-color">{{'Private info (Optional)'|__}}</a></h2>
+
+<div class="acc_container">
+    <div class="steps">
+        <div id="step5">
+            <div class="register">
+                <div class="block">
+                    <div class="block-inner">
+
+                        <div class="form">
+                            <div class="input clearfix">
+                                {{ form.input('UserInfo.sex', {'options': {'M': 'Male', 'F': 'Female'}, 'empty': 'Please select your gender', 'class': 'text', 'div': false }) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.sex', 'privacy_level':privacy['sex'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                <label>{{'Marital Status'|__}}</label>
+                                {{ form.select("UserPrivateInfo.marital_status", marital, null, {'label': false, "empty":false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.marital_status', 'privacy_level':privacy['marital_status'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                <label for="UserPrivateInfoBirthday">{{'Birthday'|__}}</label>
+                                {{ form.text('UserPrivateInfo.birthday', {'class': 'text', 'div': false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.birthday', 'privacy_level':privacy['birthday'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                {{ form.input('UserPrivateInfo.phone', {'label': 'Phone #', 'class': 'text', 'div': false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.phone', 'privacy_level':privacy['phone'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                <label>{{'Annual Salary'|__}}</label>
+                                {{ form.select("UserPrivateInfo.annual_salary", salary, null, {'label': false, "empty":false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.annual_salary', 'privacy_level':privacy['annual_salary'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                {{ form.input('UserPrivateInfo.address', {'class': 'text', 'div': false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.address', 'privacy_level':privacy['address'] }) }}
+                            </div>
+                            <div class="input clearfix">
+                                {{ form.input('UserPrivateInfo.about_me', {'class': 'text aboutMeTextArea', 'div': false}) }}
+                                {{ view.element('community/edit_privacy', { 'field':'UserPrivacy.about_me', 'privacy_level':privacy['about_me'] }) }}
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ form.end() }}
+<div class="padd-10"></div>
+<div class="button clearfix">
+    {{ view.Html.image('btn/btn-save.png', {'id': 'submit', 'link': 'javascript::void(0);'}) }}
+    {#{{ view.Html.image('btn/btn-skip.png', {'id': 'reset', 'link': 'javascript::void(0);'}) }}#}
+</div>
+</div>
+
+
+
+
+
+

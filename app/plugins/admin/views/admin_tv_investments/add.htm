@@ -1,0 +1,171 @@
+{{ view.element('editor') }}
+{{ html.script('/admin/js/translate.js', { 'include' : false }) }}
+{{ view.Html.script('jquery/plugins/fancybox/jquery.fancybox-1.3.4.pack')}}
+{{ view.Html.css('/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4')}}
+<style type="text/css">
+    fieldset{
+        border: 1px solid #d3d3d3;
+        padding: 5px;
+        text-align: center;
+        margin-left: 160px;
+        width: 300px;
+    }
+    fieldset input{
+        width: 260px;
+        margin: 10px 0;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#TvInvestmentDateRelease').datepicker({ dateFormat: 'mm/dd/yy' });
+    });
+
+    $(function() {
+        $("#tabs").tabs(
+            {
+                show: function(event, ui)
+                {
+                    elRTE.prototype.options.panels.web2pyPanel = [
+                                 "copy", "cut", "paste", "pasteformattext", "bold", "italic", "underline", "forecolor", "justifyleft", "justifyright",
+                                 "justifycenter", "justifyfull", "insertorderedlist", "insertunorderedlist",
+                                 "link", "image", "flash", "formatblock", "fontname", "fontsize", "fullscreen"
+                    ];
+                    elRTE.prototype.options.toolbars.web2pyToolbar = ["web2pyPanel"];
+                    $(ui.panel).find('.myelfinder').elrte(opts);
+                }
+            }
+        );
+        {#{% for key, value in languages %}
+        $('#EventDetails{{ key|capitalize }}').elrte(opts);
+        {% endfor %}#}
+
+        elRTE.prototype.options.panels.web2pyPanel = [
+             "bold", "italic", "underline"
+        ];
+        elRTE.prototype.options.toolbars.web2pyToolbar = ["web2pyPanel"];
+
+        $('.filePDF').click(function(){
+            var $this = $(this);
+            $('<div />').elfinder({
+               url : '/js/elfinder-1.2/connectors/php/connector.php',
+               lang : 'eng',
+               dialog : { width : 900, modal : true },
+               editorCallback : function(url) {
+                   $this.val(url);
+                   console.log($this.val());
+               }
+            })
+        });
+
+        $('#TvInvestmentSpeakers').elrte(opts);
+
+
+
+    });
+    </script>
+
+<h2 class="title-page">{{ view.params.action == 'add' ? 'Add new TV' : 'Edit TV' }}</h2>
+<div class="navi"><!--<a href="/admin/pages/">Home</a> / <a href="/admin/pages/add">Add new page</a>--></div>
+<div class="top-line">&nbsp;</div>
+<div class="pages-content-block">
+    {{ form.create({'class' : 'simple-form', 'url' : '/admin/admin_tv_investments/' ~ view.params.action}) }}
+
+    {{ form.hidden('TvInvestment.id') }}
+    {{ form.hidden('TvInvestmentCategory.id') }}
+
+    <div id="tabs">
+        <ul>
+            {% for key, value in languages %}
+            <li><a href="#tabs-{{ key }}">{{ value }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <div class="input text">
+            <label for="TvInvestmentDateStart">Date release</label>
+            {{ form.text('TvInvestment.date_release', {'readonly': 'readonly', 'value' : view.data.TvInvestment.date_release }) }}
+        </div>
+
+
+        <div class="select text">
+            <label for="TvInvestmentCategoryId">Tv investment category</label>
+            <select id="TvInvestmentCategoryId" name="data[TvInvestment][tv_investment_category_id]" >
+                <option value="">Please select category</option>
+                {% for value, text in TvInvestmentCategory %}
+                    <option value="{{ value }}"{% if value == view.data.TvInvestment.tv_investment_category_id %} selected="selected" {% endif %}>{{ text }}</option>
+                {% endfor %}
+            </select>
+            {#{{ form.input('Event.event_category_id', EventCategory) }}#}
+        </div>
+
+        {% for key, value in languages %}
+        <div id="tabs-{{ key }}">
+            {{ form.input('TvInvestment.title.' ~ key, {'label' : 'Title: '}) }}
+            {{ form.input('TvInvestment.video_transcripts.' ~ key, {'label' : 'Video transcripts file: ', 'class' : 'filePDF'}) }}
+            {% if loop.first == false %}
+            <img alt='{"id":"TvInvestmentTitle", "from":"eng", "to":"{{ key }}"}' class="translate" title="Translate" src="/admin/img/icons/translate.png" />
+            <img id="translate-loader" style="display: none" src="/img/ajax-loader-sub.gif" alt="">
+            {% endif %}
+            {{ form.input('TvInvestment.details.' ~ key, {'type' : 'textarea' , 'label' : 'Content' , 'class' : 'myelfinder' , 'label' : false}) }}
+            {#{% if loop.first == false %}
+            <img alt='{"id":"EventDetails", "from":"eng", "to":"{{ key }}"}' class="translate" title="Translate" src="/admin/img/icons/translate.png" />
+            <img id="translate-loader" style="display: none" src="/img/ajax-loader-sub.gif" alt="">
+            {% endif %}#}
+
+        </div>
+        {% endfor %}
+        <fieldset>
+            <legend>Video URL</legend>
+            <div id="youtubeShot">
+                <a href="{{view.data.TvInvestment.url_video}}" class="videoPlay">{{ youtube.getImage(view.data.TvInvestment.url_video, 'small', null, view.data.TvInvestment.title ) }}</a>
+            </div>
+            {{ form.text("TvInvestment.url_video", {'label':false, 'id':'urlVideo', 'disabled' : disabledUrl }) }}<br/>
+        </fieldset>
+        {{ form.input('TvInvestment.address') }}
+        {#{{ form.input('TvInvestment.site_url', {'label' : 'Site'}) }}#}
+        {{ form.input('TvInvestment.sign_up', {'label' : 'Sign up'}) }}
+        {{ form.input('TvInvestment.speakers', {'label' : 'Key speakers'}) }}
+        {{ form.submit('Save', {'class' : 'submit-btn'}) }}
+    </div>
+    {{ form.end() }}
+</div>
+<script type="text/javascript">
+    $(function() {
+
+        $('#urlVideo').blur(function(){
+            var videoURL = $(this).attr('value');
+            if (videoURL != '') {
+                $('#youtubeShot').load('/admin/admin_tv_investments/getYoutubeShot/small', {videoURL: videoURL});
+                /*$('a.videoPlay').prettyPhoto({
+                    autoplay: true
+                });*/
+            }
+
+        });
+
+
+        $(".videoPlay").live('click', function() {
+
+            var urlYoutube = $(this).attr('href').replace('youtu.be', 'youtube.com/v');
+            urlYoutube = urlYoutube.replace(new RegExp("watch\\?v=", "i"), 'v/');
+            urlYoutube += '&autoplay=1';
+            $.fancybox({
+                'padding'		: 0,
+                'autoScale'		: false,
+                'transitionIn'	: 'none',
+                'transitionOut'	: 'none',
+                'title'			: this.title,
+                'width'			: 640,
+                'height'		: 385,
+                'href'			: urlYoutube,
+                'type'			: 'swf',
+                'swf'			: {
+                'wmode'				: 'transparent',
+                'allowfullscreen'	: 'true'
+                }
+            });
+
+            return false;
+        });
+
+    });
+</script>

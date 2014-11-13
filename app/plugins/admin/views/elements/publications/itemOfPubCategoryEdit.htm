@@ -1,0 +1,14 @@
+{{ extTree.addItemAttribute('id', 'list_' ~ data.PublicationCategory.id ) }}
+
+{% if hasChildren %}
+    {{ extTree.addItemAttribute('class', 'haveChilds' ) }}
+{% endif %}
+
+<div class="categoryDiv">
+
+    <span class="categoryItem">{{ data.PublicationCategory.name }}</span>
+
+    <span class="margin-r float-r ui-state-default ui-corner-all red-border"><a href='#' data-id="{{ data.PublicationCategory.id }}" class="delete-link ui-icon ui-icon-trash delCategoryPub">[ Del ]</a></span>
+    <span class="margin-r float-r ui-state-default ui-corner-all"><a data-id="{{ data.PublicationCategory.id }}" href="#" class="ui-icon ui-icon-pencil editCat">[ Edit ]</a></span>
+    <br clear="all"/>
+</div>

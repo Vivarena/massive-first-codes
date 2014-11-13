@@ -1,0 +1,90 @@
+{{ view.Html.css([ '/admin/css/msg.css?dfgdfr5' ], null, {'inline': false}) }}
+
+<div id="listAllMsg" class="tmp">
+    {{ view.element('messages/ajaxListMsg') }}
+</div>
+
+
+<script type="text/template-nano">
+
+<div id="dialogReadMsg" style="display: none;" title="Read message">
+
+    <div class="showMsg borders">
+
+        <div class="blockMsg">
+            <span class="captionMsg1">From:</span>
+            <span class="captionMsg2">{from}</span>
+        </div>
+        <div class="blockMsg">
+            <span class="captionMsg1">Subject:</span>
+            <span class="captionMsg2">{subject}</span>
+        </div>
+        <div class="blockMsg">
+            <span class="captionMsg1">Sent:</span>
+            <span class="captionMsg2"><a href="mailto: {reply}">{reply}</a></span>
+        </div>
+        <hr />
+        <div class="textMsg">
+            {text}
+        </div>
+        <hr />
+        <div class="float-r msgDate"><em>{created}</em></div>
+    </div>
+
+</div>
+
+</script>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var contentListMsg = $('#listAllMsg');
+
+        contentListMsg.on('click', '.pagi a', function(e){
+            ajaxLoader('', 'listAllMsg');
+            contentListMsg.load($(this).attr('href'));
+            e.preventDefault();
+        });
+
+        /*contentListMsg.on('click', 'a.readMsg', function(e){
+            e.preventDefault();
+            var idMsg = $(this).attr('href').replace('#', '');
+            ajaxLoader();
+            $.post("/admin/admin_users/readMsg/" + idMsg , '',
+                function(data) {
+                    if(!data.error) {
+                        var msg = data.msg;
+                        var dataTemplate = {
+                            'from': msg.From.UserInfo.username,
+                            'to': msg.To.UserInfo.username,
+                            'subject': msg.subject,
+                            'created': msg.created,
+                            'text': msg.text
+                        };
+                        var content = $.nano($('#dialogReadMsg').html(), dataTemplate);
+                        $(content).dialog({
+                            resizable: false,
+                            title: "Message from " + msg.From.UserInfo.username,
+                            position: "center",
+                            width: 550,
+                            modal: true,
+                            buttons: {
+                                "Close": function() {
+                                    $(this).dialog("close");
+                                }
+                            }
+                        });
+
+                    } else {
+                        $.jGrowl(data.err_desc, { header: 'Error!', theme: 'jGrowl-type-error' });
+                    }
+
+                },
+                "json"
+            );
+        });*/
+
+    });
+
+</script>

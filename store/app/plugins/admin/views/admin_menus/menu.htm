@@ -1,0 +1,272 @@
+{{ html.css('/admin/css/dynamic_menu.css', null, {'inline': false}) }}
+
+{{ html.script('/admin/js/jquery/plugins/nano/jquery.nano', {'inline': false}) }}
+
+{{ html.script('/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4', {'inline': false}) }}
+{{ html.css('/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4', null, {'inline': false}) }}
+
+<link href="/admin/js/jquery/jquery-ui/themes/ui-darkness/jquery-ui-1.8.14.custom.css" rel="stylesheet" type="text/css" />
+
+
+<style type="text/css">
+    a.btn {
+        display: inline;
+        border: none;
+        background: transparent;
+    }
+    a {
+        text-decoration: none;
+    }
+</style>
+{% macro draw_dynamic_menu(item) %}
+{% if item.level == 0 %}
+<li>
+    <div>
+        <div class="menu-title">
+            <div class="float-l">
+                {{ item.name }}
+            </div>
+            <div class="float-r">
+                <a href="#add_menu_container" title="Add sub menu" class="add_menu"
+                   data-id="{{item.id}}" data-title="{{ item.name }}">
+                    <img src="/admin/img/icons/add.png" alt="" />
+                </a>
+
+               {% if item.active %}
+                    <a href="/admin/admin_menus/activate/Menu/{{ item.id }}" title="Click to deactivate">
+                        <img alt="" src="/admin/img/icons/active.png" />
+                    </a>
+                {% else %}
+                    <a href="/admin/admin_menus/activate/Menu/{{ item.id }}" title="Click to activate">
+                        <img alt="" src="/admin/img/icons/inactive.png" />
+                    </a>
+                {% endif %}
+
+                <a href="index.htm#" data-id="{{item.id}}" class="btn edit-btn"><img src="/admin/img/icons/edit.png" alt="" /></a>
+
+                <a href="/admin/admin_menus/moveUp/{{ item.id }}" class="btn up-btn"><img src="/admin/img/icons/desc.png" alt="" /></a>
+                <a href="/admin/admin_menus/moveDown/{{ item.id }}" class="btn down-btn"><img src="/admin/img/icons/asc.png" alt="" /></a>
+                <a href="/admin/admin_menus/delete/{{ item.id }}" class="btn down-btn"><img src="/admin/img/icons/delete.png" alt="" /></a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        {% for child in item.children %}
+        <ul class="sub-menu">
+            {{ _self.draw_dynamic_menu(child) }}
+        </ul>
+        {% endfor %}
+    </div>
+</li>
+{% else %}
+<li style="margin-left: {{ item.level * 10 }}px" class="menu-item">
+    <div class="float-l">
+        <a href="{{ item.url }}" target="_blank"
+           class="page_preview" title="{{ item.name }} Page Preview">
+            {{ item.name }}
+        </a>
+    </div>
+    <div class="float-r">
+        {% if item.level != 1 %}
+        <a href="#add_menu_container" title="Add sub menu" class="add_menu"
+           data-id="{{item.id}}" data-title="{{ item.name }}">
+            [<img src="/admin/img/icons/add.png" alt="" />]
+        </a>
+        {% else %}
+        <span class="add_menu_disabled">&nbsp;</span>
+        {% endif %}
+
+        {% if item.active %}
+            <a href="/admin/admin_menus/activate/Menu/{{ item.id }}" title="Click to deactivate">
+                <img alt="" src="/admin/img/icons/active.png" />
+            </a>
+        {% else %}
+            <a href="/admin/admin_menus/activate/Menu/{{ item.id }}" title="Click to activate">
+                <img alt="" src="/admin/img/icons/inactive.png" />
+            </a>
+        {% endif %}
+
+        <a href="/admin/admin_menus/moveUp/{{ item.id }}" class="btn up-btn">[up]</a>
+        <a href="/admin/admin_menus/moveDown/{{ item.id }}" class="btn down-btn">[down]</a>
+        <a href="index.htm#" data-id="{{item.id}}" class="btn edit-btn">[edit]</a>
+        <a href="/admin/admin_menus/delete/{{ item.id }}" class="btn del-btn delete-link">[delete]</a>
+
+    </div>
+    <div class="clear"></div>
+    {% for child in item.children %}
+    <ul class="sub-menu">
+        {{ _self.draw_dynamic_menu(child) }}
+    </ul>
+    {% endfor %}
+</li>
+{% endif %}
+{% endmacro %}
+
+<h2 style="margin-bottom: -20px; margin-left: 20px;">{{ menuName|capitalize }} navigation menu</h2>
+    <a href="#add_menu_container" title="Add sub menu" class="add_menu" style="float: right; margin-right: 32px"
+        data-id="0" data-title="{{ item.name }}">
+        <img src="/admin/img/icons/add.png" alt="" />
+    </a>
+<ul class="dynamic-menu">
+    {% for dynamic_menu_item in menu %}
+    {{ _self.draw_dynamic_menu(dynamic_menu_item) }}
+    {% endfor %}
+</ul>
+
+<div id="form_template">
+    <div id="{action}_menu_dialog" title="Add menu item to {title}">
+        <p class="validate-error"></p>
+        {{ form.create('Menu', {'url': '/admin/admin_menus/{action}', 'class': 'menu-form'}) }}
+        {{ form.hidden("site_menu_id", { "value" : menuType }) }}
+        <fieldset>
+
+
+                {% for key, value in languages %}
+                    <label>Menu name ({{ value }}) </label>
+                    {{ form.text('name.' ~ key, {'class': 'text ui-widget-content ui-corner-all', 'value': '{menu.name.' ~key ~ '}'}) }}
+                    <label>Decription ({{ value }}) </label>
+                    {{ form.text('description.' ~ key, {'class': 'text no-validation ui-widget-content ui-corner-all', 'value': '{menu.description.' ~key ~ '}'}) }}
+                {% endfor %}
+
+
+            <div>
+                <div>
+                    <div>
+                        <label class="float-l">Menu URL</label>
+                        <span class="url-description float-r">Please put address or select below</span>
+                        <div class="clear">&nbsp;</div>
+                        {{ form.text('url', {'class': 'text ui-widget-content ui-corner-all menu-url', 'value': '{menu.url}'}) }}
+                    </div>
+
+                    <div>
+                        <label>Select static page: </label>
+                        {{ form.select('static_page', static_pages, null, {'empty': 'Please Select', 'class': 'staticPageSelect'}) }}
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="data[Menu][parent_id]" value="{parent_id}" />
+
+        </fieldset>
+        {{ form.end() }}
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        $('.page_preview').fancybox({
+                    'width': '90%',
+                    'height': '90%',
+                    'autoScale': false,
+                    'transitionIn': 'none',
+                    'transitionOut': 'none',
+                    'type': 'iframe'
+                });
+
+        $('.add_menu').click(function(event) {
+            var data = {
+                'title': $(this).attr('data-title'),
+                'parent_id': $(this).attr('data-id'),
+                'action': 'add',
+                'menu': {
+                    'name': '',
+                    'url': '',
+                    'description': ''
+                }
+            }
+            var content = $.nano($('#form_template').html(), data);
+
+            showDialog(content);
+
+
+            event.preventDefault();
+        });
+
+        $('.edit-btn').click(function(event) {
+            var id = $(this).attr('data-id');
+            $.getJSON('/admin/admin_menus/read/' + id, function(data) {
+                if(data.status) {
+                    var data = {
+                        'title': data.name,
+                        'action': 'edit/' + id,
+                        'parent_id' : data.parent_id,
+                        'menu': {
+                            'name': {
+                                {% for key, value in languages %}
+                                    '{{ key }}': data.name.{{ key }}{% if loop.index != loop.last %},{% endif %}
+                                {% endfor %}
+                                },
+                            'description': {
+                                {% for key, value in languages %}
+                                    '{{ key }}': data.description.{{ key }}{% if loop.index != loop.last %},{% endif %}
+                                {% endfor %}
+                                },
+                        'url': data.url
+                        }
+                    }
+                    var content = $.nano($('#form_template').html(), data);
+                    showDialog(content);
+                }
+            });
+
+            event.preventDefault();
+        });
+
+        function showDialog(content) {
+            $("#tabs").tabs();
+            $(content).dialog({
+                        'modal': true,
+                        'resizable': false,
+                        'draggable': false,
+                        'width': 450,
+                        'buttons': {
+                            'Cancel': function()
+                            {
+                                $(this).dialog("close");
+                            },
+                            'Save': function()
+                            {
+                                $(this).find('form').submit();
+                            }
+                        }
+                    });
+        }
+
+        $('#MenuStaticPage, #MenuCollectionPage').live('change', function() {
+            var $context = $(this).closest('form');
+            var $this = $(this);
+
+            if($this != '') {
+                var msg = 'Menu URL field is not empty, overwrite the data?';
+                var $urlField = $('.menu-url', $context);
+                if($.trim($urlField.val()) != '' && !confirm(msg)) {
+                    $this.val('');
+                } else {
+                    $urlField.val($this.val());
+
+                    if($(this).hasClass('staticPageSelect')) {
+                        $('.collectionSelect', $context).val('');
+                    } else {
+                        $('.staticPageSelect', $context).val('');
+                    }
+                }
+            }
+        });
+        $("#tabs").tabs();
+        $('.menu-form').live('submit', function(event) {
+            var isValid = true;
+            $(':text', $(this)).each(function(index, elem) {
+                $elem = $(elem);
+                if($.trim($elem.val()) == '' && !$elem.hasClass("no-validation") ) {
+                    $elem.effect('highlight');
+
+                    isValid = false;
+                }
+            });
+
+            if(!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>

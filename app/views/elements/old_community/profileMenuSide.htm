@@ -1,0 +1,40 @@
+<div class="profile-left__menu">
+    <ul>
+        <li class="clearfix">
+            <a href="/profile/feed" class="left-link"><span class="info-center">&nbsp;</span>{{ 'Feed'|__ }}</a>
+        </li>
+        <li class="clearfix">
+          {% if view.data.unread > 0 %}
+            <a href="#" class="left-link unread" id="messages_link"><span class="tools-icon">&nbsp;</span>{{ 'Messages'|__ ~ ' (' ~ view.data.unread ~ ')'}}</a>
+          {% else %}
+            <a href="#" class="left-link" id="messages_link"><span class="tools-icon">&nbsp;</span>{{ 'Messages'|__}}</a>
+          {% endif %}
+        </li>
+        <li class="clearfix">
+            <a href="/profile/network" class="left-link"><span class="community-center">&nbsp;</span>{{ 'Network'|__ }}</a>
+        </li>
+        <li class="clearfix">
+            <a href="/profile/suggestions" class="left-link"><span class="dashboard">&nbsp;</span>{{ 'Suggestions'|__ }}</a>
+        </li>
+        <li class="clearfix">
+            <a href="/profile/polls" class="left-link"> <span class="invest-center">&nbsp;</span>{{ 'Polls'|__ }}</a>
+        </li>
+        <li class="clearfix">
+          {% if view.data.requests > 0 %}
+            <a href="/profile/requests" class="left-link unread"><span class="fav-icon">&nbsp;</span> {{ 'Requests'|__ ~ ' (' ~ view.data.requests ~ ')'}}</a>
+          {% else %}
+            <a href="/profile/requests" class="left-link"><span class="fav-icon">&nbsp;</span> {{ 'Requests'|__ }}</a>
+          {% endif %}
+        </li>
+        <li class="clearfix hidden">
+            <a href="#" class="left-link"><span class="company-icon">&nbsp;</span>{{ 'Suggestions'|__}}</a>
+        </li>
+        <li class="clearfix">
+            <a class="left-link" href="#"><span class="company-icon">&nbsp;</span>{{ 'Pages'|__ }}</a>
+            <ul class="small-list">
+                <li><a href="/profile/create-page">Create a brand page</a></li>
+                <li><a href="/profile/pages">List of pages</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

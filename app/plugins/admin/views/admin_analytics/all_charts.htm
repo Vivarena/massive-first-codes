@@ -1,0 +1,47 @@
+{{ view.Html.css([ '/admin/css/analytics' ], null, {'inline': false}) }}
+
+
+<div class="eachBlock">
+    <div id="textStat">
+
+        <ul class="listStat">
+            <li>Count of users: <span>{{ countUsers }}</span></li>
+        </ul>
+
+    </div>
+</div>
+
+
+<div class="eachBlock">
+    {{ view.element('analytics/genderStat')}}
+</div>
+
+<div class="eachBlock">
+    {{ view.element('analytics/langStat')}}
+</div>
+
+<div class="eachBlock">
+    {{ googleChart.setChartAttrs(
+            {
+                'type' : 'pie',
+                'title' : 'Years',
+                'data' : dataA,
+                'size' : [ 400, 200 ],
+                'color' : [],
+                'labelsXY' : true,
+                'min' : minA,
+                'max' : maxA,
+                'legend' : legendA
+            }
+    ) }}
+
+    <div class="divChart">
+        {{ googleChart }}
+    </div>
+
+</div>
+
+
+
+
+

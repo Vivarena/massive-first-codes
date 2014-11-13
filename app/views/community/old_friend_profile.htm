@@ -1,0 +1,218 @@
+{% if isMyProfile %}
+    {{ view.Html.script('/js/jquery/plugins/nicEdit/nicEdit', { 'inline': false }) }}
+{% endif %}
+{{ view.addScript('
+<script type="text/javascript" src="/js/start.js"></script>
+<link rel="stylesheet" href="/js/jquery/plugins/chosen/chosen.css" media="screen" />
+<script type="text/javascript" src="/js/jquery/plugins/chosen/chosen.jquery.min.js"></script>
+') }}
+{{ view.Html.script('/js/jquery/plugins/jquery.textarea-expander', { 'inline': false }) }}
+{{ view.Html.css('/js/jquery/plugins/fancybox/jquery.fancybox-1.3.4')}}
+<div class="profile-content clearfix">
+    <div class="profile-content__all-box clearfix">
+
+
+        <div class="post_items clearfix">
+            <div id="posts">
+                {% if isMyProfile %}
+                <div class="hint">
+                   <span class="text-letter">{{'Post'|__}}</span>
+
+                    <div class="btn-box clearfix btnPostSome">
+                        <div class="button clearfix">
+                            <span class="left-line-btn">&nbsp;</span>
+                            <input class="btn-bg-line" type="button" id="showPostBtn" value="{{'Post something'|__}}">
+                            <span class="right-line-btn">&nbsp;</span>
+                        </div>
+                    </div>
+                    <div id="postSomeText" class="hidden">
+                        <div class="textarea-box">
+                            {{ form.create({'action': 'addPost'}) }}
+                            <textarea id="postTextInput" name="data[UserPost][text]" title="What's on your mind?"></textarea>
+                            <span class="angle">&nbsp;</span>
+                            <div class="btn-box clearfix">
+                                <div class="button clearfix">
+                                    <span class="left-line-btn">&nbsp;</span>
+                                    <input class="btn-bg-line" type="button" id="cancelPostBtn" value="{{'Cancel'|__}}">
+                                    <span class="right-line-btn">&nbsp;</span>
+                                </div>
+                                <div class="button clearfix">
+                                    <span class="left-line-btn">&nbsp;</span>
+                                    <input class="btn-bg-line" type="button" id="addPostBtn" value="{{'Add Post'|__}}">
+                                    <span class="right-line-btn">&nbsp;</span>
+                                </div>
+                            </div>
+                            {{ form.end() }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div id="outputPosts">
+                    {{ view.element('community/listPosts', {'posts' : posts }) }}
+                </div>
+
+            </div>
+        </div>
+
+        <div id="friendsPreview">
+            {{ view.element('community/friends_friend') }}
+        </div>
+
+        <div class="profile-content__block  clearfix">
+          <h3>{{ 'Personal Info'|__ }}</h3>
+            {% set bInfo = basic_info.0 %}
+            {% set uInfo = user_info.0 %}
+            {% set elem_name = 'community/profile_item' %}
+            <div class="profile-content__block__info  clearfix">
+              {{ view.element(elem_name, {'value':user.email, 'label':'Email', 'first':true, 'privacy':privacy['email'] }) }}
+              {{ view.element(elem_name, {'value':uInfo.sex, 'label':'Sex', 'privacy':privacy['sex'] }) }}
+              {{ view.element(elem_name, {'value':user.lang, 'label':'Language', 'privacy':privacy['lang'] }) }}
+              {% if uInfo.usa_residence is not none and uInfo.usa_residence is not sameas("") %}
+                {{ view.element(elem_name, {'value':uInfo.usa_residence ? 'Yes' : 'No', 'label':'U.S. Resident?', 'privacy':privacy['usa_residence'] }) }}
+              {% endif %}
+              {% if uInfo.inv_before is not none and uInfo.inv_before is not sameas("") %}
+                {{ view.element(elem_name, {'value':uInfo.inv_before ? 'Yes' : 'No', 'label':'Invested before?', 'privacy':privacy['inv_before'] }) }}
+              {% endif %}
+              {% if bInfo.birthday|length and bInfo.birthday|date('o') > -1 %}
+                {{ view.element(elem_name, {'value':bInfo.birthday|date('m / d'), 'label':'Birthday', 'privacy':privacy['birthday'] }) }}
+              {% endif %}
+              {{ view.element(elem_name, {'value':bInfo.marital_status, 'label':'Marital Status', 'privacy':privacy['marital_status'] }) }}
+              {{ view.element(elem_name, {'value':bInfo.industry, 'label':'Industry', 'privacy':privacy['industry'] }) }}
+              {{ view.element(elem_name, {'value':bInfo.company, 'label':'Company', 'privacy':privacy['company'] }) }}
+              {{ view.element(elem_name, {'value':bInfo.position, 'label':'Position', 'privacy':privacy['position'] }) }}
+              {{ view.element(elem_name, {'value':bInfo.annual_salary, 'label':'Annual Salary', 'privacy':privacy['annual_salary'] }) }}
+              {#{{ view.element(elem_name, {'value':bInfo.hobbies, 'label':'Hobbies', 'privacy':privacy['hobbies'] }) }}#}
+              {{ view.element(elem_name, {'value':bInfo.phone, 'label':'Phone', 'privacy':privacy['phone'] }) }}
+              {{ view.element(elem_name, {'value':bInfo.address, 'label':'Address', 'privacy':privacy['address'] }) }}
+            </div>
+        </div>
+
+        <div class="profile-content__block clearfix">
+          <h3>{{ 'Financial Info'|__ }}</h3>
+          {% set fInfo = finance_info.0 %}
+          <div class="profile-content__block__info clearfix">
+            {{ view.element(elem_name, {'value':fInfo.risk_profile, 'label':'Risk Profile', 'first':true, 'privacy':privacy['risk_profile'] }) }}
+            {{ view.element(elem_name, {'value':fInfo.goals, 'label':'Goals', 'privacy':privacy['goals'] }) }}
+            {{ view.element(elem_name, {'value':fInfo.roi, 'label':'Avg. ROI', 'privacy':privacy['roi'] }) }}
+            {{ view.element(elem_name, {'value':fInfo.accounts, 'label':'Accounts Held', 'privacy':privacy['accounts'] }) }}
+            {{ view.element(elem_name, {'value':fInfo.net_worth, 'label':'Net Worth', 'privacy':privacy['net_worth']}) }}
+          </div>
+        </div>
+
+        {{ view.element('community/suggestions_short') }}
+
+        {% if interests|length %}
+        <div class="profile-content__block clearfix">
+            <h3>{{'Interests'|__}}</h3>
+
+            <div class="profile-content__block__info clearfix">
+                <div class="profile-content__block__info-i first clearfix">
+                    <div class="info-title">
+                        <p>{{'Interests'|__}}</p>
+                    </div>
+                    <div class="info-name">
+                        <ul>
+                            {% for item in interests %}
+                            <li>{{ item.name }}</li>
+                            {% endfor %}
+                        </ul>
+                        <span class="privacy">{{ privacy['UserInterest'] }}</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% endif %}
+
+        {% if bInfo.about_me|length %}
+        <div class="profile-content__block clearfix">
+            <h3>{{'About Me'|__}}</h3>
+            <div class="profile-content__block__info clearfix">
+                    <p class="textInfo">
+                        {{ bInfo.about_me|nl2br }}
+                    </p>
+                    <span class="privacy">{{ privacy['about_me'] }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $('#avatarBox').on('click', '.zoomAva', function(e){
+            $(this).fancybox();
+            e.preventDefault();
+        });
+
+        var friendsBox = $('#friendsPreview');
+
+        friendsBox.on('click', '#FriendsPager a', function(e){
+            friendsBox.load($(this).attr('href'));
+            e.preventDefault();
+        });
+
+    });
+
+</script>
+
+<script type="text/javascript" src="/js/community/post.js"></script>
+
+{% if isMyProfile %}
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var editedPostArea;
+        var btnShowPost = $('#showPostBtn').closest('.btnPostSome'),
+            postTextArea = $('#postSomeText');
+
+        $('#showPostBtn').click(function (e) {
+            postTextArea.slideDown('fast', function(){
+                btnShowPost.hide();
+                if (editedPostArea == undefined) {
+                    editedPostArea = initEditor('postTextInput');
+                }
+            });
+            e.preventDefault();
+        });
+
+        $('#cancelPostBtn').click(function (e) {
+            postTextArea.slideUp('fast', function(){
+                btnShowPost.show();
+            });
+            e.preventDefault();
+        });
+
+
+        $('#addPostBtn').click(function (e) {
+            var $this = $(this),
+                formPost = $this.closest('form'),
+                nicE = new nicEditors.findEditor('postTextInput'),
+                contentPost = nicE.getContent();
+
+            postHandlerBox.load(formPost.attr('action'), { 'data[UserPost][text]' : contentPost }, function(){
+                nicE.setContent('');
+                $('.commentsBoxArea').TextAreaExpander(40, 110);
+            });
+            e.preventDefault();
+        });
+
+    });
+
+    function initEditor(idElement)
+    {
+        return new nicEditor({
+                    iconsPath : '/js/jquery/plugins/nicEdit/nicEditorIcons.gif',
+                    buttonList : ['bold','italic','underline','strikeThrough','link', 'unlink'],
+                    maxHeight : 200
+        }).panelInstance(idElement);
+    }
+
+</script>
+
+<script type="text/javascript" src="/js/community/remove_post.js"></script>
+
+{% endif %}

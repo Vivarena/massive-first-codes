@@ -1,0 +1,109 @@
+#pubCategoriesTree{
+    width: 220px;
+    padding: 10px;
+    border: 1px solid #d3d3d3;
+    float: left;
+}
+
+.actionBtn{
+    text-decoration: none;
+    padding: 4px;
+    display: block;
+    height: 25px;
+}
+.actionBtn img{
+    position: relative;
+    top: 3px;
+    margin-right: 4px;
+}
+.actionBtn:hover{
+    background-color: #d3d3d3;
+}
+
+.actionBtns{
+    background-color: #f1f1f1;
+    border-top: 1px solid #d3d3d3;
+}
+
+
+#allCategories ol{
+    padding-left: 15px;
+}
+#allCategories li{
+    list-style: none;
+    list-style-image: url('/admin/img/a5.png');
+}
+.categorySortingEdit li{
+    cursor: move;
+}
+#allCategories li.haveChilds{
+    list-style-image: url('/admin/img/a6.gif') !important;
+}
+#allCategories li .categoryDiv {
+    border-bottom: 1px dotted #e0e0e0;
+}
+.placeholder{
+    width: 150px;
+    height: inherit;
+    border: 1px dashed #d3d3d3;
+    display: block;
+}
+
+#publicationsInCategory{
+    float: right;
+    width: 470px;
+    padding: 10px 0 0 0;
+    border: 1px solid #d3d3d3;
+}
+
+.pubsTable{
+    width: 460px;
+    margin: 5px;
+}
+.pubsTable tr{
+    margin: 0 10px;
+    border-left: 1px solid #d3d3d3;
+    border-right: 1px solid #d3d3d3;
+}
+.pubsTable td{
+    line-height: 17px;
+}
+.pubsTable .emptyTR{
+    border: 0;
+}
+.pubsTable .emptyTR td{
+    height: 7px;
+}
+.pubsTable tr.startPub{
+    border-top: 1px solid #d3d3d3;
+}
+.pubsTable tr.endPub{
+    border-bottom: 1px solid #d3d3d3;
+}
+.pubsTable td.leftTD{
+    width: 358px;
+    padding-left: 5px;
+}
+.pubsTable .rightTD span{
+    display: block;
+}
+.pubsTable .linkPub{
+    font-style: italic;
+}
+
+.pubsTable .datePub{
+    font-size: 11px;
+    color: #808080;
+
+}
+.centerText{
+    text-align: center;
+}
+.bothTR{
+    border-top: 1px solid #d3d3d3;
+    border-bottom: 1px solid #d3d3d3;
+}
+.selectedCat{
+    font-weight: bold;
+    text-decoration: none;
+}

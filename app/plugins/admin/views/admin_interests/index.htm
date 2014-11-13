@@ -1,0 +1,272 @@
+{{ view.addScript('
+<script type="text/javascript" src="/admin/js/jquery/plugins/nano/jquery.nano.js"></script>
+') }}
+<h3>Interests</h3>
+<div class="padd-10"></div>
+<div class="float-r clearfix">
+    <span class="margin-l float-l ui-state-default ui-corner-all">
+        <a href="#" class="btn add-btn ui-icon ui-icon-circle-plus">
+            [add]
+        </a>
+    </span>
+</div>
+<div id="dialog-confirm" title="Delete this item?" class="hidden">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+        This interest will be permanently deleted and cannot be recovered.<br />
+        Relations of all users with it would be broken to.<br />
+        Are you sure?</p>
+</div>
+<div class="padd-10"></div>
+<table width="100%" cellpadding="0" cellspacing="1" class="contact-info">
+    <tr class="head">
+        <th class="first sort" width="30">{{ paginator.sort('id') }}</th>
+        <th class="sort" width="300">{{ paginator.sort('name') }}</th>
+        <th class="sort" width="100">{{ paginator.sort('created') }}</th>
+        <th width="30">-</th>
+        <th width="30">-</th>
+        <th width="30">-</th>
+    </tr>
+    <script type="nano/row-template" id="rowTpl">
+        <tr>
+            <td class="{class}">{Interest.id}</td>
+            <td class="{class}">{Interest.name}</td>
+            <td class="{class}">{Interest.created}</td>
+            <td class="{class}">
+                <span class="margin-l float-l ui-state-default ui-corner-all">
+                    <a href="javascript:void(0)" data-id="{Interest.id}" class="btn activate-btn ui-icon ui-icon-check">
+                        [activate]
+                    </a>
+                </span>
+            </td>
+            <td class="{class}">
+                <span class="margin-l float-l ui-state-default ui-corner-all">
+                    <a href="javascript:void(0)" data-id="{Interest.id}" class="btn edit-btn ui-icon ui-icon-pencil">
+                        [edit]
+                    </a>
+                </span>
+            </td>
+            <td class="{class}">
+                <span class="margin-l float-l ui-state-default ui-corner-all">
+                    <a href="javascript:void(0)" data-id="{Interest.id}" class="btn activate-btn ui-icon ui-icon-trash">
+                        [delete]
+                    </a>
+                </span>
+            </td>
+        </tr>
+    </script>
+    {% for item in view.data %}
+    {% set row_class = loop.index%2 ? 'odd' : 'even' %}
+    <tr>
+        <td class="{{ row_class }}">{{ item.Interest.id }}</td>
+        <td class="{{ row_class }}">{{ item.Interest.name }}</td>
+        <td class="{{ row_class }}">{{ item.Interest.created|date('Y/m/d - H:i:s') }}</td>
+        <td class="{{ row_class }}" align="center">
+            <span class="margin-l float-l ui-state-default ui-corner-all">
+                <a href="javascript:void(0)" data-id="{{ item.Interest.id }}" class="btn activate-btn ui-icon ui-icon-{% if item.Interest.active %}check{% else %}cancel{% endif %}">
+                    [activate]
+                </a>
+            </span>
+        </td>
+        <td class="{{ row_class }}" align="center">
+            <span class="margin-l float-l ui-state-default ui-corner-all">
+                <a href="javascript:void(0)" data-id="{{ item.Interest.id }}" class="btn edit-btn ui-icon ui-icon-pencil">
+                    [edit]
+                </a>
+            </span>
+        </td>
+        <td class="{{ row_class }}" align="center">
+            <span class="margin-l float-l ui-state-default ui-corner-all">
+                <a href="javascript:void(0)" data-id="{{ item.Interest.id }}" class="btn del-btn ui-icon ui-icon-trash">
+                    [delete]
+                </a>
+            </span>
+        </td>
+    </tr>
+    {% else %}
+    <tr class="none even">
+        <td colspan="6" align="center" valign="middle">You have not created user interests yet.</td>
+    </tr>
+    {% endfor %}
+</table>
+{{ view.element('paginator') }}
+
+<script type="nano/form-template" id="addFormTpl">
+    <div id="{action}_menu_dialog" title="{action} interest">
+        <p class="validate-error"></p>
+        {{ form.create('Interest', {'url': '/admin/admin_interests/{action}', 'class': 'interest-form', "enctype":"multipart/form-data"}) }}
+        {{ form.hidden("id", { "value" : '{id}' }) }}
+        <div id="tabs">
+            <ul>
+                {% for key, value in languages %}
+                <li><a href="#tabs-{{ loop.index }}">{{ value }}</a></li>
+                {% endfor %}
+            </ul>
+            {% for key, value in languages %}
+            <div id="tabs-{{ loop.index }}">
+                <fieldset>
+                    <label>Interest name</label>
+                    {{ form.text('name.' ~ key, {'class': 'text ui-widget-content ui-corner-all', 'value': '{data.name.' ~key ~ '}'}) }}
+                </fieldset>
+                <fieldset>
+                    <label>Interest description</label>
+                    {{ form.textarea('description.' ~ key, {'class': 'text ui-widget-content ui-corner-all', 'value': '{data.description.' ~key ~ '}', 'rows': 4, 'width': '380px'}) }}
+                </fieldset>
+            </div>
+            {% endfor %}
+        </div>
+
+
+        {{ form.end() }}
+    </div>
+</script>
+
+<script type="text/javascript">
+    (function( $ ){
+        $('.activate-btn').on('click', function(){
+            var id = $(this).attr("data-id");
+            var object = $(this);
+            $.get("/admin/admin_interests/ajaxActivate/Interest/" + id,
+                    function(data) {
+                        if(data.status) {
+                            if (object.hasClass("ui-icon-check")) {
+                                object.removeClass("ui-icon-check");
+                                object.addClass("ui-icon-cancel");
+                            } else {
+                                object.removeClass("ui-icon-cancel");
+                                object.addClass("ui-icon-check");
+                            }
+                        }
+                    }, 'json'
+            );
+            return false;
+        });
+
+        $('.add-btn').on('click', function( e ){
+            e.preventDefault();
+            var content = $.nano( $('#addFormTpl').html().trim(), {
+                action: 'add',
+                data: {
+                    id: null,
+                    name: '',
+                    description: ''
+                }
+            });
+            showDialog(content);
+            return false;
+        });
+
+        $(".del-btn").click(function(event) {
+            event.preventDefault();
+            var id = $(this).data("id");
+
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                position: "center",
+                height:165,
+                width:450,
+                modal: true,
+                buttons: {
+                    "Delete": function() {
+                        $(this).dialog("close");
+                        $.get("/admin/admin_interests/ajaxDelete/Interest/" + id, function (data) {
+                            if (data.status) {
+                                row.remove();
+                            }
+                        }, "json");
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+
+        $( '.edit-btn').on('click', function( e ){
+            e.preventDefault();
+            var id = $(this).data('id'),
+                row = $(this).closest('tr');
+            $.post('/admin/admin_interests/edit/', { 'data': {'id': id} }, function(data){
+                if (data.status) {
+                    var content = $.nano( $('#addFormTpl').html().trim(), {
+                        id: id,
+                        action: 'edit',
+                        data: data.Interest
+                    } );
+                    $(content).dialog({
+                        'modal': true,
+                        'resizable': false,
+                        'draggable': false,
+                        'width': 470,
+                        'buttons': {
+                            'Cancel': function()
+                            {
+                                $(this).dialog("close");
+                            },
+                            'Save': function() {
+                                var $this = $(this),
+                                    form  = $this.find('form');
+                                $.post(form.attr('action'), form.serializeArray(), function( data ){
+                                    if (data.status) {
+                                        var rowclass = row.find('td:first-child').attr('class');
+                                        rowdata = {
+                                            class: rowclass,
+                                            Interest: data.data.Interest
+                                        };
+                                        var updated_row = $.nano( $('#rowTpl').html().trim(), rowdata);
+                                        row.replaceWith( $(updated_row) );
+                                        $this.dialog('close');
+                                    }
+                                },'json');
+                            }
+                        },
+                        'open': function() {
+                            $("#tabs").tabs();
+                        },
+                        'close': function() {
+                            $('#tabs').tabs('destroy');
+                            $('#tabs').remove();
+                        }
+                    });
+                }
+            },'json' );
+        });
+
+        function saveData() {
+            var $this = $(this),
+                form = $this.find('form');
+            $.post(form.attr('action'), form.serializeArray(), function( data ){
+                if (data.status) {
+                    $this.dialog('close');
+                    var trow = $.nano( $('#rowTpl').html().trim(), data.data );
+                    $('tr.head').after( $(trow) );
+                }
+            },'json');
+        }
+
+        function showDialog(content) {
+
+            $(content).dialog({
+                'modal': true,
+                'resizable': false,
+                'draggable': false,
+                'width': 470,
+                'buttons': {
+                    'Cancel': function()
+                    {
+                        $(this).dialog("close");
+                    },
+                    'Save': saveData
+                },
+                'open': function() {
+                    $("#tabs").tabs();
+                },
+                'close': function() {
+                    $('#tabs').tabs('destroy');
+                    $('#tabs').remove();
+                }
+            });
+        }
+
+    })( jQuery );
+</script>

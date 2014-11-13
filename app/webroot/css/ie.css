@@ -1,0 +1,25 @@
+
+/*------------------------- Style for ie------------------------------*/
+
+.header-search {
+    margin-left: 0;
+    padding-left: 40px;
+    width: 394px;
+}
+
+.tab-list {
+    top:-26px;
+}
+label{
+    width: 112px;
+}
+
+.btn-post {
+    /*float: none;*/
+    text-align: right;
+}
+
+.footer-menu ul li {
+    display: inline;
+    float: left;
+}

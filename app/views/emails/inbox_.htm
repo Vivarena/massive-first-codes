@@ -1,0 +1,116 @@
+{{ view.addScript('
+<script type="text/javascript">
+    $(function(){
+        $(".select_all").click(function(){
+            $(".select_all_item").attr("checked", $(this).attr("checked") ? true : false );
+        });
+    })
+</script>
+') }}
+
+<div id="container" class="block">
+    <div id="content" class="filter-map">
+        <div class="clearfix shouldBeAlignedByHeight">
+            <div style="float: right; margin-right: 50px; font-size: 20px; font-weight: bold;">
+                {{ box|capitalize }}
+            </div>
+            <div class="profile-information local clearfix">
+<div id="mail-system">
+    {{ view.element('entered_emails_left_side') }}
+    <div class="right-side">
+        <div class="block mail-pool">
+            {% if items %}
+                <form id="submited_form" class="if-selected" action="{{ html.url({'controller' : 'emails' , 'action' : 'delete' , 'messageType' : 'inbox'}) }}" method="post">
+                    {#{{ view.element('entered_emails_list_navigation_toolbar') }}#}
+                    <table cellpadding="0" cellspacing="0" class="mail-list">
+                        <tr>
+                            <td class="checkbox"><input class="select_all" type="checkbox" /></td>
+                            <td class="sender">
+                                <div class="sender float-l">
+                                    {% if box == 'sent' %}
+                                        reciever
+                                    {% else %}
+                                        sender
+                                    {% endif %}
+                                </div>
+
+                            </td>
+                            {% if box == 'trash' %}
+                            <td class="sender">
+                                <div class="sender float-l">
+                                    reciever
+                                </div>
+                            </td>
+                            {% endif %}
+                            <td><div class="subject">subject</div></td>
+                            <td class="recieved">
+                                <div class="recieved  float-l">
+                                    {% if box == 'sent' %}
+                                        sent
+                                    {% else %}
+                                        recived
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+
+                        {% for item in items %}
+                            <tr class="{{ item.Message.status ? '' : 'unread' }} message-{{ item.Message.id }} mails">
+                                <td class="checkbox"><input value="{{ item.Message.id }}" class="select_all_item" type="checkbox" /></td>
+                                <td class="sender">
+                                    <div class="sender float-l">
+                                        {% if item.Message.type == 'system' %}
+                                            <span style="color: #F32420;">system</span>
+                                        {% elseif item.From.status == 'removed' %}
+                                            <span style="font-weight: bold;">deleted</span>
+                                        {% else %}
+                                            {% if box == 'sent' %}
+                                                <a href="/view-profile/{{ item.To.url_alias }}">{{ item.To.fname }} {{ item.To.lname }}</a>
+                                            {% else %}
+                                                <a href="/view-profile/{{ item.From.url_alias }}">{{ item.From.fname }} {{ item.From.lname }}</a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    {#<div class="float-r"><img alt="" src="{{ html.url('/img/design/' ~ (item.From.last_active > cur_time ? 'green-ball' : 'yellow-ball') ~ '.png') }}" /></div>#}
+                                </td>
+                                {% if box == 'trash' %}
+                                <td class="sender">
+                                    <div class="sender float-l">
+                                        {% if item.To.id != auth.user('id') and item.To.status == 'removed' %}
+                                            <span style="font-weight: bold;">deleted</span>
+                                        {% else %}
+                                            {% if item.To.id == user_info.User.id %}
+                                                <a href="/profile.html">you</a>
+                                            {% else %}
+                                                <a href="/view-profile/{{ item.To.url_alias }}">{{ item.To.fname~' '~item.To.fname }}</a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                {% endif %}
+                                <td><div class="subject"><a href="{{ html.url('/emails/view/'~item.Message.id) }}">
+                                    {{ item.Message.subject }}
+                                </a></div></td>
+                                <td class="recieved">
+                                    <div class="recieved">{{ item.Message.created }}</div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <div class="padd-10"></div>
+                    {{ view.element('entered_emails_list_navigation_toolbar') }}
+                </form>
+            {% else %}
+                <div class="align-center padd10" style='padding-top: 30px'>
+                    Messages not found!
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="clear"></div>
+</div> 
+<div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>

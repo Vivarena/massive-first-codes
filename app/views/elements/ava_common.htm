@@ -1,0 +1,29 @@
+{% if ava %}{% set avaAddon = 'id="avatarImage"' %}{% endif %}
+{% if data.photo %}
+    {% if zoomIt %}
+        <a href="{{ data.photo }}" class="zoomAva"><img src="{{ data|avatar|thumb(w, h) }}" width="{{ w }}" height="{{ h }}" alt="Avatar"></a>
+    {% else %}
+        {% if thumbAva %}
+            <img src="{{ data|avatar|thumb(w, h) }}" width="{{ w }}" height="{{ h }}" alt="Avatar" {{ avaAddon }}>
+        {% else %}
+            <img src="{{ data|avatar }}" width="{{ w }}" height="{{ h }}" alt="Avatar" {{ avaAddon }}>
+        {% endif %}
+    {% endif %}
+{% elseif data.avatar %}
+    {% if thumbAva %}
+        <img src="{{ data.avatar|thumb(w, h) }}" width="{{ w }}" height="{{ h }}" alt="Avatar" {{ avaAddon }}>
+    {% else %}
+        <img src="{{ data.avatar }}" width="{{ w }}" height="{{ h }}" alt="Avatar" {{ avaAddon }}>
+    {% endif %}
+{% else %}
+    {% if data.sex == 'M' %}
+    {{ view.Html.image('/img/man.png'|thumb(w, h), { 'width' : w, 'height' : h} ) }}
+    {% endif %}
+    {% if data.sex == 'F' %}
+    {{ view.Html.image('/img/woman.png'|thumb(w, h), { 'width' : w, 'height' : h} ) }}
+    {% endif %}
+    {% if data.sex|length == 0 %}
+    {{ view.Html.image( data.photo|thumb(w, h), { 'width' : w, 'height' : h} ) }}
+    {% endif %}
+{% endif %}
+        

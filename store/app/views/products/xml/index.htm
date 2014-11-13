@@ -1,0 +1,42 @@
+<data>
+    <products>
+        {% for key, item in items %}
+            <product>
+                <id>{{ item.id }}</id>
+                <title>{{ item.title|escape }}</title>
+                <overview>{{ item.overview|striptags|escape }}</overview>
+                <description>{{ item.description|striptags|escape }}</description>
+                <quantity>{{ item.quantity }}</quantity>
+                <price>{{ item.price }}</price>
+                <image>{{ item.image }}</image>
+                <active>{{ item.active }}</active>
+                <exclusive>{{ item.exclusive }}</exclusive>
+                <category_id>{{ item.category_id }}</category_id>
+                <charity>{{ item.charity }}</charity>
+                <networth>{{ item.networth }}</networth>
+                <vendor>{{ item.vendor }}</vendor>
+                <margin>{{ item.margin }}</margin>
+                <top>{{ item.top }}</top>
+                <sale>{{ item.sale }}</sale>
+                <mark_up>{{ item.mark_up }}</mark_up>
+                <tax>{{ item.tax }}</tax>
+                <rprice>{{ item.rprice }}</rprice>
+                <gift>{{ item.gift }}</gift>
+                <fullfillment>{{ item.fullfillment }}</fullfillment>
+                <confirmation>{{ item.confirmation }}</confirmation>
+                <week_item>{{ item.week_item }}</week_item>
+                <suncoast_scu>{{ item.suncoast_scu }}</suncoast_scu>
+                <user_id>{{ item.user_id }}</user_id>
+            </product>
+        {% endfor %}
+    </products>
+
+    <pagination>
+        <current>{{ paginator.params().page }}</current>
+        <next>{{ paginator.params().page + 1 }}</next>
+        <prev>{{ paginator.params().page - 1 }}</prev>
+        <is_next>{{ paginator.params().nextPage }}</is_next>
+        <is_prev>{{ paginator.params().prevPage }}</is_prev>
+        <total_page>{{ paginator.params().pageCount }}</total_page>
+    </pagination>
+</data>

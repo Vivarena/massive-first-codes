@@ -1,0 +1,6 @@
+<div class="bread-crumbs">
+    {% if user_status %}
+      <span>{{ 'Status'|__}}</span>
+      <span class="active">{{ user_status['postText']|truncate(70) }}</span>
+    {% endif %}
+</div>

@@ -1,0 +1,14 @@
+<h3><a href="#">Events</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_events/index/{{ index }}" {% if _hovers.events %}class="hover"{% endif %}>Manage</a></li>
+        <li><a href="/admin/admin_events/add/{{ index }}" {% if _hovers.add_event %}class="hover"{% endif %}>Add new</a></li>
+    </ul>
+</div>
+
+<h3><a href="#">Event Categories</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_events/index_categories/{{index}}" {% if _hovers.category %}class="hover"{% endif %}>Manage</a></li>
+    </ul>
+</div>        

@@ -1,0 +1,18 @@
+<h3><a href="#">Config</a></h3>
+<div>
+	<ul class="menu-left">
+		<li><a href="/admin/admin_configs/" {% if _hovers.config %}class="hover"{% endif %}>Configs</a></li>
+        {#{% if access == 'admin' %}
+		    <li><a href="/admin/admin_configs/users" {% if _hovers.users %}class="hover"{% endif %}>Users</a></li>
+        {% endif %}#}
+	</ul>
+</div>
+{#
+<h3><a href="#">Email Templates</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a {% if _hovers.manage %}class="hover"{% endif %} href="/admin/admin_email_templates">Manage</a></li>
+        <li><a {% if _hovers.add %}class="hover"{% endif %} href="/admin/admin_email_templates/add">Create New</a></li>
+    </ul>
+</div>
+#}

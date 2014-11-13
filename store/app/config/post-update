@@ -1,0 +1,37 @@
+#!/bin/bash
+
+cd ~/public_html
+
+echo '-----------------------------------------------'
+echo '------------------- GIT -----------------------'
+echo '-----------------------------------------------'
+
+
+git reset --hard HEAD
+if [ $? -eq 0 ]; then
+echo 'git reset success'
+fi
+
+git pull
+if [ $? -eq 0 ]; then
+echo 'git pull success'
+fi
+
+find . -type d -exec chmod 755 {} \; && find . -type f -exec chmod 644 {} \;
+if [ $? -eq 0 ]; then
+echo 'change permissions success'
+fi
+chmod 777 ~/public_html/app/config/post-update
+
+echo '-----------------------------------------------'
+echo '---------------- CLEAR CACHE ------------------'
+echo '-----------------------------------------------'
+
+find ~/public_html/app/tmp/cache -type f -exec rm {} \; && rm -rf "~/public_html/app/tmp/cache/twig/"*;
+if [ $? -eq 0 ]; then
+echo 'ALL cache successfully clear'
+fi
+
+echo '-----------------------------------------------'
+echo '------------------- DONE ----------------------'
+echo '-----------------------------------------------'

@@ -1,0 +1,38 @@
+{% if categories %}
+    <categories>
+        {% for key, node in categories %}
+            <category>
+            {% for key, val in node %}
+                {% if key != 'children' %}
+                    <{{ key }}>{{ val }}</{{ key }}>
+                {% else %}
+                    {% if val %}
+                    <children>
+                        {{ _self.sub_categories(val) }}
+                    </children>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            </category>
+        {% endfor %}
+    </categories>
+{% endif %}
+
+
+{% macro sub_categories(children) %}
+    {% for key, node in children %}
+        <category>
+        {% for key, val in node %}
+            {% if key != 'children' %}
+                <{{ key }}>{{ val }}</{{ key }}>
+            {% else %}
+                {% if val %}
+                    <children>
+                        {{ _self.sub_categories(val) }}
+                    </children>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        </category>
+    {% endfor %}
+{% endmacro %}

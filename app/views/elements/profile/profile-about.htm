@@ -1,0 +1,100 @@
+{% if user_info.bg_image is defined %}
+<style type="text/css">
+  .bg-woman {
+    background-image: url({{ user_info.bg_image }});
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+</style>
+{% endif %}
+<div class="about-info clearfix">
+       
+    <div class="about-info__all clearfix">
+        <div class="about-info-img">
+            {{ view.element('ava_common', { 'data' : view.data, 'w' : 151, 'h' : 151, 'thumbAva' : true } ) }}
+           
+        </div>
+        <div class="about-info-text">
+            <h3>{{ view.data.first_name }} {{ view.data.last_name }}</h3>
+
+            {% if view.data.country_name %}
+                <a href="#">{{view.data.country_name}}</a>
+            {% endif %}
+
+            {% if view.data.position %}
+                <p><i>{{view.data.position}} - {{view.data.company}}</i></p>
+            {% endif %}
+
+            {% if view.data.about_trunc %}
+                <div class="connection connection_padd">
+                    <p>{{view.data.about_trunc|truncate(270)}}</p>
+                </div>
+            {% endif %}
+            <div class="about-info-text__bottom clearfix">
+
+            <div class="connection connection_link clearfix">
+                {% set linkProfile = (view.data.login|length > 0) ? view.data.login : 'profile-'~view.data.user_id %}
+                <a href="/{{ linkProfile }}/contacts" class="contact-link">{{ countFriends }} {{'CONTACTS'|__}}</a>
+                {% if not me %}
+                  {% if is_friend==0 %}
+                    <a class="addToNet" data-id="{{ view.data.user_id }}" href="/community/addToNetwork">{{'ADD TO NETWORK'|__}}</a>
+                  {% elseif is_friend==1 %}
+                    <a href="/emails/write/{{ view.data.user_id }}" class="msg-link">{{'SEND A MESSAGE'|__}}</a>
+                  {% elseif is_friend==3 %}
+                    <a class="addToNet" data-id="{{ view.data.user_id }}" href="/community/cancelRequest">{{'CANCEL REQUEST'|__}}</a>
+                  {% endif %}
+                {% endif %}
+              </div>
+
+                <div class="social clearfix">
+                  <a href="{{ user_info.url_blog }}" class="bloger"></a>
+                  <a href="{{ user_info.url_facebook }}" class="facebook"></a>
+                  <a href="{{ user_info.url_linkedin }}" class="in"></a>
+                  <a href="{{ user_info.url_twitter }}" class="twitter"></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+
+    $(function () {
+        var searchUsers = {
+            content: $('.about-info-text__bottom'),
+            btnAdd: '.addToNet',
+
+            init: function() {
+                this.content.on('click', this.btnAdd, searchUsers.addToNetwork);
+            },
+
+            addToNetwork: function(e){
+                var $this = $(this);
+                $.post(
+                        $this.attr('href'),
+                        { 'data[id]': $this.data('id') },
+                        function( data ) {
+                            if ( data.status ) {
+                                if ($this.attr('href')=='/community/cancelRequest')
+                                {
+                                    $this.text('ADD TO NETWORK');
+                                    $this.attr('href','/community/addToNetwork');
+                                }
+                                else
+                                {
+                                    $this.text('CANCEL REQUEST');
+                                    $this.attr('href','/community/cancelRequest');
+                                }
+                            } else {
+                                alert("Error: "+data.message);
+                            }
+                        }, 'json'
+                );
+                e.preventDefault();
+            }
+        };
+        searchUsers.init();
+    });
+
+</script>

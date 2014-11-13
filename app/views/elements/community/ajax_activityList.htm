@@ -1,0 +1,79 @@
+{% if aWall %}
+    {% set albumsId = [] %}
+    {% set attachedId = [] %}
+    {% for item in aWall %}
+
+        <div class="comment-list__one clearfix">
+            <div class="comment-list__one__img clearfix">
+                {% set linkProfile = (item.login|length > 0) ? item.login : 'profile-'~item.user_id %}
+                <a href='/{{ linkProfile }}'>
+                    {{ view.element('ava_common', { 'data' : item, 'w' : 60, 'h' : 60, 'thumbAva' : true })}}
+                </a>
+            </div>
+            <div class="comment-list__one__text clearfix">
+                <a href="/{{ linkProfile }}">{{ item.userName }}</a>
+
+                {% if item.type_feed == 'friend' %}
+                    {{ item.text }} - <span class="green"><a href="/profile-{{ item.friendID }}" class="friendLink">{{ item.friendName }}</a></span>
+                {% elseif item.type_feed == 'suggestion' %}
+                    {{ item.text }}: <span class="green"><a href="/{{ linkProfile }}/suggestions/">
+                        <p>&quot;{{ item.titleSuggestion }}&quot;</p>
+                    </a></span>
+                {% elseif item.type_feed == 'poll' %}
+                    {{ item.text.text }} - <span class="green"><a href="/profile/polls/">
+                        <p>&quot;{{ item.text.question }}&quot;</p>
+                    </a></span>
+                {% elseif item.type_feed == 'post' %}
+                    {{ item.text.text }} -
+                    <p class="activityPost">&quot;{{ item.text.post_text }}&quot;</p>
+                    {% if item.text.type == 'video' %}
+                        <ul class="clearfix activityListPhotos">
+                            <li><a href="{{ item.text.attached_video }}" class="viewVideoItem"><img src="/thumbs/120x90{{ item.text.cover_video }}" alt="Video{{ loop.index }}"/></a></li>
+                        </ul>
+                    {% elseif item.text.type == 'image' %}
+                        {% set attachedId = attachedId|merge([item.id_affected_tables]) %}
+                        <ul class="clearfix activityListPhotos">
+                            <li><a href="{{ item.text.attached_image }}" class="attachedImage_{{ item.id_affected_tables }}"><img src="/thumbs/120x92{{ item.text.attached_image }}" alt="Image{{ loop.index }}"/></a></li>
+                        </ul>
+                    {% endif %}
+                {% elseif item.type_feed == 'comment_post' %}
+                    {{ item.text.text }} - <span class="green"><a href="/{{ linkProfile }}/activity">
+                        <p>&quot;{{ item.text.comment_text }}&quot;</p>
+                    </a></span>
+                {% elseif item.type_feed == 'photo_album' %}
+                    {% set albumsId = albumsId|merge([item.id_affected_tables]) %}
+                    {{ item.text }} - <a href="/{{ linkProfile }}/albums/photos/{{ item.id_affected_tables }}" class="activityPhoto">&quot;{{ item.albumName }}&quot;</a>
+                    <ul class="clearfix activityListPhotos">
+                        {% for photo in item.photos %}
+                            <li><a href="{{ photo }}" class="viewPhotoAlbum_{{ item.id_affected_tables }}"><img src="/thumbs/50x50{{ photo }}" alt="Photo{{ loop.index }}"/></a></li>
+                        {% endfor %}
+                    </ul>
+                {% elseif item.type_feed == 'video_item' %}
+                    {{ item.text }} - <a href="/{{ linkProfile }}/albums/videos/{{ item.id_affected_tables }}" class="activityPhoto">&quot;{{ item.albumName }}&quot;</a>
+                    <ul class="clearfix activityListPhotos">
+                        <li><a href="{{ item.videoUrl }}" class="viewVideoItem"><img src="/thumbs/120x90{{ item.videoCover }}" alt="Video{{ loop.index }}"/></a></li>
+                    </ul>
+                {% endif %}
+                <p class="activityData"><a href="{{ item.id }}" class="del_wall_item">[Del]</a> {{ item.created|date('M j, Y H:i') }}</p>
+            </div>
+        </div>
+
+
+    {% endfor %}
+{% endif %}
+
+<script type="text/javascript">
+
+    $(function() {
+        {% for albumId in albumsId %}
+        $(".viewPhotoAlbum_{{ albumId }}").colorbox({rel:'viewPhotoAlbum_{{ albumId }}', width:"90%", height:"90%", fixed: true });
+        {% endfor %}
+
+        {% for attachId in attachedId %}
+        $(".attachedImage_{{ attachId }}").colorbox({rel:'attachedImage_{{ attachId }}', width:"90%", height:"90%", fixed: true });
+        {% endfor %}
+
+        $(".viewVideoItem").colorbox({width:"70%", height:"70%", fixed: true, iframe:true });
+    });
+
+</script>

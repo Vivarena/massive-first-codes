@@ -1,0 +1,751 @@
+2012-05-30 12:15:08 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:09 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:09 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:09 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:09 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:09 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:09 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:10 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:10 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:10 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:10 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:11 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:12 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:12 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:12 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:12 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:12 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:12 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:12 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2012-05-30 12:15:12 Notice: Notice (8): Trying to get property of non-object in [/home/andres/public_html/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2013-05-07 16:08:03 Notice: Notice (8): Trying to get property of non-object in [/home/slav/www/vivarena/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2013-05-07 16:09:01 Notice: Notice (8): Trying to get property of non-object in [/home/slav/www/vivarena/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2013-05-07 16:09:38 Notice: Notice (8): Trying to get property of non-object in [/home/slav/www/vivarena/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2013-05-07 16:09:46 Notice: Notice (8): Trying to get property of non-object in [/home/slav/www/vivarena/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2013-05-07 16:10:55 Notice: Notice (8): Trying to get property of non-object in [/home/slav/www/vivarena/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2013-05-07 16:11:40 Notice: Notice (8): Trying to get property of non-object in [/home/slav/www/vivarena/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 813]
+2013-05-15 13:33:17 Notice: Notice (8): Undefined variable: HTTP_RAW_POST_DATA in [/home/slav/www/vivarena/store/app/controllers/products_controller.php, line 911]
+2013-05-15 13:33:29 Notice: Notice (8): Undefined variable: HTTP_RAW_POST_DATA in [/home/slav/www/vivarena/store/app/controllers/products_controller.php, line 911]
+2013-05-15 13:34:05 Notice: Notice (8): Undefined variable: HTTP_RAW_POST_DATA in [/home/slav/www/vivarena/store/app/controllers/products_controller.php, line 911]
+2013-05-15 13:35:03 Notice: Notice (8): Undefined variable: HTTP_RAW_POST_DATA in [/home/slav/www/vivarena/store/app/controllers/products_controller.php, line 911]
+2013-05-15 13:35:33 Notice: Notice (8): Undefined variable: HTTP_RAW_POST_DATA in [/home/slav/www/vivarena/store/app/controllers/products_controller.php, line 911]
+2013-05-15 13:35:42 Notice: Notice (8): Undefined variable: HTTP_RAW_POST_DATA in [/home/slav/www/vivarena/store/app/controllers/products_controller.php, line 911]
+2013-05-21 17:43:16 Notice: Notice (8): Undefined variable: id in [/home/slav/www/vivarena/store/app/controllers/products_controller.php, line 1065]
+2013-05-27 15:01:16 Notice: Notice (8): Undefined variable: used in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 82]
+2013-05-27 15:01:33 Notice: Notice (8): Undefined variable: used in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 82]
+2013-05-27 15:24:10 Notice: Notice (8): unserialize() [http://php.net/function.unserialize]: Error at offset 39754 of 40176 bytes in [/home/www-data/www/viv_arena/vendors/cakephp/cake/libs/cache/file.php, line 176]
+2013-05-28 12:13:30 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:14:55 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:16:07 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:16:26 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:24:53 Notice: Notice (8): Undefined variable: uspsDomesticRates in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 542]
+2013-05-28 12:30:52 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:35:32 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:36:37 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:38:25 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:42:29 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:44:37 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:45:23 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:46:03 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:47:07 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:47:55 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:48:18 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:49:07 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:51:42 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:52:02 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:52:25 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:54:21 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:54:37 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:55:20 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:56:07 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 12:57:22 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:02:06 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:02:29 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:02:46 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:08:12 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:08:44 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:09:02 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:09:59 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:18:05 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:18:28 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:19:00 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:19:35 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:23:28 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 13:23:51 Notice: Notice (8): Undefined index: value in [/home/www-data/www/viv_arena/store/app/controllers/components/usps.php(211) : eval()'d code, line 1]
+2013-05-28 22:48:03 Notice: Notice (8): Undefined index: friendsId in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 51]
+2013-05-28 22:48:15 Notice: Notice (8): Undefined index: friendsId in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 51]
+2013-05-28 22:48:33 Notice: Notice (8): Undefined index: friendsId in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 51]
+2013-05-28 22:49:31 Notice: Notice (8): Undefined index: friendsId in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 51]
+2013-05-28 23:10:04 Notice: Notice (8): Array to string conversion in [/home/www-data/www/viv_arena/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 2204]
+2013-05-28 23:10:08 Notice: Notice (8): Array to string conversion in [/home/www-data/www/viv_arena/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 2204]
+2013-05-30 11:58:52 Notice: Notice (8): Array to string conversion in [/home/www-data/www/viv_arena/vendors/cakephp/cake/libs/model/datasources/dbo_source.php, line 2204]
+2013-07-03 19:51:39 Notice: Notice (8): Undefined index: user_id in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 101]
+2013-07-03 19:53:30 Notice: Notice (8): Undefined index: user_id in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 100]
+2013-07-03 19:53:33 Notice: Notice (8): Undefined index: user_id in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 100]
+2013-07-03 19:53:34 Notice: Notice (8): Undefined index: user_id in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 100]
+2013-07-03 19:53:35 Notice: Notice (8): Undefined index: user_id in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 100]
+2013-07-03 19:56:27 Notice: Notice (8): Undefined index: user_id in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 94]
+2013-07-03 19:56:29 Notice: Notice (8): Undefined index: user_id in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 94]
+2013-07-03 19:56:31 Notice: Notice (8): Undefined index: user_id in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 94]
+2013-07-03 19:56:32 Notice: Notice (8): Undefined index: user_id in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 94]
+2013-07-03 19:59:58 Notice: Notice (8): Undefined index: type in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 77]
+2013-07-03 20:00:02 Notice: Notice (8): Undefined index: type in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 77]
+2013-07-03 20:00:53 Notice: Notice (8): Undefined index: type in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 77]
+2013-07-03 20:20:15 Notice: Notice (8): Undefined index: type in [/home/www-data/www/viv_arena/store/app/controllers/products_controller.php, line 81]
+2013-07-26 20:54:04 Notice: Notice (8): Undefined index: PAYMENTSTATUS in [/home/mike/www/vivarena/httpdocs/store/app/controllers/payments_express_controller.php, line 286]
+2013-07-26 21:06:56 Notice: Notice (8): Undefined index: PAYMENTSTATUS in [/home/mike/www/vivarena/httpdocs/store/app/controllers/payments_express_controller.php, line 286]
+2013-07-26 21:08:14 Debug: Array
+(
+    [Order] => Array
+        (
+            [id] => 1374861076
+            [payment_provider_order_number] => EC-1G3805014L461011R
+            [seller_user_id] => 
+            [phone] => 1895634534
+            [email] => developemail@yahoo.com
+            [shipping_name] => Doe
+            [shipping_address_1] => street1
+            [shipping_address_2] => street2
+            [shipping_city] => Miami
+            [shipping_postcode] => 33180
+            [shipping_country] => United States
+            [shipping_method] => Not specified
+            [payment_name] => Dogg
+            [payment_address_1] => 1 Main St
+            [payment_address_2] => street2
+            [payment_city] => San Jose
+            [payment_postcode] => 95131
+            [payment_country] => United States
+            [payment_method] => PayPal ExpressCheckout card
+            [comment] => 
+            [notify] => 0
+            [shipping] => 0.00
+            [subtotal] => 250.00
+            [discount] => 0
+            [charity] => 
+            [total] => 255.00
+            [status] => 6
+            [created] => 2013-07-26
+            [modified] => 2013-07-26
+            [payment_state] => CA
+            [shipping_state] => Florida
+            [is_test_order] => 1
+            [shipping_fname] => John
+            [payment_fname] => Snoop
+            [tax] => 5.00
+            [coupon] => 
+            [tracking] => 
+            [custom_order] => 0
+            [tracking_num] => 
+        )
+
+    [OrderProduct] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 46
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [1] => Array
+                (
+                    [id] => 47
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [2] => Array
+                (
+                    [id] => 48
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [3] => Array
+                (
+                    [id] => 49
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+        )
+
+)
+
+2013-07-26 21:08:16 Notice: Notice (8): Undefined index: PAYMENTSTATUS in [/home/mike/www/vivarena/httpdocs/store/app/controllers/payments_express_controller.php, line 286]
+2013-07-26 21:16:08 Debug: Array
+(
+    [Order] => Array
+        (
+            [id] => 1374861076
+            [payment_provider_order_number] => EC-1G3805014L461011R
+            [seller_user_id] => 
+            [phone] => 1895634534
+            [email] => developemail@yahoo.com
+            [shipping_name] => Doe
+            [shipping_address_1] => street1
+            [shipping_address_2] => street2
+            [shipping_city] => Miami
+            [shipping_postcode] => 33180
+            [shipping_country] => United States
+            [shipping_method] => Not specified
+            [payment_name] => Dogg
+            [payment_address_1] => 1 Main St
+            [payment_address_2] => street2
+            [payment_city] => San Jose
+            [payment_postcode] => 95131
+            [payment_country] => United States
+            [payment_method] => PayPal ExpressCheckout card
+            [comment] => 
+            [notify] => 0
+            [shipping] => 0.00
+            [subtotal] => 250.00
+            [discount] => 0
+            [charity] => 
+            [total] => 255.00
+            [status] => 6
+            [created] => 2013-07-26
+            [modified] => 2013-07-26
+            [payment_state] => CA
+            [shipping_state] => Florida
+            [is_test_order] => 1
+            [shipping_fname] => John
+            [payment_fname] => Snoop
+            [tax] => 5.00
+            [coupon] => 
+            [tracking] => 
+            [custom_order] => 0
+            [tracking_num] => 
+        )
+
+    [OrderProduct] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 46
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [1] => Array
+                (
+                    [id] => 47
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [2] => Array
+                (
+                    [id] => 48
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [3] => Array
+                (
+                    [id] => 49
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [4] => Array
+                (
+                    [id] => 50
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [5] => Array
+                (
+                    [id] => 51
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+        )
+
+)
+
+2013-07-26 21:18:01 Debug: Array
+(
+    [Order] => Array
+        (
+            [id] => 1374861076
+            [payment_provider_order_number] => EC-1G3805014L461011R
+            [seller_user_id] => 
+            [phone] => 1895634534
+            [email] => developemail@yahoo.com
+            [shipping_name] => Doe
+            [shipping_address_1] => street1
+            [shipping_address_2] => street2
+            [shipping_city] => Miami
+            [shipping_postcode] => 33180
+            [shipping_country] => United States
+            [shipping_method] => Not specified
+            [payment_name] => Dogg
+            [payment_address_1] => 1 Main St
+            [payment_address_2] => street2
+            [payment_city] => San Jose
+            [payment_postcode] => 95131
+            [payment_country] => United States
+            [payment_method] => PayPal ExpressCheckout card
+            [comment] => 
+            [notify] => 0
+            [shipping] => 0.00
+            [subtotal] => 250.00
+            [discount] => 0
+            [charity] => 
+            [total] => 255.00
+            [status] => 2
+            [created] => 2013-07-26
+            [modified] => 2013-07-26
+            [payment_state] => CA
+            [shipping_state] => Florida
+            [is_test_order] => 1
+            [shipping_fname] => John
+            [payment_fname] => Snoop
+            [tax] => 5.00
+            [coupon] => 
+            [tracking] => 
+            [custom_order] => 0
+            [tracking_num] => 
+        )
+
+    [OrderProduct] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 46
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [1] => Array
+                (
+                    [id] => 47
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [2] => Array
+                (
+                    [id] => 48
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [3] => Array
+                (
+                    [id] => 49
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [4] => Array
+                (
+                    [id] => 50
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [5] => Array
+                (
+                    [id] => 51
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [6] => Array
+                (
+                    [id] => 52
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [7] => Array
+                (
+                    [id] => 53
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+        )
+
+)
+
+2013-07-26 21:18:21 Debug: Array
+(
+    [Order] => Array
+        (
+            [id] => 1374861076
+            [payment_provider_order_number] => EC-1G3805014L461011R
+            [seller_user_id] => 
+            [phone] => 1895634534
+            [email] => developemail@yahoo.com
+            [shipping_name] => Doe
+            [shipping_address_1] => street1
+            [shipping_address_2] => street2
+            [shipping_city] => Miami
+            [shipping_postcode] => 33180
+            [shipping_country] => United States
+            [shipping_method] => Not specified
+            [payment_name] => Dogg
+            [payment_address_1] => 1 Main St
+            [payment_address_2] => street2
+            [payment_city] => San Jose
+            [payment_postcode] => 95131
+            [payment_country] => United States
+            [payment_method] => PayPal ExpressCheckout card
+            [comment] => 
+            [notify] => 0
+            [shipping] => 0.00
+            [subtotal] => 250.00
+            [discount] => 0
+            [charity] => 
+            [total] => 255.00
+            [status] => 2
+            [created] => 2013-07-26
+            [modified] => 2013-07-26
+            [payment_state] => CA
+            [shipping_state] => Florida
+            [is_test_order] => 1
+            [shipping_fname] => John
+            [payment_fname] => Snoop
+            [tax] => 5.00
+            [coupon] => 
+            [tracking] => 
+            [custom_order] => 0
+            [tracking_num] => 
+        )
+
+    [OrderProduct] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 46
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [1] => Array
+                (
+                    [id] => 47
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [2] => Array
+                (
+                    [id] => 48
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [3] => Array
+                (
+                    [id] => 49
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [4] => Array
+                (
+                    [id] => 50
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [5] => Array
+                (
+                    [id] => 51
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [6] => Array
+                (
+                    [id] => 52
+                    [order_id] => 1374861076
+                    [product_id] => 47
+                    [name] => Porsche snickers
+                    [model] => 47.0
+                    [attributes] => a:0:{}
+                    [price] => 250
+                    [total] => 250
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+            [7] => Array
+                (
+                    [id] => 53
+                    [order_id] => 1374861076
+                    [product_id] => 46
+                    [name] => Botinok
+                    [model] => 46.0
+                    [attributes] => a:0:{}
+                    [price] => 200
+                    [total] => 200
+                    [tax] => 
+                    [quantity] => 1
+                    [charity] => 
+                    [networth] => 
+                    [category] => 
+                )
+
+        )
+
+)
+
+2013-07-26 21:19:25 Notice: Notice (8): Undefined index: PAYMENTSTATUS in [/home/mike/www/vivarena/httpdocs/store/app/controllers/payments_express_controller.php, line 286]
+2013-07-30 15:00:11 Notice: Notice (8): Undefined index: PAYMENTSTATUS in [/home/mike/www/vivarena/httpdocs/store/app/controllers/payments_express_controller.php, line 266]
+2013-07-30 15:34:18 Notice: Notice (8): Undefined index: PAYMENTSTATUS in [/home/mike/www/vivarena/httpdocs/store/app/controllers/payments_express_controller.php, line 266]
+2013-07-30 15:37:03 Notice: Notice (8): Undefined index: PAYMENTSTATUS in [/home/mike/www/vivarena/httpdocs/store/app/controllers/payments_express_controller.php, line 266]
+2013-07-30 19:54:54 Notice: Notice (8): Undefined index: ship4free9125 in [/home/mike/www/vivarena/httpdocs/store/app/controllers/products_controller.php, line 571]
+2013-07-30 19:55:09 Notice: Notice (8): Undefined index: ship4free9125 in [/home/mike/www/vivarena/httpdocs/store/app/controllers/products_controller.php, line 571]
+2013-07-30 19:55:38 Notice: Notice (8): Undefined index: ship4free9125 in [/home/mike/www/vivarena/httpdocs/store/app/controllers/products_controller.php, line 571]
+2013-12-13 13:09:05 Notice: Notice (8): Undefined index: product_id in [/home/www-data/www/vivarena/store/app/controllers/api_controller.php, line 185]

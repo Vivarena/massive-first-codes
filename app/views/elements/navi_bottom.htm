@@ -1,0 +1,8 @@
+{% set cols = bottomDynamicMenu|array_split_into(4) %}
+{% for rows in cols %}
+    <ul{{ loop.first ? ' class="first-child"' : ''}}>
+    {% for item in rows %}
+        <li>{{ view.Html.link(item.Menu.name, item.Menu.url) }}</li>
+    {% endfor %}
+    </ul>
+{% endfor %}

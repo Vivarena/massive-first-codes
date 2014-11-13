@@ -1,0 +1,4 @@
+{{ form.input('Product.title', {'class' : 'text', 'label':'Title'}) }}
+{{ form.input('Product.overview', {'type' : 'textarea', 'label':'Overview'}) }}
+<p style="margin-left:160px">Description should be at least 10 symbols</p>
+{{ form.input('Product.description', {'type' : 'textarea', 'style':'height:100px; width:500px','class':'tinymce', 'label':'Description'}) }}

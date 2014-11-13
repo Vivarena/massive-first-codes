@@ -1,0 +1,236 @@
+<section id="content">
+    <h1>Product details</h1>
+    <div class="item-holder">
+        <section class="item-pictures">
+            {% if data.product.user_id == 0 %}
+                {% set where_img = store_url %}
+            {% else %}
+                {% set where_img = host %}
+            {% endif %}
+            <div class="picture">
+                <a href="#"><img data-src="{{ data.product.image }}" src="{{ where_img }}/thumbs/330x438{{ data.product.image }}" alt="{{ data.product.title }}" /></a>
+            </div>
+            {% if data.product_image.path %}
+            <div class="thumbs">
+                {% for key, url in data.product_image.path %}
+                    {% if loop.index < 5 %}
+                        <a href="{{ key }}"><img data-src="{{ url }}" src="{{ where_img }}/thumbs/69x80{{ url }}" alt="" /></a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            {#<div class="social">#}
+                {#<img src="img/soc.jpg" alt="" width="50" height="24" style="vertical-align:top;" />#}
+            {#</div>#}
+        </section>
+        <section class="item-info">
+            <h2>{{ data.product.title }}</h2>
+            {% if data.product.overview %}
+                <h3>{{ data.product.overview }}</h3>
+            {% endif %}
+            {#<form id="productForm" method="post" action="/shopping-cart.html">#}
+            {{ form.create({ 'url': '/shop/cart', 'id': 'ProductCartForm' }) }}
+            {{ form.hidden('Product.id', { 'value':data.product.id }) }}
+                <fieldset>
+                    <div class="product-form">
+                        {% if data.product_attribute_group.group|length > 0 %}
+                            {% if data.product_attribute_group.group.0 %}
+                                {% for attribute in data.product_attribute_group.group %}
+                                    <dl>
+                                    <dt>{{ attribute.name|upper }}:</dt>
+                                    <dd>
+                                        <select class="attrChange" name="data[Product][attributes][{{ attribute.name }}]">
+                                            {% for subAttr in attribute.attr %}
+                                                <option value="{{ subAttr.id }}">{{ subAttr.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </dd>
+                                    </dl>
+                                {% endfor %}
+                            {% else %}
+                                {% for attribute in data.product_attribute_group %}
+                                <dl>
+                                    <dt>{{ attribute.name|upper }}:</dt>
+                                    <dd>
+                                        <select class="attrChange" name="data[Product][attributes][{{ attribute.name }}]">
+                                        {% for subAttr in attribute.attr %}
+                                            <option value="{{ subAttr.id }}">{{ subAttr.title }}</option>
+                                        {% endfor %}
+                                        </select>
+                                    </dd>
+                                </dl>
+                                {% endfor %}
+                            {% endif%}
+                        {% endif %}
+                            <dl>
+                                <dt>QTY:</dt>
+                                <dd>
+                                    {% if data.product_attribute_group.group|length > 0 %}
+                                        <select id="qty" name="data[Product][quantity]">
+                                            <option value="0">0</option>
+                                        </select>
+                                    {% elseif data.product.quantity and data.product.quantity > 0 %}
+                                        <select id="qty" name="data[Product][quantity]">
+                                            {% for i in 1..data.product.quantity %}
+                                                <option value="{{ i }}">{{ i }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    {% else %}
+                                        <span style="color: red; font-size:14px">out of stock</span>
+                                    {% endif %}
+                                </dd>
+
+                            </dl>
+                        <div class="price-holder">
+                            <div class="price-block">
+                                <span>Price: <span id="priceNumber" class="price" style="display: inline; float: none;">{{ number.format(data.product.price, {"places":"2"}) }}</span></span>
+                            </div>
+                            <div class="button-block">
+                                {% if not friendLogin %}
+                                <span id="btnAddToCart">
+                                    <a href="javascript:;" onclick="jQuery('#ProductCartForm').submit();" id="submitToCart" class="add-to-cart" >Add to Cart</a>
+                                </span>
+                                {% else %}
+                                    <span>Only {{ friendLogin }}'s friends can <br> buy this product</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if data.product.user_id %}
+                            {% set uId = '/emails/write/'~data.product.user_id %}
+                        {% else %}
+                            {% set uId = 'mailto:information@vivarena.com' %}
+                        {% endif %}
+                        <div>
+                            <a href="{{ uId }}">Question to Seller</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {% if data.product.user_id %}
+                                <a href="/profile/{{ data.product.user_id }}">Seller’s profile</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+            {{ form.end() }}
+            {#</form>#}
+            <div class="description">
+                {{ data.product.description }}
+            </div>
+        </section>
+    </div>
+    {% if data.related_products %}
+    <h4>related products</h4>
+    <ul class="products">
+        {% for key, node in data.related_products %}
+            {% if node.user_id == 0 %}
+                {% set where_img_r = store_url %}
+            {% else %}
+                {% set where_img_r = host %}
+            {% endif %}
+            <li>
+                <div class="box">
+                    <h2>{{ node.title }}</h2>
+                    <a href="/shop{{ 'product'|toUrl(node.id, node.title) }}">
+                        <img src="{{ where_img_r }}/thumbs/156x190{{ node.image }}" alt="{{ node.title }}" />
+                    </a>
+                    <div class="bottom">
+                        <a href="/shop{{ 'product'|toUrl(node.id, node.title) }}" class="details">Details</a>
+                        {#<span class="price">{{ number.format(node.price, {"places":"2"}) }}</span>#}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="back">
+        <a href="#" onclick="window.history.back();">Back</a>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    var _storeUrl = '{{ store_url }}';
+
+    $(function(){
+
+        var allAttr = [];
+        var countAttr = 0;
+        {% if data.product_attribute_group %}
+            changeQuantity();
+        {% endif %}
+
+//        $(".fancy-image").fancybox();
+
+        $('.attrChange').change(function(){
+
+            changeQuantity();
+
+        });
+
+        function changeQuantity() {
+            if($('.attrChange').length == 0) {
+                return false;
+            }
+            $(".product-info").addClass("product-info-hover");
+            $('.attrChange').each(function(index) {
+                allAttr[countAttr] = $(this).val();
+                countAttr++;
+            });
+
+            $.post("/shop/getQty", { idAttr: allAttr },
+                    function(data) {
+                        if(!data.error) {
+
+                            $(".attr-qty").html("");
+                            $(".attr-qty").html("<select id='qty' name='data[Product][quantity]' style='width: 40px;'></select>");
+
+
+                            $('#qty').removeAttr('disabled');
+                            $('.add-to-cart').show();
+                            $('#qty').empty();
+                            var options = $('#qty').prop('options');
+                            for (var i = 1; i <= data.qty; i++) {
+                                options[options.length] = new Option(i, i);
+                            }
+
+                        } else {
+
+                            $(".attr-qty").html("");
+                            $(".attr-qty").html("<span style='color: red; font-size:20px'>out of stock</span>");
+
+
+
+//                    $('#qty').empty();
+//                    var options = $('#qty').prop('options');
+//                    options[options.length] = new Option('0','0');
+//                    $('#qty').attr('disabled', 'disabled');
+                            $('.add-to-cart').hide();
+                        }
+                        $(".product-info").removeClass("product-info-hover");
+
+                    },
+                    "json"
+            );
+        }
+
+        $('.thumbs a').click(function(){
+
+            var thumb = $(this).find('img');
+            var mainImage = $('.picture img');
+
+            var thumb_src = thumb.attr('data-src');
+            var mainImage_src = mainImage.attr('data-src');
+
+            mainImage.attr({
+                'src':_storeUrl+'/thumbs/330x438'+thumb_src,
+                'data-src':thumb_src
+            });
+
+            thumb.attr({
+                'src':_storeUrl+'/thumbs/69x80'+mainImage_src,
+                'data-src':mainImage_src
+            });
+
+            return false;
+        });
+
+    })
+</script>

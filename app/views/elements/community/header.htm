@@ -1,0 +1,38 @@
+<div class="header_inner clearfix">
+    <h1 class="logo-box"><a href="/community" class="logo">Vivarena</a> </h1>
+
+    <div class="header-search clearfix">
+
+        {{ form.create('search', {'url' : '/community/search' }) }}
+        <input type="text" name="data[Search][text]" value="" class="search-field"/>
+        <input type="submit" value="Search" class=" btn search-btn" />
+
+        {#<div class="radio-box clearfix">
+
+            <div class="radio-box__one clearfix">
+                <input type="radio" id="radio" value="" class="radio" name="radio"/>
+                <label for="radio">Search for people </label>
+            </div>
+
+            <div class="radio-box__one clearfix">
+                <input type="radio" id="radio2" value="" class="radio" name="radio"/>
+                <label for="radio2">Search for Store </label>
+            </div>
+        </div>#}
+        {{ form.end() }}
+    </div>
+    <div class="header-menu clearfix">
+        <ul class="clearfix">
+            <li>
+                <a href="/{{ session.read('Auth.User.login') }}">{{ view.element('ava_common', { 'data' : session.read('Auth.User.info'), 'w' : 21, 'h' : 21, 'thumbAva' : true })}}
+                    <span>{{ session.read('Auth.User.info.username') }}</span>
+                </a><br/>
+                <a href="/users/logout" style="float: right;"><span>Logout</span></a>
+            </li>
+           {# <li><a href="/sport-news">News</a></li>
+            <li><a href="/events">Events</a></li>
+            <li><a href="/">Home</a></li>#}
+
+        </ul>
+    </div>
+</div>

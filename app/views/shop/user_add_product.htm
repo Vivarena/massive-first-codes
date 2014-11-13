@@ -1,0 +1,212 @@
+{{ view.Html.script('jquery/plugins/plu_uploader/plupload.full', { 'inline': false }) }}
+{{ view.Html.script('jquery/plugins/plu_uploader/jquery.plupload.queue/jquery.plupload.queue', { 'inline': false }) }}
+<div style="width: 50%; float: left">
+    <h1 class="create-ttl">Create Product/Service</h1>
+
+        {{ form.create('UserProduct', {'url': '/profile/edit-product', 'style': 'width: 450px; margin-top: 5px', 'type':'file'}) }}
+
+    <div class="text row">
+        <label>Type</label>
+        {{ form.hidden('id') }}
+        {{ form.select('type', {'new':'New Product','used':'Used Product','service':'Service','event':'Events'}, null, {'empty':false,'default':'new', 'id':'is_service_select'}) }}
+    </div>
+    <div class="text row">
+            <label>Category</label>
+            <select name="data[CategoriesProduct][category_id][]" style="float: right; margin-top: -10px; margin-right: 160px;">
+                {% for key, node in categories %}
+                    <option value="{{ node.id }}" {% if view.data.CategoriesProduct.category_id.0 == node.id %}selected="selected"{% endif %}>{{ node.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    <div class="text row">
+        <label>Title</label>
+        {{ form.input('title', {'div': false, 'label': false}) }}
+        </div>
+
+    {#{% if add_product_flag %}#}
+    <div class="text row">
+        <label>Price</label>
+        {{ form.input('price', {'div': false, 'label': false}) }}
+    </div>
+    {#{% endif %}#}
+
+    {% if edit_product_flag %}
+        {{ form.hidden('shipping') }}
+        {{ form.hidden('tax') }}
+    {% else %}
+        <div class="text row">
+            <label>Shipping</label>
+            {{ form.input('shipping', {'div': false, 'label': false}) }}
+        </div>
+        <div class="text row">
+            <label>Tax</label>
+            {{ form.input('tax', {'div': false, 'label': false}) }}
+        </div>
+    {% endif %}
+
+
+
+
+    {#{% if add_product_flag %}#}
+    <div class="text row">
+        <label>Quantity</label>
+        {{ form.input('quantity', {'div': false, 'label': false}) }}
+    </div>
+    {#{% endif %}#}
+
+    {#<div class="text row">#}
+        <label>Upload Image</label>
+        {{ form.input('image',{'type':'file', 'div': false, 'label': false, 'size': '6'}) }}
+    {#</div>#}
+
+
+
+    <div class="or-holder">
+        <span>OR</span>
+        <strong>Select from Albums</strong>
+        {{ form.button('Select',{'type':'button','id':'addFromAlbum'}) }}
+    </div>
+
+
+
+    <div id="albumImages" {% if not this.data.UserProduct.image %}style="display: none" {% endif %}>
+        {% if this.data.UserProduct.image %}
+            <img style="margin: 0 auto; display: block" src="/thumbs/200x200{{ this.data.UserProduct.image }}" alt="product image"/>
+        {% endif %}
+    </div>
+
+    {% if view.data.UserProduct.image %}
+        {{ form.input('prev_image',{'type':'hidden','value':view.data.UserProduct.image}) }}
+    {% endif %}
+        {#<div class="text row">#}
+            {#<label>Used</label>#}
+            {#{{ form.checkbox('used', {'style': 'float: right; margin-right: 222px;'}) }}#}
+        {#</div>#}
+        {#<div class="text row">#}
+            {#<label>Product type</label>#}
+            {#{{ form.select('type',{'new':'New product', 'used':'Used product', 'serv':'Service'}, {'style':'float:right; margin-right: 222px;'}) }}#}
+        {#</div>#}
+        <div class="text row">
+            <label>Description</label>
+            {{ form.textarea('description', {'style': 'float: right; width: 230px'}) }}
+        </div>
+
+    {% if edit_product_flag %}
+        {{ form.hidden('pay_pal_acc') }}
+    {% else %}
+        <div class="row">
+            <label>Pay Pal Account (email):</label>
+            {{ form.textarea('pay_pal_acc', {'style': 'float: right; width: 230px'}) }}
+        </div>
+    {% endif %}
+
+
+    <div class="row">
+        {{ form.submit('Submit') }}
+    </div>
+    {{ form.end() }}
+</div>
+<div class="vj_list">
+    <ul>
+        <li>
+            Products and Services will be marketed within your network
+        </li>
+        <li>
+            Vivarena Fee is 1% of the total sale
+        </li>
+        <li>
+            Products and Services will be posted until they are sold or deleted
+        </li>
+        <li>
+            Vivarena needs your PayPal account in order to
+            transfer the proceeds from the sale. If you do not have
+            a PayPal account  open one now at <a href="http://www.paypal.com" target="_blank">www.paypal.com</a>
+        </li>
+    </ul>
+</div>
+<style type="text/css">
+    label {
+        display: block;
+    }
+    div.text {
+        height: 30px;
+    }
+    div.submit {
+        clear: both;
+        margin-top: 50px;
+    }
+
+    #UserProductTotPrice {
+        background: #dfdfdf !important;
+    }
+    .vj_list{
+        width: 50%;
+        float: left;
+        font-size: 15px;
+    }
+    .vj_list ul{
+        list-style: circle;
+        margin-top: 40px;
+        margin-left: 95px;
+    }
+    .vj_list ul li{
+        margin-bottom: 20px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    /*$('#UserProductPrePrice, #UserProductShipping, #UserProductTax').keyup(function() {
+        var price = $('#UserProductPrePrice').val(), shipping = $('#UserProductShipping').val(), tax = $('#UserProductTax').val();
+        if(price == '' || typeof price == 'undefined') {
+            price = 0;
+        }
+        if(shipping == '' || typeof shipping == 'undefined') {
+            shipping = 0;
+        }
+        if(tax == '' || typeof tax == 'undefined') {
+            tax = 0;
+        }
+        var total = parseFloat(price)+parseFloat(shipping)+parseFloat(tax);
+        $('#UserProductPrice').val(total);
+        $('#UserProductTotPrice').val(total);
+    });*/
+
+//    const SERVICE = 1;
+//
+//    $('#is_service_select').bind('change',function(){
+//        var type = $('#is_service_select option:selected').val();
+//        if(type == SERVICE){
+//            $('#UserProductUsed').attr('disabled','disabled');
+//        }else{
+//            $('#UserProductUsed').attr('disabled','');
+//        }
+//    });
+
+
+    $('#addFromAlbum').live('click',function(){
+        $.get('/albums/index/photos/ajax', function(response) {
+            if(response.error == false) {
+                $('#albumImages').html(response.content);
+                $('#albumImages').show();
+            }
+        }, 'json');
+
+        return false;
+    });
+    $('.view_album').live('click', function (e) {
+        var album_id = $(this).attr('data-id');
+        var type = $(this).attr('data-type');
+        $.get('/albums/view/'+type+'/'+album_id+'/ajax', function(response) {
+            if(response.error == false) {
+                $('#albumImages').html(response.content);
+            }
+        }, 'json');
+    });
+    $('.choose_img').live('click', function(e){
+        var url = $(this).attr('data-url');
+        var type = $(this).attr('data-type');
+        $('#UserProductImage').replaceWith('<input type="text" value="'+url+'" name="data[UserProduct][image]" id="UserProductImage">');
+        $('#albumImages').html('<img style="margin: 0 auto; display: block" src="/thumbs/200x200'+url+'">').show();
+    });
+</script>

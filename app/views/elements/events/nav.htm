@@ -1,0 +1,12 @@
+<tr>
+    {% for id, title in event_cats %}
+        {% set class = loop.first ? 'th-first' : loop.last ? 'th-last' : '' %}
+        {% set current = id == event.event_category_id ? 'currently' : '' %}
+        <td class="th {{ class }}"><div class="inner {{ current }}">{{ title|upper }}</div></td>
+    {% endfor %}
+{#    {% for title, countEvent in event_cats %}
+        {% set class = loop.first ? 'th-first' : loop.last ? 'th-last' : '' %}
+        &#123;&#35;{% set current = id == event.event_category_id ? 'currently' : '' %}&#35;&#125;
+        <td class="th {{ class }}"><div class="inner">{{ title|upper }}</div></td>
+    {% endfor %}#}
+</tr>

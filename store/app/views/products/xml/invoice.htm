@@ -1,0 +1,56 @@
+<data>
+    <payment_name>{{ data.Order.payment_name }}, {{ data.Order.payment_fname }}</payment_name>
+    <order_id>{{ data.Order.id }}</order_id>
+    <shipping>
+        <method>{{ data.Order.shipping_method }}</method>
+        <date>{{ data.Order.created|date("m/d/Y") }}</date>
+        <payment_method>{{ data.Order.payment_method }}</payment_method>
+    </shipping>
+    <products>
+        {% set subTotal = 0 %}
+        {% set taxTotal = 0 %}
+        {% for item in data.OrderProduct %}
+            <product>
+                <name>{{ item.name }}</name>
+                <attribs>
+                    {% if item.attributes|length > 0 %}
+                        {% for key, val in item.attributes %}
+                            <attrib>{{ key }} - {{ val }}</attrib>
+                        {% endfor %}
+                    {% endif %}
+                </attribs>
+                <quantity>{{ item.quantity }}</quantity>
+                <tax>{{ item.tax }}</tax>
+                <price>
+                        {{ item.price }}
+                </price>
+            </product>
+            {% set subTotal = subTotal + (item.price * item.quantity) %}
+            {% set taxTotal = taxTotal + (item.tax * item.quantity) %}
+        {% endfor %}
+    </products>
+    <subtotal>{{ subTotal }}</subtotal>
+    {% if taxTotal %}
+        <sales_tax>{{ taxTotal }}</sales_tax>
+    {% endif %}
+    {% if data.Order.shipping %}
+        <shipping_price>{{ data.Order.shipping }}</shipping_price>
+    {% endif %}
+    <grand_total>{{ subTotal + taxTotal }}</grand_total>
+    <order_by>
+        <payment_name>{{ data.Order.payment_name }}, {{ data.Order.payment_fname }}</payment_name>
+        <payment_address_1>{{ data.Order.payment_address_1 }}</payment_address_1>
+        <payment_location>{{ data.Order.payment_city }}, {{ data.Order.payment_state }}, {{ data.Order.payment_postcode }}</payment_location>
+        <payment_country>{{ data.Order.payment_country }}</payment_country>
+        <phone>{{ data.Order.phone }}</phone>
+        <email>{{ data.Order.email }}</email>
+    </order_by>
+    <shipping_to>
+        <shipping_name>{{ data.Order.shipping_name }}, {{ data.Order.shipping_fname }}</shipping_name>
+        <shipping_address_1>{{ data.Order.shipping_address_1 }}</shipping_address_1>
+        <location>{{ data.Order.shipping_city }}, {{ data.Order.shipping_state }}, {{ data.Order.shipping_postcode }}</location>
+        <shipping_country>{{ data.Order.shipping_country }}</shipping_country>
+        <phone>{{ data.Order.phone }}</phone>
+        <email>{{ data.Order.email }}</email>
+    </shipping_to>
+</data>

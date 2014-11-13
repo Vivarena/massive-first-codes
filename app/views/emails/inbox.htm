@@ -1,0 +1,72 @@
+<div class="tabs-box clearfix">
+<span class="shadow-tab">&nbsp;</span>
+<ul class="tab-list clearfix">
+    <li class="active">Messages</li>
+</ul>
+<div class="padd-30"></div>
+<form action="#" class="messages_form">
+    <fieldset>
+       <div class="btn-holder">
+            <a href="/messages/inbox" class="box {{ activeSection['inbox'] }}">In box</a>
+            <a href="/messages/sent" class="sent {{ activeSection['sent'] }}">Sent</a>
+            <a href="/messages/writeTo" class="write">Write</a>
+       </div>
+       <div class="box-table-holder">
+           <table class="box-table">
+                <tbody>
+                    <tr>
+                        <th class="col">from</th>
+                        <th class="col-02">Subject</th>
+                        <th class="col-03">date</th>
+                        <th class="col-04">time</th>
+                        <th class="col-05">delete</th>
+                        <th class="col-06"><input type="checkbox" name="" class="select_delete_all" /></th>
+                    </tr>
+                </tbody>
+           </table>
+       </div>
+
+
+        {{ view.element('messaging/messages_item') }}
+
+        <div class="bottom">
+            <input type="submit" class="sbm delete-messages" name="" value="Delete" />
+            <div class="paging">
+                Messages {{ paginator.counter() }}
+                {#<span>Messages 3-1 of</span>#}
+                {#<span class="current">1</span>#}
+                <span>{{ paginator.first() }}</span>
+                <span>{% if paginator.hasPrev %}{{ paginator.prev() }}{% endif %}</span>
+                <span>{{ paginator.numbers({'modulus': 3}) }}</span>
+                <span>{% if paginator.hasNext %}{{ paginator.next() }}{% endif %}</span>
+                <span>{{ paginator.last() }}</span>
+
+            </div>
+
+        </div>
+
+        </fieldset>
+        </form>
+</div>
+
+{{ view.Html.script(['project/messaging']) }}
+
+{#<script type="text/javascript">#}
+    {#$(document).ready(function() {#}
+        {#$('.cancel').click(function(e) {#}
+            {#e.preventDefault();#}
+            {#var $this = $(this), message_id = $this.data('id');#}
+            {#$this.closest('tr').slideUp();#}
+            {#$.get('/emails/ajaxDeleteMessage/'+message_id, function(response){#}
+                {#console.log(response);#}
+                {#if(response == "\"ok\"") {#}
+                    {#showTopMsg('Message deleted!', 'success', false);#}
+                    {#$this.closest('tr').remove();#}
+                {#}else {#}
+                    {#showTopMsg('Something wrong!', 'error', false);#}
+                    {#$this.closest('tr').slideDown();#}
+                {#}#}
+            {#}, 'json');#}
+        {#});#}
+    {#});#}
+{#</script>#}

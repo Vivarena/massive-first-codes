@@ -1,0 +1,39 @@
+<div class="profile-left__menu">
+    <ul>
+    {% if not is_friend %}
+        <li><a class="friendshipChanger" id="addToNet" data-id="{{ view.data.user_id }}" href="/community/addToNetwork">{{ 'Add to Network'|__ }}</a></li>
+    {% endif %}
+    {% if is_friend == 1 %}
+        <li><a class="friendshipChanger" id="delete" data-id="{{ view.data.user_id }}" href="/community/unFriend">{{ 'Remove'|__ }}</a></li>
+    {% endif %}
+    {% if is_friend == 2 %}
+        <li><a class="friendshipChanger" id="approve" data-id="{{ view.data.user_id }}" href="/community/confirmFriend">{{ 'Approved request'|__ }}</a></li>
+    {% endif %}
+    {% if is_friend == 3 %}
+        <li>{{ 'Request pending'|__ }}</li>
+    {% endif %}
+
+        <li><a id="chat" data-id="{{ view.data.user_id }}" href="/community/chat">{{ 'Send Message'|__ }}</a></li>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $('div.profile-left__menu').find('a.friendshipChanger').on('click', function(e) {
+            var $this = $(this);
+            $.post( $this.attr('href'), { 'data[id]': $this.data('id') },
+                function(data) {
+                    if (data.status) {
+                        $this.closest('li').text(data.message);
+                    }
+                }, 'json'
+            );
+            e.preventDefault();
+        });
+
+        $('div.profile-left__menu').find('#chat').on('click', function(e) {
+            window.Messenger.loadMsgForm( $(this).data('id') );
+            e.preventDefault();
+        });
+    });
+</script>

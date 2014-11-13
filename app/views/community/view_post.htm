@@ -1,0 +1,78 @@
+<div class="profile-content clearfix">
+    <div class="profile-content__all-box clearfix">
+
+
+        <div class="post_items clearfix">
+            <div id="posts">
+
+                <div id="outputPosts">
+
+                    <ul class="itemsPost">
+                        {% if post %}
+
+                        <li class="postItemLi clearfix" id="postItem_{{ post.UserPost.id }}">
+                            <span class="userLink">
+                                <div class="profile-content__newsfeed__img viewPost">
+                                    <a href='/profile/{{ post.UserPost.user_id }}'>
+                                        {{ view.element('ava_common', { 'data' : post.User.UserInfo, 'w' : 30, 'h' : 30, 'thumbAva' : true })}}
+                                    </a>
+                                </div>
+                            </span>
+
+                            <span class="textPost">
+                                <a href='/profile/{{ post.User.id }}'><span class="username">{{ post.User.UserInfo.first_name }} {{ post.User.UserInfo.last_name }}</span></a> {{ post.UserPost.text }}
+                            </span>
+                            <span class="datePost">
+                                {{ post.UserPost.created|date('d M Y, H:i') }}
+                            </span>
+                            <div class="outputComments clearfix">
+                                <div class="clearfix"></div>
+                                {{ view.element('community/listPostComments', {'commentItems' : post.UserPostComment } ) }}
+                            </div>
+                            <div class="actionBtnPost">
+                                <a href="#" class="addCommentToPost">Add comment</a>
+                            </div>
+                            {% if isMyProfile %} <a href="#" class="removePostBtn" data-id="{{ post.UserPost.id }}">Delete post</a> {% endif %}
+                            <div class="commentsPostBox">
+                                {{ form.create({'action': 'addPostComment'}) }}
+                                    {{ form.input('UserPostComment.text', {'label':false, 'class' : 'expand40-110 commentsBoxArea'}) }}
+                                    <input type="hidden" id="UserPostId" name="data[UserPostComment][user_post_id]" value="{{ post.UserPost.id }}">
+                                    <div class="btn-box clearfix">
+                                        <div class="button clearfix">
+                                            <span class="left-line-btn">&nbsp;</span>
+                                            <input class="btn-bg-line small-font addCommentPostBtn" type="button" value="Add comment">
+                                            <span class="right-line-btn">&nbsp;</span>
+                                        </div>
+                                        <div class="button clearfix">
+                                            <span class="left-line-btn">&nbsp;</span>
+                                            <input class="btn-bg-line small-font cancelCommentPostBtn" type="button" value="Cancel">
+                                            <span class="right-line-btn">&nbsp;</span>
+                                        </div>
+                                    </div>
+                                {{ form.end() }}
+                            </div>
+                        </li>
+                        {% else %}
+                        <li>
+                            <h2 style="text-align: center">
+                                {{'This post was deleted or doesnt exists...'|__}}
+                            </h2>
+                        </li>
+                        {% endif %}
+                    </ul>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript" src="/js/community/post.js"></script>
+
+{% if isMyProfile %}
+
+<script type="text/javascript" src="/js/community/remove_post.js"></script>
+
+{% endif %}

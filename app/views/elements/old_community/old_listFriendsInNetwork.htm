@@ -1,0 +1,46 @@
+{% for item in rel_users %}
+<div class=" profile-content__newsfeed  clearfix">
+    <div class=" profile-content__newsfeed-i first clearfix">
+        <div class="profile-content__newsfeed__img">
+            {% if item.UserInfo.photo|length > 0 %}
+            {% set ava = (item.UserInfo.avatar) ? item.UserInfo.avatar : item.UserInfo.photo %}
+                {{ view.Html.image( ava|thumb('62','59'), {'url': '/profile/'~item.User.id} ) }}
+            {% else %}
+                {% if item.UserInfo.sex == 'M' %}
+                    {{ view.Html.image('/img/demo/man.png'|thumb('62','59'), {'url': '/profile/'~item.User.id}) }}
+                {% endif %}
+                {% if item.UserInfo.sex == 'F' %}
+                    {{ view.Html.image('/img/demo/woman.png'|thumb('62','59'), {'url': '/profile/'~item.User.id}) }}
+                {% endif %}
+                {% if item.UserInfo.sex|length == 0 %}
+                    {{ view.Html.image( item.UserInfo.photo|thumb('62','59'), {'url': '/profile/'~item.User.id} ) }}
+                {% endif %}
+            {% endif %}
+            {#{{ view.Html.image('demo/man-big2.jpg', {'url': '/profile/'~item.User.id}) }}#}
+        </div>
+        <div class="profile-content__newsfeed__text clearfix">
+            <b>{{ view.Html.link(item.UserInfo.username, '/profile/'~item.UserInfo.user_id) }}</b>
+            {% if item.UserInfo.country|length %}
+            <p>{{'Lives in:'|__}} {{ item.UserInfo.country }}</p>
+            {% endif %}
+        </div>
+        <div class="profile-links">
+            {% set iAmFriend = item.User.iAmFriend %}
+            {% set isMyFriend = item.User.isMyFriend %}
+
+            {% if iAmFriend and isMyFriend %}
+                <a href="/community/unFriend" data-id="{{ item.UserInfo.user_id }}" class="remove">{{'Remove'|__}}</a>
+            {% elseif not isMyFriend and iAmFriend %}
+                <span class="infoMsg">{{'Request Pending'|__}}</span>
+            {% elseif isMyFriend and not iAmFriend %}
+                <a href="/community/confirmFriend" data-id="{{ item.UserInfo.user_id }}">{{'Accept Request'|__}}</a>
+                <a href="/community/rejectFriend" data-id="{{ item.UserInfo.user_id }}">{{'Reject Request'|__}}</a>
+            {% elseif not isMyFriend and not iAmFriend %}
+                <a class="friendshipChanger" id="addToNet" data-id="{{  item.UserInfo.user_id }}" href="/community/addToNetwork">{{ 'Add to Network'|__ }}</a>
+            {% endif %}
+            <a href="/community/chat" data-id="{{ item.UserInfo.user_id }}" class="send-msg blockElem">{{'Send Message'|__}}</a>
+
+        </div>
+    </div>
+</div>
+{% endfor %}

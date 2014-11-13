@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    {{ view.Html.charset() }}
+    {{ view.Html.meta('icon') }}
+
+    {{ view.element('meta-data') }}
+
+    {{ view.Html.css(['style', 'home', 'fonts/stylesheet', '/js/jquery/plugins/humane-notify/themes/libnotify']) }}
+
+    {{ view.Html.script(['jquery/jquery-1.7.1.min', 'jquery/plugins/humane-notify/humane.min', 'project/common_functions']) }}
+
+    <!-- html5.js for IE less than 9 -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
+    <![endif]-->
+</head>
+<body>
+	<div class="wrap">
+		<header id="header">
+			<strong class="logo"><a href="/">Vivarena</a></strong>
+			<div class="login-box">
+                {{ form.create('User', {'action': 'login'}) }}
+					<fieldset>
+						<div class="row">
+							<label>Email:</label>
+                            {{ form.input('UserLogin.email', {'div': false, 'label': false, 'class' : 'txt' }) }}
+						</div>
+						<div class="row">
+							<label>Password:</label>
+                            {{ form.input('UserLogin.password', {'div': false, 'label': false, 'class' : 'txt' }) }}
+						</div>
+						<div class="row">
+							<input type="checkbox" name="data[UserLogin][remember]" class="check" value="1" id="lbl-03" />
+							<label for="lbl-03" class="lbl">Remember me</label>
+							<a href="#">Forgot password?</a>
+							<input type="submit" name=""  class="sbm" value="Log In" />
+						</div>
+					</fieldset>
+                {{ form.end() }}
+			</div>
+			{#<strong class="slogan">Welcome to the Largest Community of<br/> Athletes and Sports Enthusiastic</strong>#}
+			<strong class="slogan">Welcome to the World’s Largest<br> Community of Athletes and<br> Sports Enthusiasts</strong>
+		</header>
+		<div class="main-holder">
+			<section id="main">
+				<div class="main-inner">
+					{{ content_for_layout }}
+				</div>
+			</section>
+		</div>
+	</div>
+	<footer id="footer">
+		<nav class="menu">
+			<ul>
+				<li{% if currentUrl == '/about-us' %} class="active"{% endif %}><a href="/about-us">About Us</a></li>
+				<li{% if currentUrl == '/terms' %} class="active"{% endif %}><a href="/terms">Terms</a></li>
+				<li{% if currentUrl == '/privacy' %} class="active"{% endif %}><a href="/privacy">Privacy</a></li>
+				<li{% if currentUrl == '/advertise' %} class="active"{% endif %}><a href="/advertise">Advertise</a></li>
+				<li{% if currentUrl == '/contact-us' %} class="active"{% endif %}><a href="/contact-us">Contact Us</a></li>
+			</ul>
+		</nav>
+		<div class="copyright">
+			<p>&copy; 2013, Vivarena, Inc. All Rights Reserved.</p>
+		</div>
+	</footer>
+
+    {{ view.element('flyTopMessage', {'wrapEl' : 'wrap'}) }}
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+{#<h3><a href="#">Polls</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_polls" {% if _hovers.manage %}class="hover"{% endif %}>Manage</a></li>
+    </ul>
+</div>#}
+<h3><a href="#">Users</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_users" {% if _hovers.users %}class="hover"{% endif %}>List of Users</a></li>
+        <li><a href="/admin/admin_users/all_messages" {% if _hovers.all_msg %}class="hover"{% endif %}>Messages</a></li>
+    </ul>
+</div>
+<h3><a href="#">Interests</a></h3>
+<div>
+    <ul class="menu-left">
+        <li><a href="/admin/admin_interests" {% if _hovers.interests %}class="hover"{% endif %}>Manage</a></li>
+    </ul>
+</div>
+

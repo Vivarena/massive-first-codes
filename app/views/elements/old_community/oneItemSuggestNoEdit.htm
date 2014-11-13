@@ -1,0 +1,18 @@
+<div class="item">
+    <h3 class="title">
+        <span class="textField">
+            {{ item.UserSuggestion.title }}
+        </span>
+    </h3>
+    <p class="text">
+        {% for href in item.SuggestionUrl %}
+        <span class="textField">
+            {{ view.Html.link(href.url|truncate(50), href.url, {'target': '_blank'}) }}
+        </span>
+        {% endfor %}
+        {% if item.UserSuggestion.description|length %}
+        <span class="title">Description:</span>
+        {{ item.UserSuggestion.description }}
+        {% endif %}
+    </p>
+</div>

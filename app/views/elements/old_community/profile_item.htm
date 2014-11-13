@@ -1,0 +1,10 @@
+{% if value|length %}
+<div class="profile-content__block__info-i clearfix {{ first ? 'first' : '' }}">
+  <div class="info-title">
+    <p>{{ label|__ }}</p>
+  </div>
+  <div class="info-name">
+    <p>{{ value|nl2br|__ }} <span class='privacy'>{{ privacy }}</span></p>
+  </div>
+</div>
+{% endif %}

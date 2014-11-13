@@ -1,0 +1,25 @@
+<div class="section-network-one__all clearfix">
+{% for item in rel_users %}
+
+    <div class="section-network-one clearfix">
+        <div class="section-network-one__img">
+            <a href="/profile-{{item.UserInfo.user_id}}">
+            {{ view.element('ava_common', { 'data' : item.UserInfo, 'w' : 64, 'h' : 64, 'thumbAva' : true } ) }}
+            </a>
+        </div>
+        <div class="section-network-one__info clearfix">
+            <div class="section-network-one__info__text">
+                <h4>{{ view.Html.link(item.UserInfo.first_name~' '~item.UserInfo.last_name, '/profile-'~item.UserInfo.user_id) }}</h4>
+                <p>{{ item.UserCountry.name }}</p>
+            </div>
+            <div class="section-network-one__info__text">
+                <ul>
+                    <li><a href="/profile-{{item.UserInfo.user_id}}" class="view-profile">{{'View Profile'|__}}</a></li>
+                    <li><a href="/emails/write/{{ item.UserInfo.user_id }}"  class="send-msg blockElem">{{'Send Message'|__}}</a></li>
+                    <li><a href="#" data-id="{{ item.UserInfo.user_id }}" class="remove delete">{{'Delete'|__}}</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>

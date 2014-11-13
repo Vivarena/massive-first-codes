@@ -1,0 +1,50 @@
+<div class="products-box clearfix">
+
+    {% for product in listProducts %}
+
+        <div class="products-one">
+            <div class="products-one-i clearfix">
+                <div class="products-one-text">
+                    <p>{{ product.title }}</p>
+                </div>
+                <a href="{{ 'product'|toUrl(product.id, product.title) }}"> <img src="{{ product.image|thumb(190, 156)}}" alt=""/> </a>
+                <span class="price">
+                    {{ number.format(product.price, {"places":"2"}) }}
+{#
+                    {% if product.rprice != 0.00 %}
+                        <span class="rprice">
+                            ({{ number.format(product.rprice, {"places":"2"}) }})
+                        </span>
+                    {% endif %}
+#}
+                </span>
+                <a href="{{ 'product'|toUrl(product.id, product.title) }}" class="btn-details">Details</a>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        equalHeight($(".products-one-text"));
+
+    });
+
+    function equalHeight(group) {
+    	var tallest = 0;
+    	group.each(function() {
+    		var thisHeight = $(this).height();
+    		if(thisHeight > tallest) {
+    			tallest = thisHeight;
+    		}
+    	});
+    	group.height(tallest);
+    }
+
+</script>

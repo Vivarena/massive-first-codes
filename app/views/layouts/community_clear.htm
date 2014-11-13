@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    {{ view.Html.charset() }}
+    {{ view.Html.meta('icon') }}
+
+    {{ view.element('meta-data') }}
+
+    {{ view.Html.css(['reset', 'form', 'style', 'fonts/stylesheet', '/js/custom_el', '/js/selectbox']) }}
+
+    {{ view.Html.script([
+        'jquery/jquery-1.7.1.min', 'custom_el', 'selectbox'
+
+    ]) }}
+
+
+    <script type="text/javascript">
+        $(function() {
+            $('.selectedBlock').click(function(e) {
+                var toggleBlock = $(this).closest('.product-block').find('.block-collpse');
+                if ($(this).hasClass('currently')) $(this).removeClass('currently'); else $(this).addClass('currently');
+                toggleBlock.slideToggle('normal', function() {
+                    // Animation complete.
+                });
+                e.preventDefault();
+            });
+        });
+    </script>
+
+    <!--[if IE ]>
+    <link rel="stylesheet" type="text/css" href="/css/ie.css" />
+    <![endif]-->
+    <!-- html5.js for IE less than 9 -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
+    <![endif]-->
+
+</head>
+<body>
+<div class="wrapper clearfix">
+
+<header class="header">
+    {{ view.element('community/header') }}
+</header>
+<!-- end header-->
+<div class="content">
+    <div class="shadow-top"></div>
+    <div class="content_inner clearfix">
+
+        {{ view.element('community/sidebar')}}
+
+        <div class="middle clearfix">
+
+
+                        <div class="msg-box">
+                        <div class="comment-link clearfix">
+                            <ul class="clearfix">
+                                <li><a href="#" class="active"><span class="status-icon">&nbsp;</span>Update Status</a></li>
+                                <li><a href="#"><span class="photo-icon">&nbsp;</span>Add  Photo/Video</a></li>
+                            </ul>
+                            <div class="comment-box clearfix">
+                                <textarea>What`s on your mind?</textarea>
+                                <input class="btn btn-post" value="Post" type="submit"/>
+
+
+                                <span class="arrow">&nbsp;</span>
+                            </div>
+
+                            {{ view.element('community/activityList') }}
+
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end content-->
+</div>
+<!-- end wrapper -->
+
+<footer>
+    <div class="copyright">
+        <p>&copy; 2013, Vivarena, Inc. All Rights Reserved.  </p>
+    </div>
+
+    <ul class="clearfix footer-menu">
+        <li><a href="">About Us</a></li>
+        <li><a href="">Terms</a></li>
+        <li><a href="">Privacy</a></li>
+        <li><a href="">Advertise</a></li>
+        <li><a href="">Contact Us</a></li>
+
+    </ul>
+</footer>
+<!-- end footer-->
+
+</body>
+</html>

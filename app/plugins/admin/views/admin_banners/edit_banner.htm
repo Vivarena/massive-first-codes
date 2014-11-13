@@ -1,0 +1,226 @@
+{{ view.Html.css([
+    '/js/jquery/plugins/croper/css/imgareaselect-default'
+], none, { 'inline' : false }) }}
+{{ view.Html.script([
+    '/admin/js/jquery/plugins/nano/jquery.nano',
+    '/js/jquery/plugins/croper/scripts/jquery.imgareaselect.pack', '/js/jquery/plugins/maplight/jquery.maphilight.min'
+], { 'inline' : false }) }}
+
+
+<style type="text/css">
+
+    #bannerImageSection{
+        position: relative;
+    }
+
+    .addLinkBox{
+        position: absolute;
+        width: 330px;
+        background-color: #e3e3e3;
+        border: 1px solid #808080;
+        padding: 10px;
+        text-align: left;
+        z-index: 999;
+    }
+    .addLinkBox input.urlText {
+        width: 200px;
+    }
+    .addLinkBox input.addLinkBtn, .addLinkBox input.cancelLinkBtn{
+        padding: 2px 5px;
+        cursor: pointer;
+    }
+    input.cancelBanner{
+        padding: 4px 10px;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="indent">
+    <div class="title" id="intro">
+        <h3 class="name" style="color: #424242">{{ action }} banner: </h3>
+    </div>
+    <div id="search_wrapper">
+
+
+        {{ form.create({'url': '/admin/admin_banners/'~action|lower~'Banner', 'class': 'menu-form', 'id' : 'imageBannerForm'}) }}
+            {#<input type="hidden" name="data[Banner][id]" value="{id}" >#}
+            {{ form.hidden('id') }}
+            <table width="100%">
+                {#<tr>
+                    <td colspan="2">
+                        <label for="">Image file: </label>
+                        {{ form.input('url', { 'div' : false, 'label':false, 'style' : 'width: 500px'}) }}
+                    </td>
+                </tr>#}
+                <tr>
+                    <td colspan="2">
+                        <div id="bannerImageSection">
+                            <div class="addLinkBox hidden">
+                                URL:
+                                <input type="text" class="urlText" id="urlText" size="50">
+                                <input type="hidden" id="coords">
+                                <input type="button" value="Add" class="addLinkBtn">
+                                <input type="button" value="Cancel" class="cancelLinkBtn">
+                            </div>
+                            <img src="{{ form.data.Banner.url }}" alt="banner image" id="bannerImage" width="988" height="365" usemap="#areasInBanner">
+                            <map name="areasInBanner" id="areasInBanner">
+                                {% for area in form.data.Banner.areas %}
+                                    <area href="#" data-link="{{ area.link }}" data-id="{{ loop.index }}" class="areaMap" shape="rect" coords="{{ area.coords }}" alt="Link" title="Click to edit" id="areaLink_{{ loop.index }}">
+                                {% endfor %}
+                            </map>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><span style="color: red"> All fields are required </span></td>
+                </tr>
+                {% for key, value in languages %}
+                <tr>
+                    <td width="170px">Banner title ({{ value }}) </td>
+                    <td>
+                        {{ form.text('title.' ~ key, {'class': 'text ui-widget-content ui-corner-all', 'style': 'width: 300px'}) }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
+        {% for area in form.data.Banner.areas %}
+            <input type="hidden" id="areaInputCoords_{{ loop.index }}" name="data[Banner][areas][{{ loop.index }}][coords]" value="{{ area.coords }}">
+            <input type="hidden" id="areaInputLink_{{ loop.index }}" name="data[Banner][areas][{{ loop.index }}][link]" value="{{ area.link }}">
+        {% endfor %}
+        {{ form.hidden('url') }}
+        {{ form.submit('Save', {'class' : 'submit-btn', 'div' : false }) }}
+        <input type="button" value="Cancel" class="cancelBanner" onclick="window.location = '/admin/admin_banners/'">
+        {{ form.end() }}
+
+    </div>
+    <div class="padd-10"></div>
+
+    <div class="clear"></div>
+</div>
+
+<script type="text/html" id="templateEditAreaLink">
+    <div title="Edit Area map link">
+        URL:
+        <input type="text" value="{linkText}" style="width: 350px;">
+    </div>
+</script>
+
+<script type="text/javascript">
+
+    $(function() {
+
+
+
+        $('#bannerImage').maphilight();
+        {% set countAreas = form.data.Banner.areas|length + 1 %}
+        var linkNum = {{ countAreas }};
+
+        $('#bannerImageSection').on('click', '.cancelLinkBtn', function(){
+            clearAreas();
+            areaCropp.cancelSelection();
+        });
+
+
+        $('#bannerImageSection').on('click', '.areaMap', function(e){
+            var linkText = $(this).data('link'),
+                forID = $(this).data('id');
+
+            var content = $.nano($('#templateEditAreaLink').html(), { linkText: linkText, loopID: forID });
+            $(content).dialog({
+                'modal': true,
+                'resizable': false,
+                'draggable': false,
+                'width': 450,
+                'buttons': {
+                    'Delete': function()
+                    {
+                        $(this).dialog("close");
+                        $('#areaInputLink_' + forID).remove();
+                        $('#areaInputCoords_' + forID).remove();
+                        $('#areaLink_' + forID).remove();
+                    },
+                    'Cancel': function()
+                    {
+                        $(this).dialog("close");
+                    },
+                    'Save': function()
+                    {
+                        $(this).dialog("close");
+                        var newLinkText = $(this).find('input').val();
+                        $('#areaInputLink_' + forID).val(newLinkText);
+                        $('#areaLink_' + forID).data('link', newLinkText);
+
+                    }
+                }
+            });
+            e.preventDefault();
+        });
+
+        $('#bannerImageSection').on('click', '.addLinkBtn', function(){
+
+            var coords = $('#coords').val(),
+                urlText = $('#urlText').val(),
+                areaTag = '<area href="#" shape="rect" coords="' + coords + '" alt="Link" title="' + urlText +'" id="areaLink_' + linkNum +'" class="areaMap" data-link="' + urlText + '" data-id="' + linkNum + '">';
+
+            $('#areasInBanner').append(areaTag);
+            $('#bannerImage').maphilight();
+            clearAreas();
+            areaCropp.cancelSelection();
+            areaCropp = initAreaCropper();
+
+            $('#imageBannerForm').append('<input type="hidden" id="areaInputCoords_' + linkNum + '" name="data[Banner][areas][' + linkNum +'][coords]" value="' + coords + '">');
+            $('#imageBannerForm').append('<input type="hidden" id="areaInputLink_' + linkNum + '" name="data[Banner][areas][' + linkNum +'][link]" value="' + urlText + '">');
+
+            linkNum++;
+
+        });
+
+        var areaCropp = initAreaCropper();
+        // Hack - because the Maphilight conflicted with Cropper
+        window.setTimeout(function() {
+            areaCropp = initAreaCropper();
+        }, 300);
+
+
+
+    });
+
+    function clearAreas() {
+        $('#coords').val('');
+        $('#urlText').val('');
+        $('.addLinkBox').hide();
+    }
+
+    function initAreaCropper(){
+
+        var wOrig = 988;
+        var hOrig = 365;
+        var areaCropp = $('img#bannerImage').imgAreaSelect({
+            maxWidth: wOrig,
+            handles: true,
+            instance: true,
+            maxHeight: wOrig,
+            onSelectEnd: updateCrop
+        });
+
+        return areaCropp;
+
+    }
+
+
+    function updateCrop(img, selection){
+        var coords = selection.x1 + ',' + selection.y1 + ',' + selection.x2 + ',' + selection.y2;
+        var centerSelected = selection.x2 - ((selection.x2 - selection.x1)/2);
+        $('#coords').val(coords);
+        $('.addLinkBox').css({
+            'top': selection.y1 - 52,
+            'left': centerSelected - 175
+        }).show();
+
+    }
+
+
+</script>

@@ -1,0 +1,272 @@
+
+body {
+
+    background:url(../img/bgs/home-bg.png) no-repeat top center #315f8c;
+
+}
+.wrapper {
+    position: relative;
+    height: 100%;
+}
+.wrapper_inner, .header_inner {
+    width: 998px;
+    margin: 0 auto;
+    position: relative;
+}
+
+
+.big-logo {
+    background: url(../img/elements/logo.png) no-repeat 28px 0 transparent;
+    width: 441px;
+    height: 170px;
+    text-indent: -9999px;
+    overflow: hidden;
+    display: block;
+}
+
+.logo-text {
+    width: 400px;
+    padding-left: 70px;
+    padding-top: 130px;
+    float: left;
+}
+
+.logo-text h2  {
+    color:#003465;
+    font-size: 30px;
+    text-align: center;
+}
+.deniedText {
+    color: #000;
+    display: block;
+    margin: 0 auto;
+    position: absolute;
+    text-align: center;
+    width: 400px;
+}
+
+
+
+
+/*------------------------------ FOOTER----------------------------------------*/
+footer {
+    clear: both;
+    border-top:1px solid #82a5be ;
+    padding-top: 10px;
+    width: 998px;
+    margin: 0 auto;
+    position: relative;
+    height: 50px;
+    margin-top: -63px;
+}
+footer  ul.footer-menu {
+    width: 330px;
+    margin: 0 auto;
+}
+footer  ul.footer-menu li a {
+    color:#c9c9c9;
+    text-align: center;
+    float: left;
+    padding: 0 6px;
+    border-left:1px solid #c9c9c9;
+
+}
+
+footer  ul.footer-menu li:first-child  a {
+    border: 0;
+    padding-left: 0;
+}
+
+.copyright {
+    position: absolute;
+    left:0px;
+    top:10px;
+}
+
+.copyright p {
+    color:#c9c9c9;
+    font-size: 13px;
+}
+
+/*------------------------------ END Footer----------------------------------------*/
+
+/* start about page */
+#header {
+	width:985px;
+	margin:0 auto;
+	overflow:hidden;
+	padding:24px 0 9px;
+}
+#header .logo {
+	float:left;
+	margin:0 18px 0 0;
+	width:173px;
+	height:65px;
+	text-indent:-9999px;
+	background:url(../img/logo-2.png) no-repeat;
+}
+#header .logo a {
+	display:block;
+	height:100%;
+}
+#header .slogan {
+	font:20px/22px 'LucidaGrandeRagulare', Arial, Helvetica, sans-serif;
+	color:#003465;
+	display:block;
+	text-align:center;
+	overflow:hidden;
+	padding:10px 0 0;
+}
+#header .login-box {
+	float:right;
+	padding:2px 32px 0 0;
+	width:332px;
+}
+#header .login-box .row {
+	padding:0 0 12px;
+	overflow:hidden;
+}
+#header .login-box label {
+	float:left;
+	color:#c9c9c9;
+	font:13px/26px 'LucidaGrandeRagulare', Arial, Helvetica, sans-serif;
+}
+#header .login-box .txt {
+	float:right;
+	border:1px solid #ccc;
+	width:208px;
+	height:14px;
+	font:13px/14px Arial, Helvetica, sans-serif;
+	color:#878888;
+	padding:5px 10px;
+	background:#fff;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	-khtml-border-radius:5px;
+	behavior:url(css/PIE.htc);
+}
+#header .login-box .check {
+	float:left;
+	margin:4px 6px 0 0;
+}
+#header .login-box .lbl,
+#header .login-box a {
+	color:#2bb1e2;
+	font:12px/22px 'LucidaGrandeRagulare', Arial, Helvetica, sans-serif;
+}
+#header .login-box a {
+	float:left;
+	padding:0 0 0 11px;
+	background:url(../img/sep-01.png) no-repeat 4px 11px;
+}
+#header .login-box .sbm {
+	float:right;
+	width:65px;
+	height:30px;
+	background:url(../img/sbm.png) repeat-x;
+	border:1px solid #057ed0;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	-khtml-border-radius:5px;
+	behavior:url(css/PIE.htc);
+	color:#fff;
+	text-shadow:0 -1px #0d8bd6;
+	font:13px/16px 'LucidaGrandeBold', Arial, Helvetica, sans-serif;
+	cursor:pointer;
+}
+.wrap {min-height:100%;}
+.main-holder {padding:0 0 116px;}
+#main {
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	-khtml-border-radius:5px;
+	behavior:url(css/PIE.htc);
+	width:723px;
+	margin:0 auto;
+	background:url(../img/bg-main.png) repeat;
+	padding:10px;
+	font:13px/16px 'LucidaGrandeRagulare', Arial, Helvetica, sans-serif;
+	color:#555;
+	text-align:justify;
+}
+#main .main-inner {
+	background:#fff;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	-khtml-border-radius:5px;
+	behavior:url(css/PIE.htc);
+	padding:28px 33px;
+}
+#main .ttl {
+	font:20px/22px 'LucidaGrandeBold', Arial, Helvetica, sans-serif;
+	color:#5a5a5a;
+	border-bottom:1px solid #ccc;
+	margin:0 0 16px;
+	padding:0 0 7px;
+}
+#main p {margin:0 0 16px;}
+#main .img-right {
+	float:right;
+	border:1px solid #ccc;
+	padding:3px;
+	margin:0 0 0 15px;
+}
+#main .img-right img {vertical-align:top;}
+#footer {
+	width:946px;
+	margin:-63px auto 0;
+	border-top:1px solid #81a4bc;
+	overflow:hidden;
+}
+#footer p {
+	float:left;
+	margin:0;
+	color:#c9c9c9;
+}
+#footer .menu {
+	overflow:hidden;
+	width:100%;
+	position:relative;
+}
+#footer .menu ul {
+	margin:0;
+	padding:0;
+	list-style:none;
+	position:relative;
+	float:left;
+	left:50%;
+}
+#footer .menu ul li {
+	float:left;
+	left:-50%;
+	position:relative;
+	padding:0 0 0 13px;
+	background:url(../img/sep-02.png) no-repeat 5px 1px;
+}
+#footer .menu ul li:first-child {
+	padding:0;
+	background:none;
+}
+#footer .menu ul li a {
+	color:#C9C9C9;
+}
+#footer .menu ul li a:hover,
+#footer .menu ul .active a {
+	color:#fff;
+	text-decoration:none;
+}
+/* end about page */
+
+.forgotLink{
+    line-height: 13px;
+    font-size: 12px;
+    float: left;
+    color: #2BB1E2;
+}
+.text{
+    margin: 10px;
+}

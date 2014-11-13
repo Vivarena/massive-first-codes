@@ -1,0 +1,34 @@
+<table class="box-table">
+    <tbody>
+    {% for message in messages %}
+        {% set unread = (message.Message.status == '0') ? '' : 'readed' %}
+        {% if outbox %}
+            {% set type = message.To %}
+        {% else %}
+            {% set type = message.From %}
+        {% endif %}
+        <tr>
+            <td class="col-01">
+                <a href="/profile/{{ type.UserInfo.user_id }}" class="user">
+                    {% if message.From.login == 'admin' %}
+                        <img src="/img/logo_mini.png" alt="" width="63" height="63"/>
+                    {% else %}
+                        <img src="{{ type.UserInfo|avatar|thumb(63,63) }}" alt="" width="63" height="63"/>
+                    {% endif %}
+                    <span>
+                        {{ type.UserInfo.username }}
+                    </span>
+                </a>
+            </td>
+            <td class="col-02">
+                <a href="/messages/view/{{ message.Message.id }}" class="{{ unread }}">{{ message.Message.subject }}</a>
+            </td>
+            <td class="col-03 {{ unread }}">{{ message.Message.created|date('m.d.Y') }}</td>
+            <td class="col-04 {{ unread }}">{{ message.Message.created|date('h:i A') }}</td>
+            <td class="col-05"><a href="#" class="cancel delete-message" data-id="{{ message.Message.id }}">X</a></td>
+            <td class="col-06"><input type="checkbox" name="" class="select_delete" data-id="{{ message.Message.id }}" /></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+

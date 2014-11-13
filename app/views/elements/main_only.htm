@@ -1,0 +1,6 @@
+<div class="main-block">
+    {{ view.element('slideshow') }}
+    {% if not session.read('Auth.User.id') %}
+    {#{{ view.element('login-form') }}#}
+    {% endif %}
+</div>

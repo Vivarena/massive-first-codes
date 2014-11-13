@@ -1,0 +1,35 @@
+<cart>
+    {% if Cart.Products %}
+    <items>
+        {% for key, node in Cart.Products %}
+            <item>
+                <key>{{ key }}</key>
+                <id>{{ node.id }}</id>
+                <title>{{ node.title|striptags|escape }}</title>
+                <image>{{ node.image }}</image>
+                <price>{{ node.price }}</price>
+                <shipping>{{ node.shipping }}</shipping>
+                <tax>{{ node.tax }}</tax>
+                <qty>{{ node.qty }}</qty>
+                <user_id>{{ node.user_id }}</user_id>
+                <available>{{ node.available }}</available>
+                {% if node.attributes %}
+                    <attributes>
+                        {% for name, value in node.attributes %}
+                            <attribute>
+                                <name>{{ name }}</name>
+                                <value>{{ value }}</value>
+                            </attribute>
+                        {% endfor %}
+                    </attributes>
+                {% endif %}
+            </item>
+        {% endfor %}
+    </items>
+    <subtotal>{{ Cart.Subtotal }}</subtotal>
+    <discount>{{ Cart.Discount }}</discount>
+    <total>{{ Cart.Total }}</total>
+    {% else %}
+        <empty>Your Cart is empty</empty>
+    {% endif %}
+</cart>

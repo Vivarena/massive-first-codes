@@ -1,0 +1,22 @@
+<div style="margin-left: 160px">
+    <input id="add" type="button" value="Add Charity" class="submit-btn" />
+</div>
+<div id="charities" style="margin-left: 84px">
+{% if view.data.Product.charity|length > 0 %}
+    {% for key, item in view.data.Product.charity %}
+        <p class="ci{{ key }}">
+            <strong>Charity Name</strong><input type="text" name="data[Product][charity][{{ key }}][name]" value="{{ item.name }}">&nbsp;&nbsp;&nbsp;
+            <strong>Value</strong> <input type="text" name="data[Product][charity][{{ key }}][value]" value="{{ item.value }}">&nbsp;&nbsp;&nbsp;
+            <a class="del-ci" href="{{ key }}"><img alt="" src="/admin/img/icons/delete.png"></a>
+        </p>
+    {% endfor %}
+{% endif %}
+</div>
+
+<script type="text/html" id="charityItem">
+    <p class="ci%n">
+        <strong>Charity Name</strong><input type="text" name="data[Product][charity][%n][name]">&nbsp;&nbsp;&nbsp;
+        <strong>Value</strong> <input type="text" name="data[Product][charity][%n][value]">&nbsp;&nbsp;&nbsp;
+        <a class="del-ci" href="%n"><img alt="" src="/admin/img/icons/delete.png"></a>
+    </p>
+</script>

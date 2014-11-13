@@ -1,0 +1,38 @@
+<h1 class="ttl">RESET PASSWORD</h1>
+
+    <p>
+        {% if hash %}
+            <i>Please enter new password and confirm:</i>
+        {% else %}
+            <i>Before we can reset your password, please enter your email below to help identify your account:</i>
+        {% endif %}
+    </p>
+
+    {% if msg %}
+    <h3>{{ msg|__ }}</h3>
+    {% else %}
+
+    {{ form.create('User', {"type":"post", "url":"/forgotten-password"}) }}
+
+    {% if hash %}
+    {{ form.hidden("User.pass.hash", {"class":"text", 'style' : 'width: 250px;',"value": hash}) }}
+    <div class="input clearfix">
+    {{ form.password("User.pass.new_pass", {"class":"text", 'style' : 'width: 250px;',"value": "",'label':'fsdf'}) }}
+    </div>
+    <div class="input clearfix">
+    {{ form.password("User.pass.confirm_pass", {"class":"text", 'style' : 'width: 250px;', "value": ""}) }}
+    </div>
+    {% else %}
+    {{ form.text("User.pass.email", {"class":"text", 'style' : 'width: 250px;',
+                                    "onblur": "this.value = (this.value == '') ? 'e-mail' : this.value",
+                                    "onfocus": "this.value = (this.value == 'e-mail') ? '' : this.value",
+                                    "value": "e-mail"}) }}
+    {% endif %}
+    <div class="bottom-box clearfix">
+        {{ form.submit('Submit'|__, {'class': 'btn-register btn-send-pass', 'div': false})}}
+    </div>
+    {{ form.end() }}
+    {% endif %}
+
+
+

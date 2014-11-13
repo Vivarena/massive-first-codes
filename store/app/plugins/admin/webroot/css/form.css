@@ -1,0 +1,133 @@
+fieldset,form,label{padding:0;margin:0;border:none;outline:none;vertical-align:baseline; }
+textarea,input,select{font-size:15px; font-family:Arial, Helvetica, sans-serif; color:#0c4662; border:1px solid #666666}
+		
+.form {
+	margin: 0;
+	padding:0
+}
+	.form .field {
+		margin: 0 ;
+		position:relative
+	}
+	.form label {
+		display: block;
+	}
+	.form .text {
+		width: 100%;
+		padding: 2px 2px;
+		vertical-align:middle;
+		height:15px;
+
+		border:1px solid #bababa;
+
+	}
+	.form img {
+		vertical-align:middle;
+		}
+	.form textarea {
+		height: 150px;
+	}
+	.form .choice label {
+		display: inline;
+	}
+	.form .submit {
+		/*text-align: center;*/
+	}
+	.form .submit input {
+		background:url(/admin/img/bg-butt.gif) left bottom repeat-x #b5def7;
+		border:1px solid #438ece;
+		color:#ffffff;
+		font-size:11px;
+		cursor:pointer;
+		height:20px;
+		padding:1px 10px
+		}
+
+	.grid-left,
+	.grid-right {
+		/*width: 500px;*/
+		/*margin: 1em auto;*/
+	}
+		.grid-left label,
+		.grid-right label {
+			float: left;
+			overflow: hidden;
+		}
+		.grid-right label {
+			float: right;
+		}
+		.grid-left .text,
+		.grid-right .text {
+			float: right;
+			/*width: 300px;*/
+		}
+		.grid-right .text {
+			float: left;
+		}
+		.grid-left .choice {
+			/*margin-left: 185px;*/
+		}
+		.grid-right .choice {
+			margin-left: 0;
+			/*padding-right: 185px;*/
+		}
+			.grid-left .choice label,
+			.grid-right .choice label {
+				float: none;
+				width: auto;
+			}
+		.grid-left .submit {
+			text-align: left;
+			/*padding-left: 185px;*/
+		}
+		.grid-right .submit {
+			text-align: left;
+		}
+		.grid-left select {
+			/*margin-left: 5px;*/
+		}
+		.grid-right select {
+			float: right;
+			/*margin-right: 5px;*/
+		}
+
+
+.simple-form label {
+    display: block;
+    float: left;
+    width: 150px;
+    text-align: right;
+    font-weight: bold;
+    padding-right: 10px;
+}
+
+.simple-form div.input {
+    padding: 5px 0;
+}
+
+.simple-form div.text input {
+    width: 300px;
+}
+
+.simple-form div.textarea textarea {
+    width: 300px;
+    height: 100px;
+}
+
+.simple-form div.textarea textarea.textarea-big {
+    height: 200px;
+}
+
+.simple-form .error-message {
+    padding-left: 160px;
+    color: red;
+}
+
+
+.product-data div.text input.text {
+    width: 50px;
+}
+
+.product-data input.text {
+    width: 50px;
+}

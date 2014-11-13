@@ -1,0 +1,47 @@
+
+{% if messages %}
+<div class="pagi">
+    {{ view.element('paginator') }}
+</div>
+
+<table cellpadding="0" cellspacing="1" class="common-style-table autoWidth">
+    <tr>
+   		<th class="first sort" width="110">From</th>
+   		<th class="sort" >To</th>
+   		<th class="sort" >Message</th>
+        {#<th class="sort" >{{ paginator.sort('Status', 'Message.status') }}</th>#}
+   		<th class="sort" >{{ paginator.sort('Created', 'Message.created') }}</th>
+   		<th>-</th>
+   		<th>-</th>
+   	</tr>
+   	{% for item in messages %}
+   	{% set row_class = loop.index%2 ? 'odd' : 'even' %}
+   	<tr>
+   		<td class="first {{ row_class }}">{{ item.From.UserInfo.username }}</td>
+   		<td class="{{ row_class }}">{{ item.To.UserInfo.username }}</td>
+           <td class="{{ row_class }}"><a href="#{{ item.Message.id }}" class="readMsg" title="Click to view message">{{ item.Message.subject }}</a></td>
+           {#<td class="{{ row_class }}">{{ statusMsg[item.Message.status] }}</td>#}
+   		<td class="{{ row_class }}">{{ item.Message.created }}</td>
+        <td class="{{ row_class }}">
+           <a href="#{{ item.Message.id }}" class="readMsg" title="Click to view message">
+               <img alt="" src="/admin/img/icons/view.png" />
+           </a>
+        </td>
+   		<td class="{{ row_class }}">
+   			<a href="/admin/admin_users/delete_message/{{ item.Message.id }}" class="delete-link" title="Click to delete">
+   				<img alt="" src="/admin/img/icons/delete.png" />
+   			</a>
+   		</td>
+   	</tr>
+   	{% endfor %}
+</table>
+<div class="pagi">
+    {{ view.element('paginator') }}
+</div>
+{% else %}
+
+<div class="empty-result">
+	Items not found
+</div>
+
+{% endif %}

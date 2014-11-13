@@ -1,0 +1,10 @@
+{% if onlyMessage %}
+    <script type="text/javascript">
+        $(function() {
+
+            showTopMsg('{{ onlyMessage.message }}', '{{ onlyMessage.type }}');
+
+        });
+    </script>
+{% endif %}
+

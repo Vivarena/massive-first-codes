@@ -1,0 +1,80 @@
+<div class="sidebar clearfix">
+    <div class="sidebar_i clearfix">
+        <div class="user-box clearfix">
+                {% if otherUserInfo %}
+                    {% set linkProfile = otherUserInfo.loginThisPage %}
+                    {% set userInfo =  otherUserInfo %}
+                {% else %}
+                    {% set linkProfile = (session.read('Auth.User.login')|length > 0) ? session.read('Auth.User.login') : 'profile-'~session.read('Auth.User.id') %}
+                    {% set userInfo =  session.read('Auth.User.info') %}
+                {% endif %}
+                {% set linkAuthUser = session.read('Auth.User.login') %}
+                <a href="#">
+                    <div class="avatarContainer">
+                        <div id="avatarBox">
+                            {{ view.element('ava_common', { 'data' : userInfo, 'w' : 60, 'h' : 60, 'thumbAva' : true, 'ava' : true })}}
+                        </div>
+                    </div>
+                </a>
+            <a href="/{{ linkProfile }}" class="name">{{ userInfo['username'] }}</a><br/>
+            {% if user_type == 1 %}
+                {% set type = 'coach' %}
+            {% endif %}
+            {% if user_type == 2 %}
+                {% set type = 'club' %}
+            {% endif %}
+            {% if user_type == 3 %}
+                {% set type = 'group' %}
+            {% endif %}
+            {% if user_type == 4 %}
+                {% set type = 'team' %}
+            {% endif %}
+            {% if type %}
+                <img src="/img/user_types/{{ type }}_icon.png" alt="type_icon"/>
+            {% endif %}
+        </div>
+        <aside id="sidebar">
+            <div class="categories">
+                <strong class="ttl">Categories</strong>
+                <ul class="menu">
+                    {% if isUsedProducts %}
+                        {% set used = '/used' %}
+                    {% endif %}
+                    {% for key, node in categories %}
+                        <li>
+                            <a href="/shop{{ used }}{{ 'by-category'|toUrl(node.id, node.title) }}">{{ node.title }}</a>
+                            {% if node.children %}
+                                {{ _self.sub_categories(node.children, used) }}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+
+                    {#<li><a href="index.html">Jeans</a></li>
+                    <li><a href="index.html" class="currently">Jeans</a>
+                        <ul class="sub-menu">
+                            <li><a href="index.html">Jackets</a></li>
+                            <li><a href="index.html">Neckwear</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="index.html">Shirts</a></li>
+                    <li><a href="index.html">T-shirts</a></li>#}
+                </ul>
+            </div>
+        </aside>
+    </div>
+</div>
+
+{% macro sub_categories(children, used) %}
+    {% for key, node in children %}
+        <ul class="sub-menu">
+        {% for key, node in node %}
+            <li>
+                <a href="/shop{{ used }}/by-category/{{ node.id }}">{{ node.title }}</a>
+                {% if node.children %}
+                    {{ _self.sub_categories(node.children, used) }}
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endmacro %}

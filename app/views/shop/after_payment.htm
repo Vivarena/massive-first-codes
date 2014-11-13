@@ -1,0 +1,6 @@
+{% if order_id %}
+Thank you for your order!
+<p>Please click <a href="/shop/invoice/{{ order_id }}">here to Print Invoice</a></p>
+{% else %}
+    <span>Some error! {{ error }} Contact Us.</span>
+{% endif %}

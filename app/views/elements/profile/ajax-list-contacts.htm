@@ -1,0 +1,50 @@
+{% if friends|length %}
+    {% set uInfo = user_info.0 %}
+    {% if uInfo.sex == 'M' %}
+        {% set gender = 'His' %}
+    {% elseif uInfo.sex == 'F' %}
+        {% set gender = 'Her' %}
+    {% else %}
+        {% set gender = '' %}
+    {% endif %}
+
+    <div class="contact-gallery clearfix">
+
+        <div class="contact-gallery-one">
+            <div class="contact-gallery-one-text">
+                <div class="contact-gallery-one-text-i">
+                    <span>{{ countFriends }}</span>
+                    <p>{{'Contacts'|__}}</p>
+                </div>
+            </div>
+        </div>
+
+        {% for friend in friends %}
+            <div class="contact-gallery-one">
+                {{ view.element('ava_common', { 'data' : friend, 'w' : 90, 'h' : 90, 'thumbAva' : true })}}
+
+                <div class="gallery-text">
+                    <p>{{ friend.username }}</p>
+                    <a href="/profile-{{ friend.user_id }}"><span>&nbsp;</span></a>
+                </div>
+            </div>
+        {% endfor %}
+
+
+        <div id="FriendsPager">
+        {% if paginator.numbers() %}
+            {% if paginator.hasPrev() %}
+                {{ paginator.prev(''|__, {'class': 'left-row'}) }}
+            {% endif %}
+            {% if paginator.hasNext() %}
+                {{ paginator.next(''|__, {'class': 'right-row'}) }}
+            {% endif %}
+            <div class="circle clearfix">
+            {% if paginator.hasNext()!=false %}
+               {{ paginator.numbers({'separator': ''}) }}
+            {% endif %}
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endif %}

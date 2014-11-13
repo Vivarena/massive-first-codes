@@ -1,0 +1,269 @@
+{{ view.Html.css([
+    '/js/jquery/plugins/new-ui/css/humanity/jquery-ui-1.8.19.custom', 'fb_invite', 'linkedin'
+    ]) }}
+
+{{ view.Html.script([
+    'https://api.cloudsponge.com/address_books.js',
+    'jquery/plugins/new-ui/js/jquery-ui-1.8.19.custom.min', 'community/requests'
+    ]) }}
+
+<!-- script type="text/javascript" src="//platform.linkedin.com/in.js">
+  api_key: qznp2go0rlxv
+  scope: r_network
+  onLoad: onLinkedInLoad
+</script -->
+
+<div class="profile clearfix" style="margin-top:50px;">
+    <div class="profile-i clearfix">
+        <div class="register-step clearfix">
+            <div class="register-step-box-content clearfix" id="join">
+                <div class="register-step-box">
+                    <div class="register-step-box-i clearfix">
+                        <div class="step-three clearfix">
+                            <div class="register-step-box-middle clearfix">
+                                <h3>{{ 'EXPAND YOUR NETWORK'|__ }}</h3>
+
+                                <p><h4>{{ 'Choose how you want to connect with people.'|__ }}</h4></p>
+                            </div>
+							<hr />
+                            <div class="register-step-box-form" id="joinUsContainer">
+                                <h4>{{ 'Search for people on Vivarena to add to your network'|__ }}</h4>
+                                <br/>
+                                <div id="searchInInvers">
+                                    <form action="/community/search" method="POST" id="searchInInversForm" class="clearfix">
+                                        <input type="text" name="data[Search][text]" id="searchInput" class="w-460" placeholder="{{'Name, email...'|__}}"/>
+                                        <a class="btn-add-to btnBlue float-r" id="searchInversBtn" href="#">{{'Find'|__}}</a>
+                                    </form>
+                                    <div id="searchResult"></div>
+                                </div>
+                                <hr />
+                                <div class="mail-box clearfix">
+                                    <br/>
+                                    <h5 class="form-title">{{'Invite someone by email address (add one, or multiple emails separated by commas)'|__}}</h5>
+                                    <div id="inviteByEmailBox">
+                                        <form action="/users/invite_by_email" method="POST" id="individualInviteForm">
+                                            <textarea name="data[emails]" id="byIndividualEmailsText" cols="30" rows="10"></textarea>
+                                            <a class="btn-add-to btnBlue float-r" id="sendInviteBtn" href="#">{{'Send invite'|__}}</a>
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr />
+                                <br/><h4>{{'Search your Social Networks'|__ }}</h4><br/>
+                                <div class="network-div">
+                                    <a href="#" class="fb-import"><img src="/img/registration/facebook-icon.png"></a>
+                                    <div id="fbContent" class="hidden">
+                                      <form action="#" id="formInviteFB">
+                                        <ul class="clearfix">
+                                          <li class="status"></li>
+                                        </ul>
+                                      </form>
+                                    </div>
+                                </div>
+                                <div class="network-div">
+                                  <a href="#" class="li-import">
+                                    <img src="/img/registration/linkin-icon.png">
+                                  </a>
+                                </div>
+                                <div class="LinkedContent hidden">
+                                  <ul class="linkedin-list clearfix">
+                                  </ul>
+                                </div>
+                                <hr />
+                                <div class="cloud">
+                                    <ul>
+                                        <li>
+                                            <br/><h4>{{ 'Search your Email Accounts'|__ }}</h4><br/>
+
+                                            <div class="sponge-item">
+                                                <a onclick="return cloudsponge.launch('yahoo');"><img
+                                                        class="sponge-logo" id="yahoo"
+                                                        src='/img/registration/yahoo.png'> <label>Yahoo!</label></a>
+                                            </div>
+                                            <div class="sponge-item">
+                                                <a onclick="return cloudsponge.launch('gmail');"><img
+                                                        class="sponge-logo" id="gmail"
+                                                        src='/img/registration/gmail.png'> <label>Gmail</label></a>
+                                            </div>
+                                            <div class="sponge-item">
+                                                <a onclick="return cloudsponge.launch('windowslive');"><img
+                                                        class="sponge-logo" id="msn" src='/img/registration/msn.png'>
+                                                    <label>Windows live</label></a>
+                                            </div>
+                                            <div class="sponge-item">
+                                                <a onclick="return cloudsponge.launch('aol');"><img class="sponge-logo"
+                                                                                                    id="aol"
+                                                                                                    src='/img/registration/aol.png'>
+                                                    <label>AOL</label></a>
+                                            </div>
+                                            <div class="sponge-item">
+                                                <a onclick="return cloudsponge.launch('plaxo');"><img
+                                                        class="sponge-logo" id="plaxo"
+                                                        src='/img/registration/plaxo.png'> <label>Plaxo</label></a>
+                                            </div>
+                                            <div class="sponge-item">
+                                                <a onclick="return cloudsponge.launch('outlook');"><img
+                                                        class="sponge-logo" id="OUTLOOK"
+                                                        src='/img/registration/outlook.png'> <label>Outlook</label></a>
+                                            </div>
+                                            <div id="cloudSpongeContainer" class="hidden">
+                                            </div>
+                                            <div id="listVivarenaUser">{{'Click on a Logo to Start Import'|__}}.<br/>
+                                                {{'After clicking on one of the options to the left, you will be prompted to signin to you mail account and subsequently be offered the option to invite all or individual email contacts. Vivarena will not send any invites without your confirmation.'|__}}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function sendInvites(contacts)
+    {
+        $.ajax({
+                url: '/emails/sendInvite',
+                type: 'POST',
+                data: ({'data[contacts]':contacts}),
+                dataType: 'json',
+                async: false,
+                success: function(data)
+                {
+                    var imgStr;
+                    $('#listVivarenaUser').empty();
+
+                    for (var i = 0; i < data.contacts.length; i++) {
+                        if (data.contacts[i].sended==true)
+                            imgStr="<img src='/img/icons/ok.png'>";
+                        else
+                            imgStr="<img src='/img/icons/err.png'>";
+                        $('#listVivarenaUser').append('<div class="div'+i+'">'+imgStr+' <label id="name">'+data.contacts[i].name+' </label><label id="email">'+data.contacts[i].email+'</label></div>');
+                    }
+                    return true;
+                }
+        });
+    }
+
+    function afterClose()
+    {
+        var contacts = [];
+        var $divs=$("#listVivarenaUser > div");
+        if ($divs.length)
+        {
+            $divs.each(function(i, e){
+                contacts[i]=$(' > #name', e).text()+'|'+$(' > #email', e).text();
+            });
+            sendInvites(contacts);
+        }
+    }
+
+    function parseContacts (contacts, source, owner) {
+        var contact, name, email;
+        var $currDiv;
+        $('#listVivarenaUser').empty();
+        $('#listVivarenaUser').show();
+        for (var i = 0; i < contacts.length; i++) {
+            contact = contacts[i];
+            name = contact.fullName();
+            email = contact.selectedEmail();
+            $('#listVivarenaUser').append('<div class="div'+i+'"><img src="/img/ajax-loader.gif"> <label id="name">'+name+' </label><label id="email">'+email+'</label></div>');
+        }
+    }
+
+    var csPageOptions = {
+        domain_key:"KL3G6TJDJWD4P72SNA26", // <--- for www.slices.vivarena.com
+        afterSubmitContacts:parseContacts,
+        beforeClosing:function(){
+            setTimeout(afterClose,1000);
+        }
+    };
+
+    $(function() {
+
+        $('#sendInviteBtn').click(function (e) {
+
+            var textEmails = $('#byIndividualEmailsText');
+            if ($.trim(textEmails.val()) != '') {
+                $.post("/community/sendInvite", $('#individualInviteForm').serialize(),
+                    function(data) {
+                        if(!data.error) {
+                            textEmails.val('');
+                        } else {
+                            window.alert(data.err_desc);
+                        }
+
+                    },
+                    "json"
+                );
+
+            }
+
+            e.preventDefault();
+        });
+
+        var searchResult = $('#searchResult');
+
+        reqUsers.init({
+            content: $('#fbContent')
+        });
+
+        $('#searchInversBtn').click(function (e) {
+            var textSearch = $('#searchInput'),
+                formSearch = $('#searchInInversForm');
+            if ($.trim(textSearch.val()) != '') {
+                $.post(formSearch.attr('action'), formSearch.serialize(),
+                    function(data) {
+                        searchResult.html(data.contentHtml);
+                        searchResult.slideDown('normal');
+                    },
+                    "json"
+                );
+
+            }
+
+            e.preventDefault();
+        });
+
+        searchResult.on('click', '.number-link', function(e){
+            $.post($(this).attr('href'), '',
+                function(data) {
+                    searchResult.html(data.contentHtml);
+                },
+                "json"
+            );
+            e.preventDefault();
+        });
+
+        searchResult.on('click', '.addToNet', function(e){
+            var $this = $(this);
+            $.post(
+                $this.attr('href'),
+                { 'data[id]': $this.data('id') },
+                function( data ) {
+                    if ( data.status ) {
+                        if ($this.attr('href')=='/community/cancelRequest')
+                        {
+                            $this.text('ADD TO NETWORK');
+                            $this.attr('href','/community/addToNetwork');
+                        }
+                        else
+                        {
+                            $this.text('CANCEL REQUEST');
+                            $this.attr('href','/community/cancelRequest');
+                        }
+                    } else {
+                        $this.replaceWith('<span class="infoMsg">' + data.message + '</span>');
+                    }
+                }, 'json'
+            );
+            e.preventDefault();
+        });
+
+    });
+
+  </script>

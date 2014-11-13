@@ -1,0 +1,14 @@
+<p>Your product {{ message }}</p>
+{% if attributes|length > 0 %}
+<p>With attributes:</p>
+<ul>
+    {% for key, attribute in attributes %}
+    <li>
+        {{ key }}: {{ attribute }}
+    </li>
+    {% endfor %}
+</ul>
+
+{% endif %}
+<p>in quantity {{ qty }} pci.</p>
+<p>was selled</p>

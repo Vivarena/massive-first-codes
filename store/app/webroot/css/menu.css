@@ -1,0 +1,122 @@
+.nav {
+    padding:175px 0 150px 0
+}
+
+ul#nav {
+    margin:0;
+    padding:0;
+    list-style:none
+}
+
+ul#nav li {
+    padding:5px 0;
+    height:1%
+}
+ul#nav li a {
+    font-size:17px;
+    text-transform:uppercase;
+    color:#000000;
+    text-decoration:none;
+    
+}
+
+ul#nav li.home-link {
+}
+
+
+ul#nav li.home-link,
+ul#nav li.music-link,
+ul#nav li.videos-link,
+ul#nav li.photos-link,
+ul#nav li.news-link,
+ul#nav li.contact-link,
+ul#nav li.category-link,
+ul#nav li.boutique-link,
+ul#nav li.saber-link
+{
+    padding-left:25px;
+    line-height:17px;
+}
+ul#nav li.home-link a,
+ul#nav li.music-link a,
+ul#nav li.videos-link a,
+ul#nav li.photos-link a,
+ul#nav li.news-link a,
+ul#nav li.category-link a,
+ul#nav li.contact-link a,
+ul#nav li.boutique-link a,
+ul#nav li.saber-link a{
+
+    display:block;
+}
+ul#nav li.about-me-link,
+ul#nav li.be-with-me-link,
+ul#nav li.travel-the-web-link,
+ul#nav li.fan-club-link,
+ul#nav li.home-link {
+    padding-left:10px;
+}
+
+ul#nav li.about-me-link a,
+ul#nav li.be-with-me-link a,
+ul#nav li.travel-the-web-link a,
+ul#nav li.fan-club-link a,
+ul#nav li.home-link a,
+ul#nav li.saber-link a {
+    display:block;
+    background:url(../img/nav/bg-manu-item.png) left top no-repeat;
+    padding:4px 0 0 0;
+    height:35px;
+    width:170px;
+    text-align:center;
+    color:#FFFFFF
+}
+
+ul#nav li.saber-link a {
+    background:url(../img/nav/saber-link.png) left top no-repeat;
+    overflow: hidden;
+    text-indent: -999px
+}
+
+ul#nav li.be-with-me-link {
+    padding-top:0px;
+    padding-bottom:0
+}
+
+ul#nav li.be-with-me-link a {
+
+}
+ul#nav li.about-me-link {
+    padding-top:0px;
+    padding-bottom:10px;
+}
+ul#nav li.about-me-link a {
+
+}
+ul#nav li.travel-the-web-link {
+    padding-top:10px;
+    padding-bottom:0px
+}
+ul#nav li.travel-the-web-link a {
+
+}
+ul#nav li.fan-club-link {
+    padding-top:0;
+}
+ul#nav li.fan-club-link a {
+    
+}
+
+
+ul#nav li.saber-link {
+    padding-top: 100px;
+    padding-left: 9px
+}
+ul#nav li.about-me-link {}
+ul#nav li.music-link {}
+ul#nav li.videos-link {}
+ul#nav li.photos-link {}
+ul#nav li.news-link {}
+
+
+ul#nav li.boutique-link  {}

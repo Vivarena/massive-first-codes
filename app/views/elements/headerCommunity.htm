@@ -1,0 +1,101 @@
+{{ html.script(['header.js', 'facebook.js', 'linkedin.js', 'twitter.js', 'jquery/plugins/jquery.oauthpopup.js']) }}
+<div id="fb-root"></div>
+
+<div id="header">
+    <div class="header clearfix">
+        <span class="shadow">&nbsp;</span>
+        <div class="logo">
+            <a href="/"><img alt="" src="/img/bg-pages/logos.png" /></a>
+        </div>
+        <div class="header-right-community clearfix">
+            <div class="lang">
+                <div class="lang-i">
+                    {% set is_english = (locale == 'eng') %}
+                    <span class="lang-icon">{{ is_english ? 'English'|__ : 'Español'|__ }}</span>
+                </div>
+                <div class="sub-lang">
+                    <ul>
+                        <li><a href="/lang/eng" class="{{ is_english ? 'hidden' : '' }}">{{ 'English'|__ }}</a></li>
+                        <li><a href="/lang/spa" class="{{ is_english ? '' : 'hidden' }}">{{ 'Español'|__ }}</a></li>
+                    </ul>
+                </div>
+            </div>
+            {% if session.check('Auth.User.id') %}
+            <div class="people-box clearfix">
+              <div class="people-box-img">
+                {{ view.element('ava_common', { 'data' : session.read('Auth.User.info'), 'w' : 31, 'h' : 27, 'thumbAva' : true } ) }}
+              </div>
+              <div class="people-box-text">
+                <div class="people-box-text-i clearfix">
+                  <span class="people-name">{{ session.read('Auth.User.info.username') }}</span>
+                  <span class="add-people">&nbsp;</span>
+                </div>
+                <div class="sub-text">
+                  <ul>
+                    {% if viewDashboard %}
+                    <li><a href="/profile/">{{ 'View Dashboard'|__ }}</a></li>
+                    {% endif %}
+                    {% set login = session.read('Auth.User.login') %}
+                    {% set linkProfile = (login|length > 0) ? login : 'profile/'~session.read('Auth.User.id') %}
+                    <li><a href="/{{ linkProfile }}">{{ 'View Profile'|__ }}</a></li>
+                    <li><a href="/profile/edit">{{ 'Edit Profile'|__ }}</a></li>
+                    <li><a href="/join-us">{{ 'Increase my Network'|__ }}</a></li>
+                    <li><a href="/users/logout">{{ 'Logout'|__ }}</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            {% else %}
+
+            <div class="right-list">
+                <ul>
+                    <li><a href="/registration">{{'Register'|__}}</a></li>
+                    <li class="login-li"><a class="community-login" href="#">{{'Log In'|__}}</a>
+
+                        <div id="forLoginBox" class="login-box beforeLogged">
+                            <span class="close">&nbsp;</span>
+                            <form accept-charset="utf-8" action="/users/login" method="post"><div style="display:none;"><input type="hidden" value="POST" name="_method"></div>
+                                <div class="clearfix">
+                                    <div class="input">
+                                        <input type="text" id="UserEmail" value="Email" onfocus="this.value = (this.value == 'Email') ? '' : this.value" onblur="this.value = (this.value == '') ? 'Email' : this.value" class="text" name="data[User][email]">
+
+                                    </div>
+                                    <div class="input">
+                                        <input type="password" id="UserPassword" value="Password" onfocus="this.value = (this.value == 'Password') ? '' : this.value" onblur="this.value = (this.value == '') ? 'Password' : this.value" class="text" name="data[User][password]">
+                                    </div>
+                                    <div class="clearfix remember-block">
+                                        <input type="hidden" value="0" id="UserRemember_" name="data[User][remember]"><input type="checkbox" id="UserRemember" value="1" name="data[User][remember]"> <label>{{'Remember me'|__}}</label>
+                                        <div class="login-links">
+                                            <a href="/forgotten-password.html" class="forgot">{{'Forgot Password?'|__}}</a>
+                                            <a href="/registration.html" class="registration">{{'Register'|__}}</a>
+                                        </div>
+                                        <div class="button">
+                                            <button type="submit" class="btn-login">Login</button>
+                                            {#<input type="submit" value="Login" class="btn-login">#}
+                                        </div>
+                                        <a href="#" class="btn-facebook"></a>
+                                        <a href="#" class="btn-linkedin"></a>
+                                        <a href="#" class="btn-twitter"></a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if session.check('Auth.User.id') %}
+            {% if noSearch is not defined %}
+                <div class="search-box">
+                {{ form.create('search', {'url' : '/community/search' }) }}
+                <input type="text" name="data[Search][text]" value="" class="search-field" placeholder="{{'Search'|__}}"/>
+                <span class="search-icon">&nbsp;</span>
+                {{ form.end() }}
+                </div>
+            {% endif %}
+            {% endif %}
+
+        </div>
+    </div>
+</div>

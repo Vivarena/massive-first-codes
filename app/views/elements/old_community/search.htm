@@ -1,0 +1,24 @@
+{{ view.addScript('<script type="text/javascript" src="/js/community/requests.js"></script>') }}
+{#
+<div class="title-box" style="width: 735px;float: left; padding-bottom: 20px;">
+    <div class="form-contact clearfix">
+        {{ form.create('', {'id': 'CommunitySearchForm', 'url': '/community/search'}) }}
+        <div class="input clearfix">
+            <label>{{'Name'|__}}</label>
+            {{ form.input('username', {'class': 'text', 'div': false, 'label': false}) }}
+        </div>
+        <div class="input clearfix">
+            <label>{{'Location'|__}}</label>
+                {{ form.select("country_id", countries, null, {'label': false, "empty":"Select if you want"|__, 'class': 'search-select'}) }}
+            &#123;&#35;{{ form.input('country', {'class': 'text', 'div': false, 'label': false}) }}&#35;&#125;
+        </div>
+        <div class="input clearfix">
+            <label>{{'Email'|__}}</label>
+            {{ form.input('email', {'class': 'text', 'div': false, 'label': false}) }}
+        </div>
+        <div class="button">
+            <input type="submit" value="" class="btn-search"/>
+        </div>
+        {{ form.end() }}
+    </div>
+</div>#}

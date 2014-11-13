@@ -1,0 +1,39 @@
+<div class="profile-left__menu">
+    <ul>
+        {% if isMyProfile %}
+            <li class="greenTxt">{{ view.Html.link('Edit'|__, '/profile/edit', { 'class' : 'greenTxt'} ) }}</li>
+        {% else %}
+            <li><a href="/profile/{{ session.read('Auth.User.id') }}">{{ 'Profile'|__ }}</a></li>
+        {% endif %}
+        {#<li>{{ view.Html.link('Edit', '/profile/edit' ) }}</li>#}
+        <li>{{ view.Html.link('Network'|__, '/profile', { 'class' : currentLink['profile'] } ) }}</li>
+        <li>{{ view.Html.link('Feed'|__, '/profile/feed', { 'class' : currentLink['feed'] } ) }}</li>
+        {#<li>{{ view.Html.link('Messaging'|__, '/profile/messaging/' ) }}</li>#}
+        <li>
+            <a href="/profile/messaging">
+            {{ 'Messaging'|__ }}
+            <span class="counter">{{ view.data.unread }}</span>
+            </a>
+        </li>
+        {#<li><a href="#">Privacy</a></li>#}
+        {#<li><a href="#">Network</a></li>#}
+        {#<li><a href="#"> Favorites</a></li>#}
+        {#<li><a href="#">Publications</a></li>#}
+
+        <li>
+            <a rel="network" href="/community/listRequests">
+                {{ 'Requests'|__ }}
+                <span class="counter">{{ view.data.requests }}</span>
+            </a>
+        </li>
+        <li>{{ view.Html.link('Suggestions'|__, '/profile/suggestions', { 'class' : currentLink['suggestions'] }) }}</li>
+        <li>{{ view.Html.link('Polls'|__, '/profile/polls', { 'class' : currentLink['polls'] }) }}</li>
+        {#<li><a href="#">Posts/Blogs</a></li>#}
+        {#<li><a href="#"> Polls</a></li>#}
+        {#<li><a href="#"> Messages</a></li>#}
+        {#<li><a href="#"> Requests</a></li>#}
+        <li>{{ view.Html.link('Log Out'|__, '/users/logout' ) }}</li>
+        <li>{{ view.Html.link('Delete Profile'|__, '/profile/delete/'~view.data.user_id ) }}</li>
+
+    </ul>
+</div>

@@ -1,0 +1,30 @@
+{% if suggestions|length %}
+<div class="profile-content__block   clearfix">
+    <h3>{{'Suggested Sites'|__}}</h3>
+
+    <div class="profile-content__block__info  clearfix">
+        <div class="profile-content__block__info-i first clearfix">
+            {% if suggestions|length %}
+            <div class="info-title">
+                <p>{{'Websites'|__}}</p>
+            </div>
+            <div class="info-name">
+                <ul>
+                    {% for item in suggestions %}
+                    <li>{{ view.Html.link( item.title, item.SuggestionUrl.0.url, {'target': '_blank'} ) }}</li>
+                    {% endfor %}
+                  </ul>
+                  <span class='privacy'>{{ privacy.UserSuggestion }}</span>
+            </div>
+            <div style="position: absolute; bottom: 5px; right: 8px;">
+                {{ view.Html.link( 'See more...'|__, '/profile/suggestions/'~view.data.user_id ) }}
+            </div>
+            {% else %}
+            <div class="post">
+                <p>{{'User has not suggest something yet.'|__}}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}

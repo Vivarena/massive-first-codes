@@ -1,0 +1,24 @@
+{{ view.addScript('
+<link rel="stylesheet" href="/js/jquery/plugins/chosen/chosen.css" media="screen" />
+<script type="text/javascript" src="/js/jquery/plugins/chosen/chosen.jquery.min.js"></script>
+') }}
+<div class="profile-custom-page clearfix">
+    {#<h3>{{'Suggestions'|__}}</h3>#}
+    <div class="network-box-i clearfix">
+        <div class="profile-content profile-content-left clearfix">
+
+            {#{% if view.data.user_id == session.read('Auth.User.id') %}#}
+            {{ view.element('community/suggestion_add_form') }}
+            {#{% endif %}#}
+
+            <div class="profile-custom-content">
+                {{ view.element('community/suggestion_details') }}
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+

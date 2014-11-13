@@ -1,0 +1,137 @@
+<div class="tabs-box clearfix">
+    <span class="shadow-tab">&nbsp;</span>
+
+    <ul class="tab-list clearfix">
+        <li class="{{ activeTab['photos'] }}"><a href="/{{ loginThisPage }}/albums/photos">Photos</a></li>
+        <li class="{{ activeTab['videos'] }}"><a href="/{{ loginThisPage }}/albums/videos">Videos</a></li>
+
+    </ul>
+
+    <div class="box-list clearfix">
+        <div class="padd-17"></div>
+        <div class="photo-album clearfix" id="albumContainer">
+            <div class="photo-album_i clearfix">
+                <span class="date-album">
+                    {% if type == 'photos' %}
+                        {% set items = album.UserPhoto %}
+                    {% elseif type == 'videos' %}
+                        {% set items = album.UserVideo %}
+                    {% endif %}
+                    {% if items|length > 0 %}
+                        {{ album[modelAlbum].name }}
+                    {% else %}
+                        {{ album[modelAlbum].name }} - but there is no {{ type }}...
+                    {% endif %}
+                </span>
+                {% if iOwnerAlbum and type != 'videos' %}
+                    <div class="addPhotoBtn">
+                        <a class="btn no-float addImages" href="#" id="addFiles">Add {{ type }}..</a>
+                    </div>
+                {% else %}
+                    <br class="clear"/> <br class="clear"/>
+                {% endif %}
+                {% if error is not defined %}
+                    {% if iOwnerAlbum %}
+                        {{ view.element('../albums/add_'~type) }}
+                    {% endif %}
+                    <div class="img-block-all clearfix">
+                    {% if items|length > 0 %}
+
+                        {% if type == 'photos' %}
+
+                            {% for item in items %}
+                                <div class="img-block__one clearfix">
+                                    <a href="{{ item.image }}" class="viewPhotoAlbum"><img src="/thumbs/103x80{{ item.image }}" alt="{{ item.title }}"></a>
+                                    {% if iOwnerAlbum %}
+                                    <div class="actionsPhoto">
+                                        <a href="#" class="deleteItemAlbum" data-item-id="{{ item.id }}">Delete</a>
+                                        <a href="{{ item.image }}" class="coverPhoto" data-album-id="{{ album[modelAlbum].id }}">Cover</a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+
+                        {% elseif type == 'videos' %}
+
+                            {% for item in items %}
+                                <div class="img-block__one clearfix">
+                                    <a href="{{ item.url_video }}" class="videoPlay"><img src="/thumbs/103x80{{ item.cover_img }}" alt="{{ item.title }}"></a>
+                                    {% if iOwnerAlbum %}
+                                    <div class="actionsPhoto">
+                                        <a href="#" class="deleteItemAlbum" data-item-id="{{ item.id }}">Delete</a>
+                                        <a href="{{ item.cover_img }}" class="coverPhoto" data-album-id="{{ album[modelAlbum].id }}">Cover</a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+
+                        {% endif %}
+
+                    {% endif %}
+                    </div>
+                {% else %}
+                    <h3>{{ error }}</h3>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+
+        var container = $('#albumContainer');
+
+        $(".viewPhotoAlbum").colorbox({rel:'viewPhotoAlbum', width:"90%", height:"90%", fixed: true });
+        $(".videoPlay").colorbox({iframe:true, width:"70%", height:"70%", fixed: true});
+
+        container.on('click', '.coverPhoto', function(e){
+            var $this = $(this),
+                getSrcPhoto = $this.attr('href'),
+                albumID = $this.data('albumId');
+
+            $.post("/albums/setCover", {'data[{{ modelAlbum }}][cover]' : getSrcPhoto, 'data[{{ modelAlbum }}][id]' : albumID, 'data[Type]' : '{{ type }}'},
+                function(data) {
+                    if(!data.error) {
+                        showTopMsg('Cover for this album has been updated successfully');
+                    } else {
+                        showTopMsg(result.err_desc, 'error');
+                    }
+
+                },
+                "json"
+            );
+
+            e.preventDefault();
+        });
+
+        container.on('click', '.deleteItemAlbum', function(e){
+            var $this = $(this);
+            modalPopup.confirmPopup('Delete', 'Do you sure want to delete this item?', function(){
+                var itemId = $this.data('itemId');
+                $.post("/albums/deleteItemAlbum", {'data[id]' : itemId, 'data[Type]' : '{{ type }}'},
+                    function(data) {
+                        if(!data.error) {
+                            $this.closest('.img-block__one').fadeOut('normal', function(){
+                                $(this).remove();
+                            });
+                            showTopMsg('Item was successfully removed');
+                        } else {
+                            showTopMsg(result.err_desc, 'error');
+                        }
+
+                    },
+                    "json"
+                );
+
+            });
+
+            e.preventDefault();
+        });
+
+    });
+
+
+</script>

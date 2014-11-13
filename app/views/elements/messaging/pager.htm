@@ -1,0 +1,10 @@
+<a href="/emails/ajaxDeleteMessages" id="delete" class="btn float-l"><span class="delete">{{ 'Delete'|__ }}</span></a>
+<div class="float-r pagination">
+    {{ 'Messages'|__ }}
+    {{ paginator.counter({'format': '%start%-%end%'}) }}
+    {{ 'of'|__ }}
+    {{ paginator.counter({'format': '%count%'}) }}
+    {{ paginator.prev('<< Newer'|__) }} |
+    {{ paginator.next('Older >>'|__) }}
+</div>
+<div class="clear"></div>

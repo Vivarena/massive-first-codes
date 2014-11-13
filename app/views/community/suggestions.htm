@@ -1,0 +1,29 @@
+{{ view.addScript('
+<link rel="stylesheet" href="/js/jquery/plugins/chosen/chosen.css" media="screen" />
+<script type="text/javascript" src="/js/jquery/plugins/chosen/chosen.jquery.min.js"></script>
+') }}
+
+<div id="about" class="about-box">
+    {{ view.element('profile/profile-status')}}
+    {{ view.element('profile/profile-about')}}
+    <h3 class="title-home">{{'My Suggestions'|__}}</h3>
+    <div class="about-block">
+        <div class="my-box-all">
+            {% for item in suggestData %}
+            <div class="my-box">
+                <div class="my-box-one">
+                    <div class="my-box-one-i">
+                        <h4 title="{{ item.UserSuggestion.title }}">{{ item.UserSuggestion.title|truncate(60) }}</h4>
+                        <p>{{ item.UserSuggestion.description|truncate(250) }} </p>
+                        {% for sugg_info in item.SuggestionUrl %}
+                        <p><a target="_blank" href="{{sugg_info.url}}">{{sugg_info.url|truncate(60)}}</a></p>
+                        {% endfor%}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {{ view.element('profile/links-bottom', { 'userID' : view.data.user_id }) }}
+</div>
+

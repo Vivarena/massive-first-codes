@@ -1,0 +1,209 @@
+{{ view.Html.script('jquery/plugins/plu_uploader/plupload.full', { 'inline': false }) }}
+{{ view.Html.script('jquery/plugins/plu_uploader/jquery.plupload.queue/jquery.plupload.queue', { 'inline': false }) }}
+{{ view.Html.script('project/attach_wallpost', { 'inline': false }) }}
+
+
+<div class="tabs-box clearfix">
+    <span class="shadow-tab">&nbsp;</span>
+
+    <div class="tabs-box-left clearfix">
+
+        <ul class="tab-list clearfix">
+            <li class="active">Profile</li>
+
+        </ul>
+        <div class="profile-box clearfix">
+            <div class="profile-box-user clearfix">
+                <div class="profile-box-user__img  clearfix">
+                    {{ view.element('ava_common', { 'data' : view.data, 'w' : 150, 'h' : 150, 'thumbAva' : true })}}
+                </div>
+                <div class="profile-box-user__text clearfix">
+                    <h3>{{ view.data.first_name }} {{ view.data.last_name }}</h3>
+                    {% if user_status %}
+                        <span class="profileStatus">{{ user_status.postText }}</span>
+                    {% endif %}
+                    {% if isMyProfile %}
+                        <span class="subActions">
+                            This is your profile
+                        </span>
+                    {% else %}
+                    <span class="subActions">
+                        <a href="/messages/write/{{ view.data.user_id }}">Send message</a>
+                    </span>
+                    {% endif %}
+                    {#<p><span>Lives in </span> <a href="#">Miami, Florida</a></p>
+                    <a href="#">Add where you work</a>
+                    <a href="#">Add your school</a>
+                    <a href="#">Add your hometown</a>
+                    <a href="#">About</a>#}
+                </div>
+            </div>
+
+            <div class="comment-link clearfix" id="activityPage">
+                <ul class="clearfix">
+                    {#<li><a href="#"><span class="status-icon">&nbsp;</span>Status</a></li>#}
+                    {#<li><a href="#"><span class="photo-icon">&nbsp;</span>Photo/Video</a></li>
+                    <li><a href="#"><span class="events-icon">&nbsp;</span>Events</a></li>
+                    <li><a href="#"><span class="results-icon">&nbsp;</span>Results</a></li>
+                    <li><a href="#"><span class="place-icon">&nbsp;</span>Place</a></li>#}
+
+                </ul>
+                {% if isMyProfile %}
+                    <div class="comment-box clearfix">
+                        {{ form.create({'url': '/posts/addPost', 'id' : 'UserAddPostForm'}) }}
+                        <div class="clearfix">
+                            <textarea id="postTextInput" name="data[UserPost][text]" rows="" cols="" placeholder="What`s on your mind?"></textarea>
+                            <div id="imagePlace"></div>
+                            <input class="btn btn-post" id="submit" value="Post" type="button"/>
+                            <select class="styled" name="data[UserPost][type]" id="getTypePost">
+                                <option value="text">Text</option>
+                                <option value="image">Attach image</option>
+                                <option value="video">Attach video</option>
+                            </select>
+                            <span class="arrow">&nbsp;</span>
+                        </div>
+
+                        <div class="input attachPlace clearfix" id="attachVideoDiv">
+                            <label class="youtubeIco"><img src="/img/youtube_32x32.png"/> URL: </label>
+                            <input type="text" id="urlVideo" name="data[UserVideo][url_video]" class="youtube-link"/>
+                            <input type="button" class="btn btn-post" value="Attach" id="attachVideo">
+                            <input type="button" class="btn btn-post" value="Albums" id="attachVideoFromAlbum" data-username="{{ loginAuth }}" data-type="videos" style="margin: 10px 200px 0 0;">
+                        </div>
+
+                        <div class="input attachPlace clearfix" id="attachImageDiv">
+                            <div id="filelist"></div>
+                            <input type="button" class="btn btn-post" value="Upload" id="attachImage">
+                            <input type="button" class="btn btn-post" value="Albums" id="attachImageFromAlbum" data-username="{{ loginAuth }}" data-type="photos">
+                        </div>
+
+                        <div class="input attachPlace clearfix" id="attachImageBlock">
+                            {#<input type="hidden" name="data[AttachImage]" value="" />#}
+                            qwe
+                        </div>
+
+                        {{ form.end() }}
+                    </div>
+                {% endif %}
+
+                <div class="comment-list clearfix">
+                    {% set albumsId = [] %}
+                    {% set attachedId = [] %}
+                    {% for item in feeds %}
+                    {% set linkProfile = (item.Feeds.login|length > 0) ? item.Feeds.login : 'profile-'~item.Feeds.user_id %}
+                    <div class="comment-list__one clearfix">
+                        <div class="comment-list__one__img clearfix">
+                            <a href="/{{ linkProfile }}">{{ view.element('ava_common', { 'data' : item.Feeds, 'w' : 60, 'h' : 60, 'thumbAva' : true }) }}</a>
+                        </div>
+                        <div class="comment-list__one__text clearfix">
+                            <b>{{ item.Feeds.userName }}</b>
+                            {% if item.Feeds.type_feed == 'friend' %}
+                                {{ item.Feeds.text|__ }} - <strong><a href="/profile-{{ item.Feeds.friendID }}">{{ item.Feeds.friendName }}</a></strong>
+                            {% elseif item.Feeds.type_feed == 'suggestion' %}
+                                {{ item.Feeds.text|__ }}: <a href="/{{ linkProfile }}/suggestions"><i>&quot;{{ item.Feeds.titleSuggestion }}&quot;</i></a> ({{ item.urls }})
+                            {% elseif item.Feeds.type_feed == 'poll' %}
+                                {{ item.Feeds.text.text|__ }} - <a href="/profile/polls/"><i>&quot;{{ item.Feeds.text.question }}&quot;</i></a>
+                            {% elseif item.Feeds.type_feed == 'post' %}
+                                {{ item.Feeds.text.text|__ }} - <i class="post-text">&quot;{{ item.Feeds.text.post_text }}&quot;</i>
+                                {% if item.Feeds.text.type == 'video' %}
+                                <ul class="clearfix activityListPhotos">
+                                    <li><a href="{{ item.Feeds.text.attached_video }}" class="viewVideoItem"><img src="/thumbs/120x90{{ item.Feeds.text.cover_video }}" alt="Video{{ loop.index }}"/></a></li>
+                                </ul>
+                                {% elseif item.Feeds.text.type == 'image' %}
+                                    {% set attachedId = attachedId|merge([item.Feeds.id_affected_tables]) %}
+                                    <ul class="clearfix activityListPhotos">
+                                        <li><a href="{{ item.Feeds.text.attached_image }}" class="attachedImage_{{ item.Feeds.id_affected_tables }}"><img src="/thumbs/120x92{{ item.Feeds.text.attached_image }}" alt="Image{{ loop.index }}"/></a></li>
+                                    </ul>
+                                {% endif %}
+
+                            {% elseif item.Feeds.type_feed == 'comment_post' %}
+                                {{ item.Feeds.text.text|__ }} - <i>&quot;{{ item.Feeds.text.comment_text }}&quot;</i>
+                            {% elseif item.Feeds.type_feed == 'photo_album' %}
+                                {% set albumsId = albumsId|merge([item.Feeds.id_affected_tables]) %}
+                                {{ item.Feeds.text }} - <a href="/{{ linkProfile }}/albums/photos/{{ item.Feeds.id_affected_tables }}" class="activityPhoto">&quot;{{ item.Feeds.albumName }}&quot;</a>
+                                <ul class="clearfix activityListPhotos">
+                                {% for photo in item.Feeds.photos %}
+                                    <li><a href="{{ photo }}" class="viewPhotoAlbum_{{ item.Feeds.id_affected_tables }}"><img src="/thumbs/50x50{{ photo }}" alt="Photo{{ loop.index }}"/></a></li>
+                                {% endfor %}
+                                </ul>
+                            {% elseif item.Feeds.type_feed == 'video_item' %}
+                                {{ item.Feeds.text }} - <a href="/{{ linkProfile }}/albums/videos/{{ item.Feeds.id_affected_tables }}" class="activityPhoto">&quot;{{ item.Feeds.albumName }}&quot;</a>
+                                <ul class="clearfix activityListPhotos">
+                                    <li><a href="{{ item.Feeds.videoUrl }}" class="viewVideoItem"><img src="/thumbs/120x90{{ item.Feeds.videoCover }}" alt="Video{{ loop.index }}"/></a></li>
+                                </ul>
+                            {% elseif item.Feeds.type_feed == 'sponsor' %}
+                                {{ item.Feeds.text }}
+                                <ul class="clearfix activityListPhotos">
+                                    <li><img src="/thumbs/120x90{{ item.Feeds.img }}" alt="Video{{ loop.index }}"/></li>
+                                </ul>
+                            {% elseif item.Feeds.type_feed == 'product' %}
+                                {{ item.Feeds.text }}
+                                <ul class="clearfix activityListPhotos">
+                                    <li>
+                                        <a href="/shop/product/{{ item.Feeds.link }}"><img src="/thumbs/120x90{{ item.Feeds.img }}" alt="productIMG"/></a>
+                                    </li>
+                                </ul>
+                            {% endif %}
+
+                            <p class="activityData">{{ item.Feeds.created|date('M j, Y H:i') }}</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="comment-list__one clearfix">
+                        <div class="comment-list__one__text clearfix">
+                            There is no activity
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="padd-15"></div>
+
+    {{ view.element('community/rightSideInProfile') }}
+
+</div>
+
+<script type="text/javascript">
+
+    $(function() {
+        {% for albumId in albumsId %}
+        $(".viewPhotoAlbum_{{ albumId }}").colorbox({rel:'viewPhotoAlbum_{{ albumId }}', width:"90%", height:"90%", fixed: true });
+        {% endfor %}
+        {% for attachId in attachedId %}
+        $(".attachedImage_{{ attachId }}").colorbox({rel:'attachedImage_{{ attachId }}', width:"90%", height:"90%", fixed: true });
+        {% endfor %}
+
+        $(".viewVideoItem").colorbox({width:"70%", height:"70%", fixed: true, iframe:true });
+
+        var loadContent = $("#activityPage"),
+            imagePlace = $('#imagePlace'),
+            attachContent = new AttachWallPost();
+
+
+        loadContent.on('click', '#submit', function() {
+            var thisBtn = $(this),
+                formPost=$("#UserAddPostForm"),
+                updatedListActivity = $('#userActivityList'),
+                contentPost = $('#postTextInput');
+            thisBtn.hide();
+            thisBtn.after(generalSettings.ajaxLoaderURL);
+            $.get(formPost.attr('action'), formPost.serialize(), function(data) {
+                    if(!data.error) {
+                        location.reload();
+                    } else {
+                        showTopMsg(data.err_desc, 'error');
+                    }
+                }
+            );
+
+        });
+
+        attachContent.initAttach();
+
+    });
+
+</script>
